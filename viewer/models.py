@@ -54,6 +54,8 @@ class Author(Model):
         return f"{self.name} {self.surname}"
 
 
+
+
 class Format(Model):
     name = CharField(max_length=32, null=False, blank=False, unique=True)
 
@@ -108,7 +110,8 @@ class Book(Model):
         return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, author={self.author}, publishing_date={self.publishing_date})"
 
     def __str__(self):
-        return f"{self.title_cz} ({self.author})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        return f"{self.title_cz} ({authors})"
 
 
 class Award(Model):
