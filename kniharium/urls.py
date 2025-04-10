@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', home, name='home'),
+    path('books/', BooksListView.as_view(), name='books'),
 ]
