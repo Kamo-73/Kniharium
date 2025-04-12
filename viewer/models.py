@@ -5,7 +5,7 @@ from django.db.models import Model, CharField, DateField, TextField, ForeignKey,
 
 
 class Genre(Model):
-    name = CharField(max_length=32, null=False, blank=False, unique=True)
+    name = CharField(max_length=100, null=False, blank=False, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -73,8 +73,8 @@ class Publisher(Model):
     name = CharField(max_length=150, null=False, blank=False, unique=True)
     information = TextField(null=True, blank=True)
     link = URLField(max_length=200, null=True, blank=True, unique=True)
-    date_of_establishment = DateField(null=True, blank=True)
-    date_of_dissolution = DateField(null=True, blank=True)
+    year_of_establishment = IntegerField(null=True, blank=True)
+    year_of_dissolution = IntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -96,7 +96,7 @@ class Book(Model):
     genre = ManyToManyField(Genre, blank=False, related_name='books')
     rating_ours = IntegerField(null=True, blank=True)
     review = TextField(null=True, blank=True)
-    publishing_date = DateField(null=True, blank=True)
+    year_of_publishing = IntegerField(null=True, blank=True)
     time_of_reading = IntegerField(null=True, blank=True)
     format = ManyToManyField(Format, blank=False, related_name='books')
     created = DateTimeField(auto_now_add=True)
@@ -104,10 +104,10 @@ class Book(Model):
     image = ImageField(upload_to='images/', default=None, null=True, blank=True)
 
     class Meta:
-        ordering = ['title_cz', 'title_orig', 'publishing_date']
+        ordering = ['title_cz', 'title_orig', 'year_of_publishing']
 
     def __repr__(self):
-        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, author={self.author}, publishing_date={self.publishing_date})"
+        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, author={self.author},year_of_publishing={self.year_of_publishing})"
 
     def __str__(self):
         authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])

@@ -8,6 +8,7 @@ def home(request):
     return render(request, 'home.html')
 
 
+
 class BooksListView(ListView):
     template_name = 'books.html'
     model = Book
