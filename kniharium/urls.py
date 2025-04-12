@@ -25,5 +25,13 @@ urlpatterns = [
     path('', home, name='home'),
     path('books/', BooksListView.as_view(), name='books'),
     path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
+    path('authors/', AuthorsListView.as_view(), name='authors'),
+    path('author/<int:pk>/', AuthorDetailView.as_view(), name='author'),
+    path('publishers/', PublishersListView.as_view(), name='publishers'),
+    path('publisher/<int:pk>/', PublisherDetailView.as_view(), name='publisher'),
+    path('about/', about, name='about'),
+
+
+
 
 ]

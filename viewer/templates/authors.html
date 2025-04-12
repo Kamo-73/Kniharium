@@ -9,11 +9,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Seznam knih</h1>
+    <h1>Seznam autorů</h1>
     <ul>
-        {% for book in books %}
+        {% for author in authors %}
             <li>
-                <a href="{% url 'book' book.id %}">{{ book }}</a>
+                <a href="{% url 'author' author.id %}">{{ author }}</a>
             </li>
         {% endfor %}
     </ul>
