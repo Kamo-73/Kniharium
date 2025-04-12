@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Seznam knih
+    {{ book.title_cz}}
 {% endblock %}
 
 {% block left_sidebar %}
@@ -9,14 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Seznam knih</h1>
-    <ul>
-        {% for book in books %}
-            <li>
-                <a href="{% url 'book' book.id %}">{{ book }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <h1>{{ book.title_cz }}</h1>
+    <p>Tu je blok content.</p>
 {% endblock %}
 
 {% block right_sidebar %}
@@ -24,4 +18,3 @@
 {% endblock %}
 
 {% include "footer.html" %}
-

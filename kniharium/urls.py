@@ -24,4 +24,6 @@ urlpatterns = [
 
     path('', home, name='home'),
     path('books/', BooksListView.as_view(), name='books'),
+    path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
+
 ]
