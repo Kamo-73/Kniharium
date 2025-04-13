@@ -33,105 +33,105 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "The Awakening",
-        "title_cz": "Probuzení",
-        "num_of_pages": 288,
-        "publisher": "Fragment",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "The Shining",
+        "title_cz": "Osvícení",
+        "num_of_pages": 456,
+        "publisher": "Beta Dobrovský",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
     },
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "The Struggle",
-        "title_cz": "Souboj",
-        "num_of_pages": 304,
-        "publisher": "Fragment",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "It",
+        "title_cz": "To",
+        "num_of_pages": 1168,
+        "publisher": "BETA",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "Audio kniha"]
     },
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "The Fury",
-        "title_cz": "Zběsilost",
-        "num_of_pages": 288,
-        "publisher": "Fragment",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Dark Reunion",
-        "title_cz": "Temné shledání",
-        "num_of_pages": 272,
-        "publisher": "Fragment",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Night World: Secret Vampire",
-        "title_cz": "Noční svět: Tajný upír",
-        "num_of_pages": 240,
-        "publisher": "Fragment",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Night World: Daughters of Darkness",
-        "title_cz": "Noční svět: Dcery temnoty",
-        "num_of_pages": 256,
-        "publisher": "Fragment",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Night World: Spellbinder",
-        "title_cz": "Noční svět: Kouzelnice",
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Carrie",
+        "title_cz": "Carrie",
         "num_of_pages": 264,
-        "publisher": "Fragment",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha"]
+        "publisher": "BETA",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Dark Visions: The Strange Power",
-        "title_cz": "Temné vize: Tajemná síla",
-        "num_of_pages": 304,
-        "publisher": "Fragment",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Misery",
+        "title_cz": "Misery",
+        "num_of_pages": 384,
+        "publisher": "BETA",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "Audio kniha"]
     },
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Dark Visions: The Possessed",
-        "title_cz": "Temné vize: Posedlí",
-        "num_of_pages": 288,
-        "publisher": "Fragment",
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Pet Sematary",
+        "title_cz": "Řbitov zvířátek",
+        "num_of_pages": 368,
+        "publisher": "BETA",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Lisa Jane",
-        "surname": "Smith",
-        "title_orig": "Dark Visions: The Passion",
-        "title_cz": "Temné vize: Vášeň",
-        "num_of_pages": 288,
-        "publisher": "Fragment",
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Doctor Sleep",
+        "title_cz": "Doktor Spánek",
+        "num_of_pages": 544,
+        "publisher": "BETA",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "Audio kniha"]
     },
+    {
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "11/22/63",
+        "title_cz": "Dallas 63",
+        "num_of_pages": 752,
+        "publisher": "BETA",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "The Green Mile",
+        "title_cz": "Zelená míle",
+        "num_of_pages": 448,
+        "publisher": "BETA",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "Audio kniha"]
+    },
+    {
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Gerald's Game",
+        "title_cz": "Geraldova hra",
+        "num_of_pages": 352,
+        "publisher": "BETA",
+        "rating_ours": 4,
+        "format": ["E-kniha"]
+    },
+    {
+        "name": "Stephen",
+        "surname": "King",
+        "title_orig": "Salem's Lot",
+        "title_cz": "Prokletí Salemu",
+        "num_of_pages": 480,
+        "publisher": "BETA",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha"]
+    }
 ]
 
 def vypocitaj_dobu_citania(pocet_stran):

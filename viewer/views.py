@@ -8,7 +8,7 @@ from django.db.models import Q
 
 def home_view(request):
     recommended_titles = [
-        "Duna",
+        "Chladnokrevně",
         "Mesiáš Duny",
         "Osvícení",
         "Pán prstenů",

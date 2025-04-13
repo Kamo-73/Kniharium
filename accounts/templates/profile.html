@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profil: {{ profile.user.username }}
+{% endblock %}
+
+{% block left_sidebar %}
+    <p>Tu je left sidebar…</p>
+{% endblock %}
+
+{% block content %}
+    <h1>Profil uživatele {{ profile.user.username }}</h1>
+
+    <p><strong>Jméno:</strong> {{ profile.user.first_name }}</p>
+    <p><strong>Příjmení:</strong> {{ profile.user.last_name }}</p>
+    {% comment %}<p><strong>Biografie:</strong> {{ profile.biography }}</p>
+    <p><strong>Watchlist:</strong>
+    <ul>
+        {% for movie in profile.watchlist.all %}
+            <li><a href="{% url 'movie' movie.id %}">{{ movie.title_orig }}</a></li>
+        {% empty %}
+            Žádný film na seznamu.
+        {% endfor %}
+    </ul>
+    </p>{% endcomment %}
+{% endblock %}
+
+{% block right_sidebar %}
+    <p>Tu je right sidebar</p>
+{% endblock %}
