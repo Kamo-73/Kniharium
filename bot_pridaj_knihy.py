@@ -33,104 +33,94 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "The Shining",
-        "title_cz": "Osvícení",
-        "num_of_pages": 456,
-        "publisher": "Beta Dobrovský",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "It",
-        "title_cz": "To",
-        "num_of_pages": 1168,
-        "publisher": "BETA",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Carrie",
-        "title_cz": "Carrie",
-        "num_of_pages": 264,
-        "publisher": "BETA",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Misery",
-        "title_cz": "Misery",
-        "num_of_pages": 384,
-        "publisher": "BETA",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Pet Sematary",
-        "title_cz": "Řbitov zvířátek",
-        "num_of_pages": 368,
-        "publisher": "BETA",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Doctor Sleep",
-        "title_cz": "Doktor Spánek",
-        "num_of_pages": 544,
-        "publisher": "BETA",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "11/22/63",
-        "title_cz": "Dallas 63",
-        "num_of_pages": 752,
-        "publisher": "BETA",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "The Green Mile",
-        "title_cz": "Zelená míle",
-        "num_of_pages": 448,
-        "publisher": "BETA",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "Audio kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Gerald's Game",
-        "title_cz": "Geraldova hra",
-        "num_of_pages": 352,
-        "publisher": "BETA",
-        "rating_ours": 4,
-        "format": ["E-kniha"]
-    },
-    {
-        "name": "Stephen",
-        "surname": "King",
-        "title_orig": "Salem's Lot",
-        "title_cz": "Prokletí Salemu",
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Angels & Demons",
+        "title_cz": "Andělé a démoni",
         "num_of_pages": 480,
-        "publisher": "BETA",
+        "publisher": "Argo",
         "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "The Da Vinci Code",
+        "title_cz": "Šifra mistra Leonarda",
+        "num_of_pages": 480,
+        "publisher": "Argo",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "The Lost Symbol",
+        "title_cz": "Ztracený symbol",
+        "num_of_pages": 512,
+        "publisher": "Argo",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Inferno",
+        "title_cz": "Inferno",
+        "num_of_pages": 528,
+        "publisher": "Argo",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Origin",
+        "title_cz": "Počátek",
+        "num_of_pages": 504,
+        "publisher": "Argo",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "The Secret of Secrets",
+        "title_cz": "Tajemství všech tajemství",
+        "num_of_pages": 512,
+        "publisher": "Argo",
+        "rating_ours": 4,
         "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Digital Fortress",
+        "title_cz": "Digitální pevnost",
+        "num_of_pages": 384,
+        "publisher": "Argo",
+        "rating_ours": 3,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Deception Point",
+        "title_cz": "Pavučina lží",
+        "num_of_pages": 464,
+        "publisher": "Argo",
+        "rating_ours": 3,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Dan",
+        "surname": "Brown",
+        "title_orig": "Wild Symphony",
+        "title_cz": "Divoká symfonie",
+        "num_of_pages": 40,
+        "publisher": "Argo",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha"]
     }
 ]
 
