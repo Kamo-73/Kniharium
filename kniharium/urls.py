@@ -19,10 +19,13 @@ from django.urls import path
 
 from viewer.views import *
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', home, name='home'),
+    path('', home_view, name='home'),
     path('books/', BooksListView.as_view(), name='books'),
     path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
     path('authors/', AuthorsListView.as_view(), name='authors'),
@@ -35,3 +38,7 @@ urlpatterns = [
 
 
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

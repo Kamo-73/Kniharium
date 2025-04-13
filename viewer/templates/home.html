@@ -3,16 +3,69 @@
 {% block title %}Domov{% endblock %}
 
 {% block left_sidebar %}
-    <p>Tu je left sidebar…</p>
+    <p></p>
 {% endblock %}
 
 {% block content %}
-    <h1>Vitaj na Knihariu!</h1>
-    <p>Tu je blok content.</p>
+<!-- Nadpis sekcie -->
+<h2 style="padding: 10px; text-align: center;">
+    Naše odporúčanie na mesiac apríl
+</h2>
+
+<!-- Grid layout: 5 stĺpcov, medzery 30px, centrované do max. 1400px -->
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; padding: 30px; max-width: 1400px; margin: auto;">
+
+    <!-- Prechádzame odporúčané knihy -->
+    {% for book in recommended_books %}
+        <!-- Každá kniha v samostatnom boxe -->
+        <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #fdfdfd;">
+
+            <!-- Klik na obrázok → presmeruje na detail knihy -->
+            <a href="{% url 'book' book.id %}">
+
+                <!-- Ak kniha má obrázok -->
+                {% if book.image and book.image.name %}
+
+                    <!-- Ak je to internetová URL (napr. z OpenLibrary) -->
+                    {% if "http" in book.image.name %}
+                        <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; object-fit: cover;">
+
+                    <!-- Inak je to lokálny obrázok z media/ -->
+                    {% else %}
+                        <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; object-fit: cover;">
+                    {% endif %}
+
+                <!-- Ak obrázok chýba úplne -->
+                {% else %}
+                    <div style="height: 280px; background-color: #ccc; display: flex; align-items: center; justify-content: center;">
+                        Obrázok chýba
+                    </div>
+                {% endif %}
+            </a>
+
+            <!-- Zoznam autorov (každý klikateľný, vedie na detail autora) -->
+            <p style="margin: 10px 0 0 0; font-weight: bold;">
+                {% for author in book.author.all %}
+                    <a href="{% url 'author' author.id %}" style="text-decoration: none; color: inherit;">
+                        {{ author.name }} {{ author.surname }}
+                    </a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            <!-- Klikateľný názov knihy (vedie na detail knihy) -->
+            <p>
+                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
+                    {{ book.title_cz }}
+                </a>
+            </p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
 
 {% block right_sidebar %}
-    <p>Tu je right sidebar</p>
+    <p</p>
 {% endblock %}
 
 {% include "footer.html" %}
