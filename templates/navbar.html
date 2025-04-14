@@ -21,8 +21,8 @@
         <div class="text-start">
             {% if user.is_authenticated %}
                 Jsi přihlášen jako <strong>{{ user.username }}</strong><br>
-                <a href="{% url 'profile' user.id %}">Profil</a><br>
-                <a href="{% url 'logout' %}">Odhlásit</a>
+                <a href="{% url 'profile' user.id %}" style="text-decoration: none; color: inherit;">Profil</a><br>
+                <a href="{% url 'logout' %}" style="text-decoration: none; color: inherit;">Odhlásit</a>
             {% else %}
                 Nepřihlášený uživatel
             {% endif %}

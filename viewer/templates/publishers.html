@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Seznam nakladatelství
+    Seznam vydavatelství
 {% endblock %}
 
 {% block left_sidebar %}
@@ -9,21 +9,47 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Seznam nakladatelství</h1>
-    <ul>
-        {% for publisher in publishers %}
-            <li>
-                <a href="{% url 'publisher' publisher.id %}">{{ publisher }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-    {% include 'paginator.html' %}
-{% endblock %}
+<h2 style="text-align: center; padding: 10px;">Zoznam vydavateľstiev</h2>
 
+
+<!-- Navigácia -->
+<div style="text-align: center; margin: 20px 0; font-size: 16px;">
+    Strana {{ current_page }}
+    {% if has_previous %}
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+    {% endif %}
+    {% if has_next %}
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+    {% endif %}
+</div>
+
+<!-- Výpis vydavateľstiev -->
+<div style="display: block; padding: 20px 100px;">
+    {% for publisher in publishers %}
+        <p style="text-align: center;">
+            <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
+                {{ publisher.name }}
+            </a>
+        </p>
+    {% empty %}
+        <p>Žiadne vydavateľstvá.</p>
+    {% endfor %}
+</div>
+
+<!-- Navigácia dole -->
+<div style="text-align: center; margin: 20px 0; font-size: 16px;">
+    Strana {{ current_page }}
+    {% if has_previous %}
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+    {% endif %}
+    {% if has_next %}
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+    {% endif %}
+</div>
+{% endblock %}
 
 {% block right_sidebar %}
     <p>Tu je right sidebar</p>
 {% endblock %}
 
 {% include "footer.html" %}
-

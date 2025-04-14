@@ -8,7 +8,7 @@ from django.db.models import Q
 
 def home_view(request):
     recommended_titles = [
-        "Chladnokrevně",
+        "Andělé a démoni",
         "Mesiáš Duny",
         "Osvícení",
         "Pán prstenů",
@@ -109,9 +109,51 @@ class BookDetailView(DetailView):
 
 class AuthorsListView(ListView):
     template_name = 'authors.html'
-    model = Author
     context_object_name = 'authors'
-    paginate_by = 10
+    paginate_by = 40  # Počet autorov na stránku
+
+    def get_queryset(self):
+        # Získame parameter pre triedenie podľa písmena
+        self.letter = self.request.GET.get('letter', 'A').upper()
+
+        # Filtrovanie autorov podľa písmena priezviska
+        return Author.objects.filter(surname__istartswith=self.letter).order_by('surname')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Zoznam písmen abecedy
+        alphabet = [chr(c) for c in range(ord('A'), ord('Z') + 1)]
+
+        # Získanie aktuálnej stránky
+        page_number = int(self.request.GET.get('page', 1))
+
+        # Získanie všetkých autorov podľa filtrovaného písmena
+        authors = self.get_queryset()
+
+        # Paginator pre stránkovanie
+        paginator = Paginator(authors, self.paginate_by)
+        page_obj = paginator.get_page(page_number)
+
+        # Rozdelenie autorov do dvoch stĺpcov
+        left_authors = page_obj.object_list[:20]
+        right_authors = page_obj.object_list[20:]
+
+        context.update({
+            'alphabet': alphabet,  # Pre abecedu
+            'current_letter': self.letter,  # Aktuálne zvolené písmeno
+            'current_page': page_number,  # Aktuálna stránka
+            'page_obj': page_obj,  # Aktuálny objekt stránkovania
+            'left_authors': left_authors,  # Autori pre ľavý stĺpec
+            'right_authors': right_authors,  # Autori pre pravý stĺpec
+            'has_previous': page_obj.has_previous(),  # Predchádzajúca stránka
+            'has_next': page_obj.has_next(),  # Ďalšia stránka
+            'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
+            # Predchádzajúce číslo stránky
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,  # Ďalšie číslo stránky
+        })
+
+        return context
 
 
 class AuthorDetailView(DetailView):
@@ -122,10 +164,36 @@ class AuthorDetailView(DetailView):
 
 class PublishersListView(ListView):
     template_name = 'publishers.html'
-    model = Publisher
     context_object_name = 'publishers'
-    paginate_by = 10
+    paginate_by = 20  # 20 vydavateľstiev na stránku
 
+    def get_queryset(self):
+        # Filtrovanie podľa názvu alebo roku založenia
+        self.sort = self.request.GET.get('sort', 'name')
+        if self.sort == 'year_of_establishment':
+            return Publisher.objects.all().order_by('year_of_establishment', 'name')
+        else:
+            return Publisher.objects.all().order_by('name')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Pre stránkovanie
+        page_number = int(self.request.GET.get('page', 1))
+        publishers = self.get_queryset()
+        paginator = Paginator(publishers, self.paginate_by)
+        page_obj = paginator.get_page(page_number)
+
+        context.update({
+            'current_page': page_number,
+            'page_obj': page_obj,
+            'has_previous': page_obj.has_previous(),
+            'has_next': page_obj.has_next(),
+            'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
+        })
+
+        return context
 
 class PublisherDetailView(DetailView):
     template_name = 'publisher.html'

@@ -9,21 +9,64 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Seznam autorů</h1>
-    <ul>
-        {% for author in authors %}
-            <li>
-                <a href="{% url 'author' author.id %}">{{ author }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-    {% include 'paginator.html' %}
-{% endblock %}
+<h2 style="text-align: center; padding: 10px;">Zoznam autorov</h2>
 
+<!-- Abeceda -->
+<div style="text-align: center; margin-bottom: 15px; font-size: 20px;">
+    {% for letter in alphabet %}
+        <a href="?letter={{ letter }}&sort={{ sort }}" style="margin: 0 7px; text-decoration: {% if current_letter == letter %}underline{% else %}none{% endif %}; font-weight: {% if current_letter == letter %}bold{% else %}normal{% endif %}; color: black;">{{ letter }}</a>
+    {% endfor %}
+</div>
+
+<!-- Navigácia -->
+<div style="text-align: center; margin: 20px 0; font-size: 16px;">
+    Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
+    {% if has_previous %}
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+    {% endif %}
+    {% if has_next %}
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+    {% endif %}
+</div>
+
+<!-- Výpis podľa priezviska autora -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 20px 100px;">
+    <div>
+        {% for author in left_authors %}
+            <p style="margin-bottom: 20px;">
+                <!-- Odkaz na detail autora -->
+                <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
+                    {{ author.name }} <strong style="font-weight: bold;">{{ author.surname }}</strong>
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+    <div>
+        {% for author in right_authors %}
+            <p style="margin-bottom: 20px;">
+                <!-- Odkaz na detail autora -->
+                <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
+                    {{ author.name }} <strong style="font-weight: bold;">{{ author.surname }}</strong>
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Navigácia dole -->
+<div style="text-align: center; margin: 20px 0; font-size: 16px;">
+    Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
+    {% if has_previous %}
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+    {% endif %}
+    {% if has_next %}
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+    {% endif %}
+</div>
+{% endblock %}
 
 {% block right_sidebar %}
     <p>Tu je right sidebar</p>
 {% endblock %}
 
 {% include "footer.html" %}
-
