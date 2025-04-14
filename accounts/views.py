@@ -1,6 +1,6 @@
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView
 
@@ -27,3 +27,7 @@ class ProfileDetailView(DetailView):
     model = Profile
     template_name = 'profile.html'
     context_object_name = 'profile'
+
+    def get_object(self):
+        user_id = self.kwargs.get("pk")  # toto je z URL (user.id)
+        return get_object_or_404(Profile, user__id=user_id)
