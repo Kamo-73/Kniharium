@@ -10,7 +10,47 @@
 
 {% block content %}
     <h1>{{ book.title_cz }}</h1>
-    <p>Tu je blok content.</p>
+    <h2>{{ book.title_orig }}</h2>
+    <h2>{% for author in book.author.all %}
+        {{ author.name }} {{ author.surname }}
+    {% endfor %}</h2>
+    <a>
+
+                <!-- Ak kniha má obrázok -->
+                {% if book.image and book.image.name %}
+
+                    <!-- Ak je to internetová URL (napr. z OpenLibrary) -->
+                    {% if "http" in book.image.name %}
+                        <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; object-fit: cover;">
+
+                    <!-- Inak je to lokálny obrázok z media/ -->
+                    {% else %}
+                        <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; object-fit: cover;">
+                    {% endif %}
+
+                <!-- Ak obrázok chýba úplne -->
+                {% else %}
+                    <div style="height: 280px; background-color: #ccc; display: flex; align-items: center; justify-content: center;">
+                        Obrázok chýba
+                    </div>
+                {% endif %}
+            </a>
+    <br>
+    <a>{{ book.description }}</a><br>
+    <a><strong>Žánry:</strong></a>
+    {% for genre in book.genre.all %}
+        {{ genre.name }}
+    {% endfor %}<br>
+    <a><strong>Počet stran: </strong>{{ book.num_of_pages }}</a><br>
+    <a><strong>Čas čtení: </strong>{{ book.time_of_reading }} minut</a><br>
+    <a><strong>Vydavatelství: </strong>{{ book.publisher }}</a><br>
+    <a><strong>Datum vydání: </strong>{{ book.year_of_publishing }}</a><br>
+    <a><strong>Formát:</strong></a>
+    {% for format in book.format.all %}
+        {{ format }}
+    {% endfor %}<br>
+    <a>Datum vytvoření: {{ book.created }}</a><br>
+    <a>Datum aktualizace: {{ book.updated }}</a><br>
 {% endblock %}
 
 {% block right_sidebar %}
