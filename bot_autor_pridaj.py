@@ -77,7 +77,7 @@ def vytvor_autora(meno, priezvisko, pohlavie):
 
     if not obrazok_url:
         fallback = "author_fallback_woman.png" if pohlavie == "žena" else "author_fallback_man.png"
-        obrazok_url = f"viewer/static/images/{fallback}"
+        obrazok_url = f"images/{fallback}"  # ✅ správna cesta vzhľadom na MEDIA_ROOT
 
     # ✅ Uloženie autora
     autor = Author.objects.create(

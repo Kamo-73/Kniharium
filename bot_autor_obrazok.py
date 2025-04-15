@@ -20,8 +20,8 @@ def ziskaj_url_obrazka(meno, priezvisko, pohlavie, jazyk='en'):
         print(f"🖼️ Obrázok z Wikipédie: {obrazok_url}")
     else:
         fallback = "author_fallback_woman.png" if pohlavie == "žena" else "author_fallback_man.png"
-        fallback_path = f"viewer/static/images/{fallback}"
-        print(f"🖼️ Obrázok nenájdený – použitý fallback: {fallback_path}")
+        fallback_path = f"images/{fallback}"  # cesta relatívna k MEDIA_ROOT
+        print(f"🖼️ Obrázok nenájdený – použitý fallback: /media/{fallback_path}")
 
 if __name__ == "__main__":
     meno = input("Zadaj meno autora/autorky: ")
