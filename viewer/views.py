@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
+from viewer.forms import BookModelForm, AuthorModelForm
 from viewer.models import Book, Author, Publisher
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -107,6 +109,36 @@ class BookDetailView(DetailView):
     context_object_name = 'book'
 
 
+class BookCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = BookModelForm
+    success_url = reverse_lazy('books')
+    #permission_required = 'viewer.add_book'
+
+    def form_invalid(self, form):
+        print("Formulář není validní.")
+        return super().form_invalid(form)
+
+
+class BookUpdateView(UpdateView):
+    template_name = 'form.html'
+    form_class = BookModelForm
+    model = Book
+    success_url = reverse_lazy('books')
+    #permission_required = 'viewer.change_book'
+
+    def form_invalid(self, form):
+        print("Formulář není validní.")
+        return super().form_invalid(form)
+
+
+class BookDeleteView(DeleteView):
+    template_name = 'confirm_delete.html'
+    model = Book
+    success_url = reverse_lazy('books')
+    #permission_required = 'viewer.delete_book'
+
+
 class AuthorsListView(ListView):
     template_name = 'authors.html'
     context_object_name = 'authors'
@@ -160,6 +192,36 @@ class AuthorDetailView(DetailView):
     template_name = 'author.html'
     model = Author
     context_object_name = 'author'
+
+
+class AuthorCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = AuthorModelForm
+    success_url = reverse_lazy('authors')
+    #permission_required = 'viewer.add_author'
+
+    def form_invalid(self, form):
+        print("Formulář 'AuthorModelForm' není validní.")
+        return super().form_invalid(form)
+
+
+class AuthorUpdateView(UpdateView):
+    template_name = 'form.html'
+    form_class = AuthorModelForm
+    model = Author
+    success_url = reverse_lazy('authors')
+    #permission_required = 'viewer.change_author'
+
+    def form_invalid(self, form):
+        print("Formulář 'AuthorModelForm' není validní.")
+        return super().form_invalid(form)
+
+
+class AuthorDeleteView(DeleteView):
+    template_name = 'confirm_delete.html'
+    model = Author
+    success_url = reverse_lazy('authors')
+    #permission_required = 'viewer.delete_author'
 
 
 class PublishersListView(ListView):

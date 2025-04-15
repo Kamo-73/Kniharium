@@ -31,6 +31,8 @@
                     </div>
                 {% endif %}
             </a>
+    <a href="{% url 'author_update' author.id %}" class="btn btn-primary">Aktualizovat</a>
+    <a href="{% url 'author_delete' author.id %}" class="btn btn-danger">Smazat</a>
 {% endblock %}
 
 {% block right_sidebar %}

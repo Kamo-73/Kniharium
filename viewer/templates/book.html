@@ -51,6 +51,9 @@
     {% endfor %}<br>
     <a>Datum vytvoření: {{ book.created }}</a><br>
     <a>Datum aktualizace: {{ book.updated }}</a><br>
+    <a href="{% url 'book_update' book.id %}" class="btn btn-primary">Aktualizovat</a>
+    <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Smazat</a>
+
 {% endblock %}
 
 {% block right_sidebar %}

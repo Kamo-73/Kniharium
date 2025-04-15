@@ -29,8 +29,16 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('books/', BooksListView.as_view(), name='books'),
     path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
+    path('book/create/', BookCreateView.as_view(), name='book_create'),
+    path('book/update/<int:pk>/', BookUpdateView.as_view(), name='book_update'),
+    path('book/delete/<int:pk>/', BookDeleteView.as_view(), name='book_delete'),
+
     path('authors/', AuthorsListView.as_view(), name='authors'),
     path('author/<int:pk>/', AuthorDetailView.as_view(), name='author'),
+    path('author/create/', AuthorCreateView.as_view(), name='author_create'),
+    path('author/update/<int:pk>/', AuthorUpdateView.as_view(), name='author_update'),
+    path('author/delete/<int:pk>/', AuthorDeleteView.as_view(), name='author_delete'),
+
     path('publishers/', PublishersListView.as_view(), name='publishers'),
     path('publisher/<int:pk>/', PublisherDetailView.as_view(), name='publisher'),
     path('about/', about, name='about'),
