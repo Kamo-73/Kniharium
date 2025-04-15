@@ -10,7 +10,26 @@
 
 {% block content %}
     <h1>{{ author.name }} {{ author.surname }}</h1>
-    <p>Tu je blok content.</p>
+     <a>
+                <!-- Ak kniha má obrázok -->
+                {% if author.image and author.image.name %}
+
+                    <!-- Ak je to internetová URL (napr. z OpenLibrary) -->
+                    {% if "http" in author.image.name %}
+                        <img src="{{ author.image.name }}" alt="{{ author.title_cz }}" style="height: 280px; object-fit: cover;">
+
+                    <!-- Inak je to lokálny obrázok z media/ -->
+                    {% else %}
+                        <img src="/media/{{ author.image.name }}" alt="{{ author.title_cz }}" style="height: 280px; object-fit: cover;">
+                    {% endif %}
+
+                <!-- Ak obrázok chýba úplne -->
+                {% else %}
+                    <div style="height: 280px; background-color: #ccc; display: flex; align-items: center; justify-content: center;">
+                        Obrázok chýba
+                    </div>
+                {% endif %}
+            </a>
 {% endblock %}
 
 {% block right_sidebar %}
