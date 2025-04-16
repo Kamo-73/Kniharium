@@ -10,7 +10,15 @@
 
 {% block content %}
     <h1>{{ author.name }} {{ author.surname }}</h1>
-     <a>
+
+    <h3>{% if author.date_of_death %}
+        ( {{ author.date_of_birth }}  ✝️{{ author.date_of_death }} )
+        {% else %}
+        ( {{ author.date_of_birth }} )
+    {% endif %}</h3>
+    <p><strong>Národnost: </strong>{{ author.nationality }} </p>
+
+    <a>
                 <!-- Ak kniha má obrázok -->
                 {% if author.image and author.image.name %}
 
@@ -31,6 +39,12 @@
                     </div>
                 {% endif %}
             </a>
+
+    <br><a>{{ author.biography }} </a><br>
+    <a>Datum vytvoření: {{ author.created }}</a><br>
+    <a>Datum aktualizace: {{ author.updated }}</a><br>
+
+
     <a href="{% url 'author_update' author.id %}" class="btn btn-primary">Aktualizovat</a>
     <a href="{% url 'author_delete' author.id %}" class="btn btn-danger">Smazat</a>
 {% endblock %}

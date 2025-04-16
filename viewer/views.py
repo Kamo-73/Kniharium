@@ -1,12 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
-from viewer.forms import BookModelForm, AuthorModelForm
-from viewer.models import Book, Author, Publisher
+from accounts.models import Profile
+from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm
+from viewer.models import Book, Author, Publisher, Comment
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Avg
+
 
 def home_view(request):
     recommended_titles = [
@@ -127,6 +129,47 @@ class BookDetailView(DetailView):
         context['podobne_knihy'] = podobne_knihy
         context['knihy_od_toho_isteho_autora'] = knihy_od_toho_isteho_autora
         return context
+
+def book(request, pk):
+    if Book.objects.filter(id=pk).exists():
+        book_ = Book.objects.get(id=pk)
+        if request.method == 'POST':
+            # zpracování formuláře
+            rating = request.POST.get('rating')
+            user_comment = request.POST.get('user_comment')
+            # pokud již uživatel tento film hodnotil, tak upravíme původní review
+            if Comment.objects.filter(book=book_, commenter=Profile.objects.get(user=request.user)).exists():
+                user_comment_ = Comment.objects.get(book=book_, commenter=Profile.objects.get(user=request.user))
+                user_comment_.rating = rating
+                user_comment_.user_comment = user_comment
+                user_comment_.save()
+            else:
+                Comment.objects.create(
+                    book=book_,
+                    commenter=Profile.objects.get(user=request.user),
+                    rating=rating,
+                    user_comment=user_comment
+                )
+        rating_avg = book_.comments.aggregate(Avg('rating'))['rating__avg']
+        rating_count = book_.comments.filter(rating__isnull=False).count()
+        context = {'book': book_,
+                   'comment_form': CommentModelForm,
+                   'rating_avg': rating_avg,
+                   'rating_count': rating_count}
+        return render(request, 'book.html', context)
+    return redirect('books')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class BookCreateView(CreateView):
@@ -281,6 +324,35 @@ class PublisherDetailView(DetailView):
     template_name = 'publisher.html'
     model = Publisher
     context_object_name = 'publisher'
+
+
+class PublisherCreateView(CreateView):
+    template_name = 'form.html'
+    form_class = PublisherModelForm
+    success_url = reverse_lazy('publishers')
+    #permission_required = 'viewer.add_author'
+
+    def form_invalid(self, form):
+        print("Formulář 'PublisherModelForm' není validní.")
+        return super().form_invalid(form)
+
+class PublisherUpdateView(UpdateView):
+    template_name = 'form.html'
+    form_class = PublisherModelForm
+    model = Publisher
+    success_url = reverse_lazy('publishers')
+    #permission_required = 'viewer.change_author'
+
+    def form_invalid(self, form):
+        print("Formulář 'PublisherModelForm' není validní.")
+        return super().form_invalid(form)
+
+
+class PublisherDeleteView(DeleteView):
+    template_name = 'confirm_delete.html'
+    model = Publisher
+    success_url = reverse_lazy('publishers')
+    #permission_required = 'viewer.delete_author'
 
 
 def about(request):

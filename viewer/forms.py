@@ -2,9 +2,9 @@ import re
 from datetime import date
 
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput
+from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput, IntegerField
 
-from viewer.models import Book, Author
+from viewer.models import Book, Author, Publisher, Comment
 
 
 class BookModelForm(ModelForm):
@@ -138,4 +138,79 @@ class AuthorModelForm(ModelForm):
             raise ValidationError(error_message)
 
         return cleaned_data
+
+
+class PublisherModelForm(ModelForm):
+    class Meta:
+        model = Publisher
+        fields = '__all__'
+
+        labels = {
+            'name': 'Název',
+            'information': 'Informace',
+            'link': 'Link',
+            'year_of_establishment': 'Rok založení',
+            'year_of_dissolution': 'Rok ukončení činnosti',
+            }
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    def clean_name(self):
+        initial = self.cleaned_data['name']
+        if initial:
+            return initial.capitalize()
+        return initial
+
+    def clean_year_of_establishment(self):
+        initial = self.cleaned_data.get('year_of_establishment')
+        if initial and initial > date.today().year:
+            raise ValidationError("Rok založení nesmí být v budoucnosti.")
+        return initial
+
+    def clean_date_of_dissolution(self):
+        initial = self.cleaned_data.get('year_of_dissolutin')
+        if initial and initial > date.today().year:
+            raise ValidationError("Datum ukončení činnosti nesmí být v budoucnosti.")
+        return initial
+
+    def clean_information(self):
+        initial = self.cleaned_data['information']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')  # TODO: Věta může končit i ! ?
+        return '. '.join(sentence.capitalize() for sentence in sentences)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        initial_name = cleaned_data['name']
+        error_message = ''
+        if not initial_name:
+            error_message += "Je nutné zadat název nakladatelství."
+        """
+        initial_date_of_establishment = cleaned_data.get('date_of_establishment') 
+        initial_date_of_dissolution = cleaned_data.get('date_of_dissolution')
+        if initial_date_of_establishment and initial_date_of_dissolution and initial_date_of_dissolution < initial_date_of_establishment:
+            error_message += " Rok ukončení činnosti nesmí být dřív, než rok založení."
+            #raise ValidationError("Datum úmrtí nesmí být dřív, než datum narození.")
+        """ # TODO: Rok ukončení upravit
+        if error_message:
+            raise ValidationError(error_message)
+
+        return cleaned_data
+
+
+class CommentModelForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['rating', 'user_comment']
+        labels = {
+            'rating': 'Hodnocení',
+            'user_comment': 'Komentář'
+        }
+    rating = IntegerField(min_value=1, max_value=5, required=False)
+
+
+
 

@@ -1,7 +1,9 @@
 from django.db import models
 
 from django.db.models import Model, CharField, DateField, TextField, ForeignKey, SET_NULL, DateTimeField, ImageField, \
-    URLField, ManyToManyField, IntegerField
+    URLField, ManyToManyField, IntegerField, CASCADE
+
+from accounts.models import Profile
 
 
 class Genre(Model):
@@ -130,7 +132,25 @@ class Award(Model):
         return f"{self.name}"
 
 
+class Comment(Model):
+    book = ForeignKey(Book, on_delete=CASCADE, null=False, blank=False, related_name='comments')
+    commenter = ForeignKey(Profile, on_delete=SET_NULL, null=True, blank=False, related_name='comments')
+    rating = IntegerField(null=True, blank=True)
+    user_comment = TextField(null=True, blank=True)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-updated']
+
+    def __repr__(self):
+        return (f"Comment(book={self.book}, "
+                f"commenter={self.commenter}, "
+                f"rating={self.rating},"
+                f"user_comment={self.user_comment[:20]})")
+
+    def __str__(self):
+        return f"{self.commenter}: {self.book} ({self.rating})"
 
 
 

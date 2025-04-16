@@ -41,6 +41,10 @@ urlpatterns = [
 
     path('publishers/', PublishersListView.as_view(), name='publishers'),
     path('publisher/<int:pk>/', PublisherDetailView.as_view(), name='publisher'),
+    path('publisher/create/', PublisherCreateView.as_view(), name='publisher_create'),
+    path('publisher/update/<int:pk>/', PublisherUpdateView.as_view(), name='publisher_update'),
+    path('publisher/delete/<int:pk>/', PublisherDeleteView.as_view(), name='publisher_delete'),
+
     path('about/', about, name='about'),
 
     path('accounts/login/', SubmittableLoginView.as_view(), name='login'),

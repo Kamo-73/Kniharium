@@ -10,6 +10,7 @@
 
 {% block content %}
 <h2 style="text-align: center; padding: 10px;">Zoznam vydavateľstiev</h2>
+    <a href="{% url 'publisher_create' %}" class="btn btn-primary">Přidat</a>
 
 
 <!-- Navigácia -->
@@ -30,7 +31,8 @@
             <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
                 {{ publisher.name }}
             </a>
-        <a >✏️</a>
+        <a href="{% url 'publisher_update' publisher.id %}">✏️</a>
+        <a href="{% url 'publisher_delete' publisher.id %}">❌</a>
         </p>
     {% empty %}
         <p>Žiadne vydavateľstvá.</p>
