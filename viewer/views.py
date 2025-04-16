@@ -9,6 +9,7 @@ from viewer.models import Book, Author, Publisher, Comment
 from django.core.paginator import Paginator
 from django.db.models import Q, Avg
 
+import math
 
 def home_view(request):
     recommended_titles = [
@@ -157,6 +158,7 @@ def book(request, pk):
             )
 
     rating_avg = book_.comments.aggregate(Avg('rating'))['rating__avg']
+    user_rating_avg = round(rating_avg or 0)
     rating_count = book_.comments.filter(rating__isnull=False).count()
 
     # podobné knihy podľa žánru a hodnotenia
@@ -171,6 +173,18 @@ def book(request, pk):
         author__in=book_.author.all()
     ).exclude(id=book_.id).distinct()[:5]
 
+    # výpočet formátovanej doby čítania
+    minutes = book_.time_of_reading or 0
+    hours = minutes // 60
+    remaining_minutes = minutes % 60
+
+    if hours and remaining_minutes:
+        reading_time = f"{hours} hod. a {remaining_minutes} min."
+    elif hours:
+        reading_time = f"{hours} hod."
+    else:
+        reading_time = f"{remaining_minutes} min."
+
     context = {
         'book': book_,
         'comment_form': CommentModelForm(),  # nezabudni na ()
@@ -178,6 +192,8 @@ def book(request, pk):
         'rating_count': rating_count,
         'podobne_knihy': podobne_knihy,
         'knihy_od_toho_isteho_autora': knihy_od_toho_isteho_autora,
+        'reading_time': reading_time,
+        'user_rating_avg': user_rating_avg,
     }
 
     return render(request, 'book.html', context)
