@@ -28,7 +28,8 @@ urlpatterns = [
 
     path('', home_view, name='home'),
     path('books/', BooksListView.as_view(), name='books'),
-    path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
+    #path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
+    path('book/<int:pk>/', book, name='book'),
     path('book/create/', BookCreateView.as_view(), name='book_create'),
     path('book/update/<int:pk>/', BookUpdateView.as_view(), name='book_update'),
     path('book/delete/<int:pk>/', BookDeleteView.as_view(), name='book_delete'),
@@ -54,7 +55,7 @@ urlpatterns = [
     path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name='profile'),
 
-
+    path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
 
 
 ]

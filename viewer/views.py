@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
@@ -131,44 +131,56 @@ class BookDetailView(DetailView):
         return context
 
 def book(request, pk):
-    if Book.objects.filter(id=pk).exists():
-        book_ = Book.objects.get(id=pk)
-        if request.method == 'POST':
-            # zpracování formuláře
-            rating = request.POST.get('rating')
-            user_comment = request.POST.get('user_comment')
-            # pokud již uživatel tento film hodnotil, tak upravíme původní review
-            if Comment.objects.filter(book=book_, commenter=Profile.objects.get(user=request.user)).exists():
-                user_comment_ = Comment.objects.get(book=book_, commenter=Profile.objects.get(user=request.user))
-                user_comment_.rating = rating
-                user_comment_.user_comment = user_comment
-                user_comment_.save()
-            else:
-                Comment.objects.create(
-                    book=book_,
-                    commenter=Profile.objects.get(user=request.user),
-                    rating=rating,
-                    user_comment=user_comment
-                )
-        rating_avg = book_.comments.aggregate(Avg('rating'))['rating__avg']
-        rating_count = book_.comments.filter(rating__isnull=False).count()
-        context = {'book': book_,
-                   'comment_form': CommentModelForm,
-                   'rating_avg': rating_avg,
-                   'rating_count': rating_count}
-        return render(request, 'book.html', context)
-    return redirect('books')
+    if not Book.objects.filter(id=pk).exists():
+        return redirect('books')
 
+    book_ = Book.objects.get(id=pk)
 
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        user_comment = request.POST.get('user_comment')
 
+        profile = Profile.objects.get(user=request.user)
+        comment_qs = Comment.objects.filter(book=book_, commenter=profile)
 
+        if comment_qs.exists():
+            comment_obj = comment_qs.first()
+            comment_obj.rating = rating
+            comment_obj.user_comment = user_comment
+            comment_obj.save()
+        else:
+            Comment.objects.create(
+                book=book_,
+                commenter=profile,
+                rating=rating,
+                user_comment=user_comment
+            )
 
+    rating_avg = book_.comments.aggregate(Avg('rating'))['rating__avg']
+    rating_count = book_.comments.filter(rating__isnull=False).count()
 
+    # podobné knihy podľa žánru a hodnotenia
+    podobne_knihy = Book.objects.filter(
+        genre__in=book_.genre.all(),
+        rating_ours__gte=(book_.rating_ours or 0) - 1,
+        rating_ours__lte=(book_.rating_ours or 0) + 1
+    ).exclude(id=book_.id).distinct()[:5]
 
+    # ďalšie knihy od rovnakého autora
+    knihy_od_toho_isteho_autora = Book.objects.filter(
+        author__in=book_.author.all()
+    ).exclude(id=book_.id).distinct()[:5]
 
+    context = {
+        'book': book_,
+        'comment_form': CommentModelForm(),  # nezabudni na ()
+        'rating_avg': rating_avg,
+        'rating_count': rating_count,
+        'podobne_knihy': podobne_knihy,
+        'knihy_od_toho_isteho_autora': knihy_od_toho_isteho_autora,
+    }
 
-
-
+    return render(request, 'book.html', context)
 
 
 
@@ -359,4 +371,9 @@ def about(request):
     return render(request, 'about_us.html')
 
 
+class CommentDeleteView(DeleteView):
+    template_name = 'confirm_delete.html'
+    model = Comment
 
+    def get_success_url(self):
+        return reverse('book', kwargs={'pk': self.object.book.pk})
