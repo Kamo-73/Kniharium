@@ -33,94 +33,104 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Angels & Demons",
-        "title_cz": "Andělé a démoni",
-        "num_of_pages": 480,
-        "publisher": "Argo",
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "A Christmas Carol",
+        "title_cz": "Vánoční koleda",
+        "num_of_pages": 96,
+        "publisher": "Chapman & Hall",
         "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "The Da Vinci Code",
-        "title_cz": "Šifra mistra Leonarda",
-        "num_of_pages": 480,
-        "publisher": "Argo",
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Oliver Twist",
+        "title_cz": "Oliver Twist",
+        "num_of_pages": 368,
+        "publisher": "Richard Bentley",
         "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "The Lost Symbol",
-        "title_cz": "Ztracený symbol",
-        "num_of_pages": 512,
-        "publisher": "Argo",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Great Expectations",
+        "title_cz": "Nadějné vyhlídky",
+        "num_of_pages": 544,
+        "publisher": "Chapman & Hall",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Inferno",
-        "title_cz": "Inferno",
-        "num_of_pages": 528,
-        "publisher": "Argo",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "David Copperfield",
+        "title_cz": "David Copperfield",
+        "num_of_pages": 624,
+        "publisher": "Bradbury & Evans",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Origin",
-        "title_cz": "Počátek",
-        "num_of_pages": 504,
-        "publisher": "Argo",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "A Tale of Two Cities",
+        "title_cz": "Příběh dvou měst",
+        "num_of_pages": 416,
+        "publisher": "Chapman & Hall",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "The Secret of Secrets",
-        "title_cz": "Tajemství všech tajemství",
-        "num_of_pages": 512,
-        "publisher": "Argo",
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Bleak House",
+        "title_cz": "Ponurý dům",
+        "num_of_pages": 768,
+        "publisher": "Bradbury & Evans",
         "rating_ours": 4,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Digital Fortress",
-        "title_cz": "Digitální pevnost",
-        "num_of_pages": 384,
-        "publisher": "Argo",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Deception Point",
-        "title_cz": "Pavučina lží",
-        "num_of_pages": 464,
-        "publisher": "Argo",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Dan",
-        "surname": "Brown",
-        "title_orig": "Wild Symphony",
-        "title_cz": "Divoká symfonie",
-        "num_of_pages": 40,
-        "publisher": "Argo",
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Little Dorrit",
+        "title_cz": "Malá Dorritka",
+        "num_of_pages": 848,
+        "publisher": "Bradbury & Evans",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Hard Times",
+        "title_cz": "Těžké časy",
+        "num_of_pages": 352,
+        "publisher": "Bradbury & Evans",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "Nicholas Nickleby",
+        "title_cz": "Nicholas Nickleby",
+        "num_of_pages": 624,
+        "publisher": "Chapman & Hall",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Charles",
+        "surname": "Dickens",
+        "title_orig": "The Old Curiosity Shop",
+        "title_cz": "Starožitnictví",
+        "num_of_pages": 432,
+        "publisher": "Chapman & Hall",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
     }
 ]
 

@@ -108,6 +108,26 @@ class BookDetailView(DetailView):
     model = Book
     context_object_name = 'book'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book = self.get_object()
+
+        # podobné knihy podľa žánru a hodnotenia
+        podobne_knihy = Book.objects.filter(
+            genre__in=book.genre.all(),
+            rating_ours__gte=(book.rating_ours or 0) - 1,
+            rating_ours__lte=(book.rating_ours or 0) + 1
+        ).exclude(id=book.id).distinct()[:5]
+
+        # ďalšie knihy od rovnakého autora
+        knihy_od_toho_isteho_autora = Book.objects.filter(
+            author__in=book.author.all()
+        ).exclude(id=book.id).distinct()[:5]
+
+        context['podobne_knihy'] = podobne_knihy
+        context['knihy_od_toho_isteho_autora'] = knihy_od_toho_isteho_autora
+        return context
+
 
 class BookCreateView(CreateView):
     template_name = 'form.html'
