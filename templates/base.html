@@ -62,5 +62,53 @@
         crossorigin="anonymous"
     ></script>
 
+
+<!-- Prihlasovací modal -->
+<div id="login-modal" style="display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5);">
+    <div style="background-color: white; max-width: 400px; margin: 100px auto; padding: 20px; border-radius: 10px; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.3);">
+
+        <!-- Zavrieť -->
+        <button onclick="closeLoginModal()" style="position: absolute; top: 10px; right: 15px; font-size: 18px; background: none; border: none; cursor: pointer;">×</button>
+
+        <h3 style="text-align: center; margin-bottom: 20px;">Prihlásenie</h3>
+
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Používateľské meno" required style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <input type="password" name="password" placeholder="Heslo" required style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <button type="submit" style="width: 100%; padding: 10px; background-color: black; color: white; border: none; border-radius: 5px;">Prihlásiť sa</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 15px;">
+            Nie ste zaregistrovaný?
+            <a href="{% url 'signup' %}">Registrujte sa tu</a>.
+        </p>
+    </div>
+</div>
+
+<script>
+    function openLoginModal() {
+        document.getElementById('login-modal').style.display = 'block';
+    }
+
+    function closeLoginModal() {
+        document.getElementById('login-modal').style.display = 'none';
+    }
+
+    // Zatváranie ESC alebo klik mimo
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeLoginModal();
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        const modal = document.getElementById('login-modal');
+        const inside = modal.querySelector('div');
+        if (event.target === modal) {
+            closeLoginModal();
+        }
+    });
+</script>
 </body>
 </html>
