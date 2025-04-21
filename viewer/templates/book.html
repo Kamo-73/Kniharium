@@ -21,7 +21,7 @@
                 {% else %}
             <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
                 <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                     <span style="font-size: 0.9em; color: #444;">Obrázok chýba</span>
+                     <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
                 </div>
             </div>
                 {% endif %}
@@ -36,7 +36,7 @@
 
         </div>
     {% empty %}
-        <p style="text-align:center;">Žiadne podobné knihy</p>
+        <p style="text-align:center;">Žádné podobné knihy</p>
     {% endfor %}
 
 {% endblock %}
@@ -85,10 +85,10 @@
                         {{ genre.name }}
                     </span>
                 {% endfor %}<br> <br>
-                <a style="font-size: 25px;"><strong>Vydavateľstvo:</strong> {{ book.publisher }}</a> <br>
-                <a style="font-size: 25px;"><strong>Rok vydania:</strong> {{ book.year_of_publishing }}</a><br>
-                <a style="font-size: 25px;"><strong>Počet strán:</strong> {{ book.num_of_pages }}</a><br>
-                <a style="font-size: 25px;"><strong>Doba čítania:</strong> {{ reading_time }}</a><br>
+                <a style="font-size: 25px;"><strong>Nakladatelství:</strong> {{ book.publisher }}</a> <br>
+                <a style="font-size: 25px;"><strong>Rok vydání:</strong> {{ book.year_of_publishing }}</a><br>
+                <a style="font-size: 25px;"><strong>Počet stran:</strong> {{ book.num_of_pages }}</a><br>
+                <a style="font-size: 25px;"><strong>Délka čtení:</strong> {{ reading_time }}</a><br>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
             </div>
         </div>
@@ -102,7 +102,7 @@
 
 
      <a style="font-size: 35px; font-weight: bold; margin: 0;">
-        Naše hodnotenie:
+        Naše hodnocení:
         <span style="font-size: 50px;">
             {% for i in "12345" %}
                 {% if forloop.counter <= book.rating_ours %}
@@ -115,7 +115,7 @@
      </a><br>
 
     <a style="font-size: 35px; font-weight: bold; margin-top: 30px;">
-        Hodnotenie čitateľov:
+        Hodnocení čtenářů:
         <span style="font-size: 50px;">
             {% for i in "12345" %}
                 {% if forloop.counter <= user_rating_avg %}
@@ -125,11 +125,11 @@
                 {% endif %}
             {% endfor %}
         </span>
-        <span style="font-size: 16px; color: gray;">({{ rating_count }} hodnotení)</span>
+        <span style="font-size: 16px; color: gray;">({{ rating_count }} hodnocení)</span>
     </a><br>
 
     <a style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline;">
-        Recenzia
+        Recenze:
     </a>  <br><br>
 
   <div style="text-align: center;">
@@ -143,11 +143,11 @@
     <div style="text-align: center;">
     <div style="display: inline-block; margin: 20px;">
         <a style="font-size: 50px;">❤️</a><br>
-        <span style="font-size: 18px;">Obľúbené</span>
+        <span style="font-size: 18px;">Oblíbené</span>
     </div>
     <div style="display: inline-block; margin: 20px;">
         <a style="font-size: 50px;">📖</a><br>
-        <span style="font-size: 18px;">Prečítané</span>
+        <span style="font-size: 18px;">Přečtené</span>
     </div>
 </div>
 
@@ -158,7 +158,7 @@
 
    <div style="width: 80%; margin: 0 auto;">
     <a style="display: block; text-align: right; font-size: 14px; color: gray; margin-bottom: 5px;">
-        Vytvorené: {{ book.created }} &nbsp;&nbsp; Aktualizované: {{ book.updated }}
+        Vytvořeno: {{ book.created }} &nbsp;&nbsp; Aktualizováno: {{ book.updated }}
     </a>
     <hr style="margin-bottom: 30px;">
     </div>
@@ -170,7 +170,7 @@
     <br>
     <hr  style="width: 80%;">
 
-   <h1 align="center">Komentáre</h1>
+   <h1 align="center">Komentáře</h1>
     <br>
 
     {% if request.user.is_authenticated %}
@@ -195,7 +195,7 @@
                 {{ comment.commenter }}
             </div>
             <div style="white-space: nowrap;">
-                Hodnotenie:
+                Hodnocení:
                 <span style="color: black;">
                     {% for i in "12345" %}
                         {% if comment.rating|floatformat:"0" >= i %}
@@ -219,7 +219,7 @@
         </div>
     </div>
 {% empty %}
-    Zatiaľ nikto nehodnotil tuto knihu.
+    Tuto knihu zatím nikdo nehodnotil.
 {% endfor %}
 
 
@@ -228,7 +228,7 @@
 
 {% block right_sidebar %}
 
-   <h3 style="text-align:center;">Ďalšie knihy autora</h3>
+   <h3 style="text-align:center;">Další knihy autora</h3>
 
 {% for b in knihy_od_toho_isteho_autora %}
     <div style="text-align:center; margin-bottom: 25px;">
@@ -243,7 +243,7 @@
             {% else %}
                 <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
                     <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 0.9em; color: #444;">Obrázok chýba</span>
+                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
                     </div>
                 </div>
             {% endif %}
@@ -258,7 +258,7 @@
 
     </div>
 {% empty %}
-    <p style="text-align:center;">Žiadne ďalšie knihy</p>
+    <p style="text-align:center;">Žádné další knihy</p>
 {% endfor %}
 
 {% endblock %}
