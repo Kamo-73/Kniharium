@@ -9,16 +9,16 @@
 {% endblock %}
 
 {% block content %}
-    <h2 style="text-align: center; padding: 10px;">Zoznam kníh</h2>
+    <h2 style="text-align: center; padding: 10px;">Seznam knih</h2>
     <a href="{% url 'book_create' %}" class="btn btn-primary">Přidat</a>
 <!-- Zobraziť podľa -->
 <div style="margin: 20px 80px; font-size: 18px;">
-    <strong>Zobraziť podľa:</strong>
+    <strong>Zobrazit podle:</strong>
     <a href="?sort=author&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'author' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'author' %}bold{% else %}normal{% endif %}; color: black;">Autora</a>
     <a href="?sort=title&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'title' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'title' %}bold{% else %}normal{% endif %}; color: black;">Názvu</a>
-    <a href="?sort=year&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'year' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'year' %}bold{% else %}normal{% endif %}; color: black;">Rok vydania</a>
+    <a href="?sort=year&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'year' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'year' %}bold{% else %}normal{% endif %}; color: black;">Roku vydání</a>
     <a href="?sort=genre&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'genre' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'genre' %}bold{% else %}normal{% endif %}; color: black;">Žánru</a>
-    <a href="?sort=publisher&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'publisher' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'publisher' %}bold{% else %}normal{% endif %}; color: black;">Vydavateľstva</a>
+    <a href="?sort=publisher&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'publisher' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'publisher' %}bold{% else %}normal{% endif %}; color: black;">Nakladatelství</a>
 </div>
 
 <!-- Abeceda -->
@@ -32,10 +32,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
     {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 
@@ -130,10 +130,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
     {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 {% endblock %}

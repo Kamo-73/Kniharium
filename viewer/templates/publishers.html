@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Seznam vydavatelství
+    Seznam nakladatelství
 {% endblock %}
 
 {% block left_sidebar %}
@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<h2 style="text-align: center; padding: 10px;">Zoznam vydavateľstiev</h2>
+<h2 style="text-align: center; padding: 10px;">Seznam nakladatelství</h2>
     <a href="{% url 'publisher_create' %}" class="btn btn-primary">Přidat</a>
 
 
@@ -17,10 +17,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }}
     {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 
@@ -35,7 +35,7 @@
         <a href="{% url 'publisher_delete' publisher.id %}">❌</a>
         </p>
     {% empty %}
-        <p>Žiadne vydavateľstvá.</p>
+        <p>Žádné nakladatelství.</p>
     {% endfor %}
 </div>
 
@@ -43,10 +43,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }}
     {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 {% endblock %}

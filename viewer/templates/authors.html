@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<h2 style="text-align: center; padding: 10px;">Zoznam autorov</h2>
+<h2 style="text-align: center; padding: 10px;">Seznam autorů</h2>
     <a href="{% url 'author_create' %}" class="btn btn-primary">Přidat</a>
 
 <!-- Abeceda -->
@@ -23,10 +23,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
     {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 
@@ -58,10 +58,10 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
     {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Predchádzajúca</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
     {% endif %}
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Ďalšia &#x3E;</a>
+        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
     {% endif %}
 </div>
 {% endblock %}
