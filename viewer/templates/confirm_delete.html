@@ -9,12 +9,16 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <p>Opravdu chcete smazat záznam "{{ object }}" z databáze?</p>
-        <input type="submit" value="Smazat" class="btn btn-danger">
-        <input type="button" value="Zpět" class="btn btn-primary" onclick="history.back()">
-    </form>
+ <div style="max-width: 500px; margin: 50px auto; padding: 30px; background-color: white; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); text-align: center;">
+        <h2 style="margin-bottom: 20px;">Naozaj chcete vymazať?</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">Záznam <strong>"{{ object }}"</strong> bude trvalo odstránený z databázy.</p>
+
+        <form method="post" style="display: flex; justify-content: center; gap: 20px;">
+            {% csrf_token %}
+            <input type="submit" value="Áno, vymazať" style="padding: 10px 20px; background-color: #c0392b; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <input type="button" value="Zrušiť" onclick="history.back()" style="padding: 10px 20px; background-color: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        </form>
+    </div>
 {% endblock %}
 
 {% block right_sidebar %}

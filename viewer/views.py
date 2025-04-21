@@ -1,3 +1,5 @@
+from random import sample
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -166,12 +168,12 @@ def book(request, pk):
         genre__in=book_.genre.all(),
         rating_ours__gte=(book_.rating_ours or 0) - 1,
         rating_ours__lte=(book_.rating_ours or 0) + 1
-    ).exclude(id=book_.id).distinct()[:5]
+    ).exclude(id=book_.id).distinct()[:3]
 
     # ďalšie knihy od rovnakého autora
     knihy_od_toho_isteho_autora = Book.objects.filter(
         author__in=book_.author.all()
-    ).exclude(id=book_.id).distinct()[:5]
+    ).exclude(id=book_.id).distinct()[:3]
 
     # výpočet formátovanej doby čítania
     minutes = book_.time_of_reading or 0
@@ -210,6 +212,12 @@ class BookCreateView(CreateView):
         print("Formulář není validní.")
         return super().form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Vytvoriť knihu'
+        context['submit_button_text'] = 'Vytvoriť'
+        return context
+
 
 class BookUpdateView(UpdateView):
     template_name = 'form.html'
@@ -221,6 +229,12 @@ class BookUpdateView(UpdateView):
     def form_invalid(self, form):
         print("Formulář není validní.")
         return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Upraviť knihu'
+        context['submit_button_text'] = 'Aktualizovať'
+        return context
 
 
 class BookDeleteView(DeleteView):
@@ -283,6 +297,23 @@ class AuthorDetailView(DetailView):
     template_name = 'author.html'
     model = Author
     context_object_name = 'author'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        author = self.get_object()
+        books = author.books.all()
+
+        # vypocet poctu stran
+        avg = books.aggregate(avg=Avg('num_of_pages')).get('avg') or 0
+        context['average_pages'] = round(avg)
+
+        # Ďalšie knihy autora – limit 5
+        context['knihy_autora'] = books.order_by('-year_of_publishing')[:3]
+
+        all_authors = list(Author.objects.exclude(id=self.get_object().id))  # bez aktuálneho autora
+        context['nahodni_autori'] = sample(all_authors, min(3, len(all_authors)))
+
+        return context
 
 
 class AuthorCreateView(CreateView):
