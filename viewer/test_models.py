@@ -75,7 +75,7 @@ class BookModelTest(TestCase):
         book = Book.objects.get(id=1)
         print(f"test_book_repr: '{book.__repr__()}'")
         self.assertEqual(book.__repr__(), "Book(title_cz=Český název knihy, "
-                                          "title_orig=Originální název knihy, author=Petr Pan, "
+                                          "title_orig=Originální název knihy, authors=Petr Pan, "
                                           "year_of_publishing=2005)")
 
     def test_book_str(self):

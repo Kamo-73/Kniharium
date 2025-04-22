@@ -34,8 +34,8 @@ class Nationality(Model):
 
 
 class Author(Model):
-    name = CharField(max_length=32, null=True, blank=True)
-    surname = CharField(max_length=50, null=True, blank=True)
+    name = CharField(max_length=32, null=False, blank=False)
+    surname = CharField(max_length=50, null=False, blank=False)
     date_of_birth = DateField(null=True, blank=True)
     date_of_death = DateField(null=True, blank=True)
     biography = TextField(null=True, blank=True)
@@ -109,7 +109,8 @@ class Book(Model):
         ordering = ['title_cz', 'title_orig', 'year_of_publishing']
 
     def __repr__(self):
-        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, author={self.author},year_of_publishing={self.year_of_publishing})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, authors={authors}, year_of_publishing={self.year_of_publishing})"
 
     def __str__(self):
         authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
