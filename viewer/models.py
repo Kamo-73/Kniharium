@@ -34,8 +34,8 @@ class Nationality(Model):
 
 
 class Author(Model):
-    name = CharField(max_length=32, null=False, blank=False)
-    surname = CharField(max_length=50, null=False, blank=False)
+    name = CharField(max_length=32, null=True, blank=True)
+    surname = CharField(max_length=50, null=True, blank=True)
     date_of_birth = DateField(null=True, blank=True)
     date_of_death = DateField(null=True, blank=True)
     biography = TextField(null=True, blank=True)
