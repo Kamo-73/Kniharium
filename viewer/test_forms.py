@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 
-from viewer.forms import AuthorModelForm, BookModelForm
+from viewer.forms import AuthorModelForm, BookModelForm, PublisherModelForm
 from viewer.models import Nationality, Genre, Author, Publisher, Format
 
 
@@ -247,7 +247,25 @@ class BookFormTest(TestCase):
                 'description': 'Popis.',
                 'publisher': '2',
                 'genre': ['1', '2'],
-                'rating_ours': '0',
+                'rating_ours': '-2',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '7',
                 'review': 'Recenze',
                 'year_of_publishing': '2021',
                 'time_of_reading': '650',
@@ -310,3 +328,95 @@ class BookFormTest(TestCase):
             }
         )
         self.assertFalse(form.is_valid())
+
+    def test_book_time_of_reading_is_invalid(self):
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '3',
+                'review': 'Recenze',
+                'year_of_publishing': '2020',
+                'time_of_reading': '0',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '3',
+                'review': 'Recenze',
+                'year_of_publishing': '2020',
+                'time_of_reading': '-10',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+class PublisherFormTest(TestCase):
+    def test_publisher_form_is_valid(self):
+        form = PublisherModelForm(
+            data={
+                'name': 'Název',
+                'information': 'Informace',
+                'year_of_establishment': '1990',
+                'year_of_dissolution': '2024',
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_publisher_year_of_establishment_is_invalid(self):
+        form = PublisherModelForm(
+            data={
+                'name': 'Název',
+                'information': 'Informace',
+                'year_of_establishment': '1439',
+                'year_of_dissolution': '2024',
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+        form = PublisherModelForm(
+            data={
+                'name': 'Název',
+                'information': 'Informace',
+                'year_of_establishment': '2035',
+                'year_of_dissolution': '',
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_publisher_year_of_dissolution_is_invalid(self):
+        form = PublisherModelForm(
+            data={
+                'name': 'Název',
+                'information': 'Informace',
+                'year_of_establishment': '1990',
+                'year_of_dissolution': '1989',
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+        form = PublisherModelForm(
+            data={
+                'name': 'Název',
+                'information': 'Informace',
+                'year_of_establishment': '1990',
+                'year_of_dissolution': '2035',
+            }
+        )
+        self.assertFalse(form.is_valid())
+

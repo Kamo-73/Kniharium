@@ -64,20 +64,26 @@ class BookModelForm(ModelForm):
 
     def clean_num_of_pages(self):
         initial = self.cleaned_data['num_of_pages']
-        if initial and initial < 0 or initial == 0:
+        if initial is not None and initial <= 0:
             raise ValidationError("Počet stran musí být větší než nula.")
         return initial
 
     def clean_rating_ours(self):
         initial = self.cleaned_data.get('rating_ours')
-        if initial not in [1, 2, 3, 4, 5]:
+        if initial is not None and initial not in [1, 2, 3, 4, 5]:
             raise ValidationError("Hodnocení musí být v rozmezí 1–5.")
         return initial
 
     def clean_year_of_publishing(self):
         initial = self.cleaned_data.get('year_of_publishing')
-        if initial <= 0 or initial > date.today().year:
+        if initial is not None and initial <= 0 or initial > date.today().year:
             raise ValidationError("Rok vydání musí být větší než nula a nesmí být v budoucnosti.")
+        return initial
+
+    def clean_time_of_reading(self):
+        initial = self.cleaned_data.get('time_of_reading')
+        if initial is not None and initial <= 0:
+            raise ValidationError("Čas čtení musí být větší než nula.")
         return initial
 
 
@@ -123,13 +129,13 @@ class AuthorModelForm(ModelForm):
 
     def clean_date_of_birth(self):
         initial = self.cleaned_data['date_of_birth']
-        if initial and initial > date.today():
+        if initial is not None and initial > date.today():
             raise ValidationError("Datum narození nesmí být v budoucnosti.")
         return initial
 
     def clean_date_of_death(self):
         initial = self.cleaned_data['date_of_death']
-        if initial and initial > date.today():
+        if initial is not None and initial > date.today():
             raise ValidationError("Datum úmrtí nesmí být v budoucnosti.")
         return initial
 
@@ -186,13 +192,15 @@ class PublisherModelForm(ModelForm):
 
     def clean_year_of_establishment(self):
         initial = self.cleaned_data.get('year_of_establishment')
-        if initial and initial > date.today().year:
+        if initial is not None and initial < 1440:
+            raise ValidationError("Rok založení nesmí být dřívější než 1440.")
+        if initial is not None and initial > date.today().year:
             raise ValidationError("Rok založení nesmí být v budoucnosti.")
         return initial
 
-    def clean_date_of_dissolution(self):
-        initial = self.cleaned_data.get('year_of_dissolutin')
-        if initial and initial > date.today().year:
+    def clean_year_of_dissolution(self):
+        initial = self.cleaned_data.get('year_of_dissolution')
+        if initial is not None and initial > date.today().year:
             raise ValidationError("Datum ukončení činnosti nesmí být v budoucnosti.")
         return initial
 
@@ -207,13 +215,12 @@ class PublisherModelForm(ModelForm):
         error_message = ''
         if not initial_name:
             error_message += "Je nutné zadat název nakladatelství."
-        """
-        initial_date_of_establishment = cleaned_data.get('date_of_establishment') 
-        initial_date_of_dissolution = cleaned_data.get('date_of_dissolution')
-        if initial_date_of_establishment and initial_date_of_dissolution and initial_date_of_dissolution < initial_date_of_establishment:
+
+        initial_year_of_establishment = cleaned_data.get('year_of_establishment')
+        initial_year_of_dissolution = cleaned_data.get('year_of_dissolution')
+        if initial_year_of_establishment and initial_year_of_dissolution and initial_year_of_dissolution < initial_year_of_establishment:
             error_message += " Rok ukončení činnosti nesmí být dřív, než rok založení."
-            #raise ValidationError("Datum úmrtí nesmí být dřív, než datum narození.")
-        """ # TODO: Rok ukončení upravit
+
         if error_message:
             raise ValidationError(error_message)
 
