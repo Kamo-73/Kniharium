@@ -49,11 +49,17 @@
     <div class="container d-flex justify-content-center align-items-center flex-wrap gap-2">
 
         <div class="input-group w-50">
-            <input type="text" id="search" name="search" class="form-control" placeholder="Vyhledat">
+            <form method="post" action="/search/">
+                {% csrf_token %}
+                <input type="text" id="search" name="search" class="form-control" placeholder="Vyhledat">
+                <button type="submit" class="btn btn-outline-secondary mx-2">Vyhledat</button>
+            </form>
         </div>
 
-        <button class="btn btn-outline-secondary mx-2" href="{% url 'search' %}">Vyhledat</button>
-        <button class="btn btn-outline-secondary">Náhodná kniha</button>
 
     </div>
 </div>
+
+<form method="get" action="{{  'random_book' }}">
+        <button type="submit" class="btn btn-outline-secondary mx-2">Náhodná kniha</button>
+        </form>

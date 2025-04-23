@@ -14,7 +14,9 @@
     <h2>Výsledky pro originální název knihy</h2>
     <ul>
         {% for book in books_title_orig %}
-            <li><a href="{% url 'book' book.id %}">{{ book }}</a></li>
+            <li>
+                <a href="{% url 'book' book.id %}">{{ book.title_orig }}</a>
+            </li>
         {% empty %}
             Nenalezen žádný záznam.
         {% endfor %}

@@ -1,3 +1,4 @@
+import random
 from random import sample
 
 from django.shortcuts import render, redirect
@@ -177,7 +178,7 @@ class BooksListView(ListView):
         #sort podla zanru
         if self.sort == 'genre':
             from viewer.models import Genre
-            context['genres'] = Genre.objects.all().order_by('name')
+            context['genre'] = Genre.objects.all().order_by('name')
             context['current_genre'] = self.request.GET.get('genre_name')
 
         if self.sort == 'publisher':
@@ -521,7 +522,7 @@ def search(request):
             books_title_orig = Book.objects.filter(title_orig__contains=search_string)
             books_title_cz = Book.objects.filter(title_cz__contains=search_string)
 
-            books_genre = Book.objects.filter(genres__name__contains=search_string)
+            books_genre = Book.objects.filter(genre__name__contains=search_string)
 
             author_name = Author.objects.filter(name__contains=search_string)
             author_surname = Author.objects.filter(surname__contains=search_string)
@@ -532,7 +533,12 @@ def search(request):
                        'books_title_cz': books_title_cz,
                        'books_genre': books_genre,
                        'author_name': author_name,
-                       'creator_surname': author_surname,
+                       'author_surname': author_surname,
                        }
             return render(request, 'search.html', context)
     return render(request, 'home.html')
+
+def random_book(request):
+    books = Book.objects.all()
+    random_book = random.choice(books)
+    return redirect('book', book_id=random_book.pk)

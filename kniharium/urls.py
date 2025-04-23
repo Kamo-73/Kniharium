@@ -59,6 +59,8 @@ urlpatterns = [
 
     path('search/', search, name='search'),
 
+    path('book/<int:pk>/', book, name='random_book'),
+
 
 ]
 
