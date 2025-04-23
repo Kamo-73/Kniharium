@@ -62,6 +62,25 @@ class BookModelForm(ModelForm):
             return initial.capitalize()
         return initial
 
+    def clean_num_of_pages(self):
+        initial = self.cleaned_data['num_of_pages']
+        if initial and initial < 0 or initial == 0:
+            raise ValidationError("Počet stran musí být větší než nula.")
+        return initial
+
+    def clean_rating_ours(self):
+        initial = self.cleaned_data.get('rating_ours')
+        if initial not in [1, 2, 3, 4, 5]:
+            raise ValidationError("Hodnocení musí být v rozmezí 1–5.")
+        return initial
+
+    def clean_year_of_publishing(self):
+        initial = self.cleaned_data.get('year_of_publishing')
+        if initial <= 0 or initial > date.today().year:
+            raise ValidationError("Rok vydání musí být větší než nula a nesmí být v budoucnosti.")
+        return initial
+
+
 
 class AuthorModelForm(ModelForm):
     class Meta:
