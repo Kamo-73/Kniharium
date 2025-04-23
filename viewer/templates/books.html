@@ -5,142 +5,333 @@
 {% endblock %}
 
 {% block left_sidebar %}
-    <p>Tu budu najnovsie pridane knihy</p>
+     <h3 style="text-align:center;">Najnovšie pridané knihy</h3>
+
+    {% for b in najnovsie_knihy %}
+        <div style="text-align:center; margin-bottom: 25px;">
+            <a href="{% url 'book' b.pk %}">
+                {% if b.image and b.image.name %}
+                    {% if "http" in b.image.name %}
+                        <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                    {% else %}
+                        <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                    {% endif %}
+                {% else %}
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
+                    </div>
+                {% endif %}
+            </a>
+
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ b.title_cz }}
+                </a>
+            </p>
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Zatiaľ žiadne knihy</p>
+    {% endfor %}
 {% endblock %}
 
 {% block content %}
     <h2 style="text-align: center; padding: 10px;">Seznam knih</h2>
+    {% if request.user.is_authenticated %}
     <a href="{% url 'book_create' %}" class="btn btn-primary">Přidat</a>
+    {% endif %}
 <!-- Zobraziť podľa -->
 <div style="margin: 20px 80px; font-size: 18px;">
     <strong>Zobrazit podle:</strong>
     <a href="?sort=author&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'author' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'author' %}bold{% else %}normal{% endif %}; color: black;">Autora</a>
     <a href="?sort=title&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'title' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'title' %}bold{% else %}normal{% endif %}; color: black;">Názvu</a>
     <a href="?sort=year&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'year' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'year' %}bold{% else %}normal{% endif %}; color: black;">Roku vydání</a>
-    <a href="?sort=genre&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'genre' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'genre' %}bold{% else %}normal{% endif %}; color: black;">Žánru</a>
-    <a href="?sort=publisher&letter={{ current_letter }}" style="margin: 0 10px; text-decoration: {% if sort == 'publisher' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'publisher' %}bold{% else %}normal{% endif %}; color: black;">Nakladatelství</a>
+    <a href="?sort=genre&genre_name=Beletria" style="margin: 0 10px; text-decoration: {% if sort == 'genre' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'genre' %}bold{% else %}normal{% endif %}; color: black;">Žánru</a>
+    <a href="?sort=publisher&publisher_name=Albatros" style="margin: 0 10px; text-decoration: {% if sort == 'publisher' %}underline{% else %}none{% endif %}; font-weight: {% if sort == 'publisher' %}bold{% else %}normal{% endif %}; color: black;">Nakladatelství</a>
 </div>
 
-<!-- Abeceda -->
-<div style="text-align: center; margin-bottom: 15px; font-size: 20px;">
-    {% for letter in alphabet %}
-        <a href="?letter={{ letter }}&sort={{ sort }}" style="margin: 0 7px; text-decoration: {% if current_letter == letter %}underline{% else %}none{% endif %}; font-weight: {% if current_letter == letter %}bold{% else %}normal{% endif %}; color: black;">{{ letter }}</a>
-    {% endfor %}
+<!-- Abeceda, Roky, Žánre alebo Nakladatelství -->
+<div style="text-align: center; margin: 20px 40px; font-size: 20px;">
+    {% if sort == 'year' %}
+        {% for year_key, year_label in year_ranges %}
+            <a href="?sort=year&year_range={{ year_key }}" style="margin: 0 7px; text-decoration: {% if current_year_range == year_key %}underline{% else %}none{% endif %}; font-weight: {% if current_year_range == year_key %}bold{% else %}normal{% endif %}; color: black;">
+                {{ year_label }}
+            </a>
+        {% endfor %}
+    {% elif sort == 'genre' %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+            {% for genre in genres %}
+                <a href="?sort=genre&genre_name={{ genre.name }}" style="text-decoration: none;">
+                    <span style="
+                        padding: 6px 12px;
+                        background-color: {% if current_genre == genre.name %}#d0e6ff{% else %}#f0f0f0{% endif %};
+                        border-radius: 20px;
+                        font-size: 20px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        margin: 7px;
+                        display: inline-block;
+                        color: black;
+                        font-weight: {% if current_genre == genre.name %}bold{% else %}normal{% endif %};
+                        text-decoration: {% if current_genre == genre.name %}underline{% else %}none{% endif %};">
+                        {{ genre.name }}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% elif sort == 'publisher' %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+            {% for publisher in publishers %}
+                <a href="?sort=publisher&publisher_name={{ publisher.name }}" style="text-decoration: none;">
+                    <span style="
+                        padding: 6px 12px;
+                        background-color: {% if current_publisher == publisher.name %}#d0e6ff{% else %}#f0f0f0{% endif %};
+                        border-radius: 20px;
+                        font-size: 20px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        margin: 7px;
+                        display: inline-block;
+                        color: black;
+                        font-weight: {% if current_publisher == publisher.name %}bold{% else %}normal{% endif %};
+                        text-decoration: {% if current_publisher == publisher.name %}underline{% else %}none{% endif %};">
+                        {{ publisher.name }}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% for letter in alphabet %}
+            <a href="?letter={{ letter }}&sort={{ sort }}" style="margin: 0 7px; text-decoration: {% if current_letter == letter %}underline{% else %}none{% endif %}; font-weight: {% if current_letter == letter %}bold{% else %}normal{% endif %}; color: black;">
+                {{ letter }}
+            </a>
+        {% endfor %}
+    {% endif %}
 </div>
 
 <!-- Navigácia -->
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
-    Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
-    {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
+    Strana {{ current_page }} –
+    {% if sort == 'year' %}
+        <strong>
+            {% for year_key, year_label in year_ranges %}
+                {% if current_year_range == year_key %}
+                    {{ year_label }}
+                {% endif %}
+            {% endfor %}
+        </strong>
+    {% elif sort == 'genre' and current_genre %}
+        <strong>{{ current_genre }}</strong>
+    {% elif sort == 'publisher' and current_publisher %}
+        <strong>{{ current_publisher }}</strong>
+    {% else %}
+        písmeno <strong>{{ current_letter }}</strong>
     {% endif %}
+
+    {% if has_previous %}
+        {% if sort == 'year' %}
+            <a href="?sort=year&year_range={{ current_year_range }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% elif sort == 'genre' %}
+            <a href="?sort=genre&genre_name={{ current_genre }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% elif sort == 'publisher' %}
+            <a href="?sort=publisher&publisher_name={{ current_publisher }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% else %}
+            <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% endif %}
+    {% endif %}
+
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
+        {% if sort == 'year' %}
+            <a href="?sort=year&year_range={{ current_year_range }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% elif sort == 'genre' %}
+            <a href="?sort=genre&genre_name={{ current_genre }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% elif sort == 'publisher' %}
+            <a href="?sort=publisher&publisher_name={{ current_publisher }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% else %}
+            <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% endif %}
     {% endif %}
 </div>
 
 <!-- Výpis podľa autora -->
 {% if sort == 'author' %}
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 20px 100px;">
-    <div>
-        {% for author in left_authors %}
-            <div style="margin-bottom: 20px;">
-                <!-- Odkaz na detail autora -->
-                <p style="margin: 0;">
-                    <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
-                        {{ author.name }} <strong style="font-weight: bold;">{{ author.surname }}</strong>
-                    </a>
-                </p>
-                <ul style="margin: 5px 0 10px 15px;">
-                    {% for book in author.books.all %}
-                        <!-- Odkaz na detail knihy -->
-                        <li>
-                            <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                                {{ book.title_cz }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
-    </div>
-    <div>
-        {% for author in right_authors %}
-            <div style="margin-bottom: 20px;">
-                <!-- Odkaz na detail autora -->
-                <p style="margin: 0;">
-                    <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
-                        <strong>{{ author.name }}</strong> <strong style="font-weight: bold;">{{ author.surname }}</strong>
-                    </a>
-                </p>
-                <ul style="margin: 5px 0 10px 15px;">
-                    {% for book in author.books.all %}
-                        <!-- Odkaz na detail knihy -->
-                        <li>
-                            <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                                {{ book.title_cz }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
+<div style="display: flex; justify-content: center;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1000px; width: 100%;">
+        <div>
+            {% for author in left_authors %}
+                <div style="margin-bottom: 20px;">
+                    <!-- Odkaz na detail autora -->
+                    <p style="margin: 0;">
+                        <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
+                            {{ author.name }} <strong style="font-weight: bold;">{{ author.surname }}</strong>
+                        </a>
+                    </p>
+                    <ul style="margin: 5px 0 10px 15px;">
+                        {% for book in author.books.all %}
+                            <!-- Odkaz na detail knihy -->
+                            <li>
+                                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                                    {{ book.title_cz }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="padding-left: 150px;">
+            {% for author in right_authors %}
+                <div style="margin-bottom: 20px;">
+                    <!-- Odkaz na detail autora -->
+                    <p style="margin: 0;">
+                        <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
+                            <strong>{{ author.name }}</strong> <strong style="font-weight: bold;">{{ author.surname }}</strong>
+                        </a>
+                    </p>
+                    <ul style="margin: 5px 0 10px 15px;">
+                        {% for book in author.books.all %}
+                            <!-- Odkaz na detail knihy -->
+                            <li>
+                                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                                    {{ book.title_cz }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
 <!-- Výpis podľa názvu -->
 {% else %}
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 20px 100px;">
-    <div>
-        {% for book in left_books %}
-            <p>
-                <!-- Odkaz na detail knihy -->
-                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                    {{ book.title_cz }}
-                </a>
-                <!-- Odkaz na detail autora -->
-                (
-                    <a href="{% url 'author' book.author.all.0.id %}" style="text-decoration: none; color: black;">
-                        {{ book.author.all.0.name }} {{ book.author.all.0.surname }}
+<div style="display: flex; justify-content: center;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1000px; width: 100%;">
+        <div>
+            {% for book in left_books %}
+                <p>
+                    <!-- Názov knihy -->
+                    <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                        {{ book.title_cz }}
                     </a>
-                )
-            </p>
-        {% endfor %}
-    </div>
-    <div>
-        {% for book in right_books %}
-            <p>
-                <!-- Odkaz na detail knihy -->
-                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                    {{ book.title_cz }}
+                    <!-- Autor -->
+                    (
+                        <a href="{% url 'author' book.author.all.0.id %}" style="text-decoration: none; color: black;">
+                            {{ book.author.all.0.name }} {{ book.author.all.0.surname }}
+                        </a>
+                    )
+                    <!-- Rok, len ak triedime podľa roku -->
+                    {% if sort == 'year' and book.year_of_publishing %}
+                        – <strong>{{ book.year_of_publishing }}</strong>
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+        <div>
+           <div style="padding-left: 150px;">
+    {% for book in right_books %}
+        <p>
+            <!-- Názov knihy -->
+            <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                {{ book.title_cz }}
+            </a>
+            <!-- Autor -->
+            (
+                <a href="{% url 'author' book.author.all.0.id %}" style="text-decoration: none; color: black;">
+                    {{ book.author.all.0.name }} {{ book.author.all.0.surname }}
                 </a>
-                <!-- Odkaz na detail autora -->
-                (
-                    <a href="{% url 'author' book.author.all.0.id %}" style="text-decoration: none; color: black;">
-                        {{ book.author.all.0.name }} {{ book.author.all.0.surname }}
-                    </a>
-                )
-            </p>
-        {% endfor %}
+            )
+            <!-- Rok, len ak triedime podľa roku -->
+            {% if sort == 'year' and book.year_of_publishing %}
+                – <strong>{{ book.year_of_publishing }}</strong>
+            {% endif %}
+        </p>
+    {% endfor %}
+</div>
+        </div>
     </div>
 </div>
 {% endif %}
 
 <!-- Navigácia dole -->
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
-    Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
-    {% if has_previous %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
+    Strana {{ current_page }} –
+    {% if sort == 'year' %}
+        <strong>
+            {% for year_key, year_label in year_ranges %}
+                {% if current_year_range == year_key %}
+                    {{ year_label }}
+                {% endif %}
+            {% endfor %}
+        </strong>
+    {% elif sort == 'genre' and current_genre %}
+        <strong>{{ current_genre }}</strong>
+    {% elif sort == 'publisher' and current_publisher %}
+        <strong>{{ current_publisher }}</strong>
+    {% else %}
+        písmeno <strong>{{ current_letter }}</strong>
     {% endif %}
+
+    {% if has_previous %}
+        {% if sort == 'year' %}
+            <a href="?sort=year&year_range={{ current_year_range }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% elif sort == 'genre' %}
+            <a href="?sort=genre&genre_name={{ current_genre }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% elif sort == 'publisher' %}
+            <a href="?sort=publisher&publisher_name={{ current_publisher }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% else %}
+            <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}" style="margin-left: 20px; color: black; text-decoration: none;">&#x3C; Předcházející</a>
+        {% endif %}
+    {% endif %}
+
     {% if has_next %}
-        <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px;">Další &#x3E;</a>
+        {% if sort == 'year' %}
+            <a href="?sort=year&year_range={{ current_year_range }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% elif sort == 'genre' %}
+            <a href="?sort=genre&genre_name={{ current_genre }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% elif sort == 'publisher' %}
+            <a href="?sort=publisher&publisher_name={{ current_publisher }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% else %}
+            <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}" style="margin-left: 10px; color: black; text-decoration: none;">Další &#x3E;</a>
+        {% endif %}
     {% endif %}
 </div>
+
 {% endblock %}
 
 
 {% block right_sidebar %}
-    <p>Tu budu njalpesie uzivatelske hodnotene knihy zatial nahodne</p>
+    <h3 style="text-align:center;">Najlepšie hodnotené knihy</h3>
+
+    {% for book in top_knihy %}
+        <div style="text-align:center; margin-bottom: 25px;">
+
+            <a href="{% url 'book' book.pk %}">
+                {% if book.image and book.image.name %}
+                    {% if "http" in book.image.name %}
+                        <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                    {% else %}
+                        <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                    {% endif %}
+                {% else %}
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
+                    </div>
+                {% endif %}
+            </a>
+
+            <p style="margin: 5px 0 0 0;">
+                <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ book.title_cz }} – {{ book.priemer|floatformat:0 }}★
+                </a>
+            </p>
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Zatiaľ žiadne hodnotené knihy</p>
+    {% endfor %}
 {% endblock %}
 
 {% include "footer.html" %}

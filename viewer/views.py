@@ -55,9 +55,60 @@ class BooksListView(ListView):
     def get_queryset(self):
         self.sort = self.request.GET.get('sort', 'title')
         self.letter = self.request.GET.get('letter', 'A').upper()
+        self.year_range = self.request.GET.get('year_range', '1980s')
+        self.genre_name = self.request.GET.get('genre_name')
 
+        # Zoradenie podľa autora (abeceda priezviska)
         if self.sort == 'author':
             return Author.objects.filter(surname__istartswith=self.letter).order_by('surname', 'name')
+
+        # Zoradenie podľa roku vydania
+        elif self.sort == 'year':
+            if self.year_range == 'before_1940':
+                return Book.objects.filter(year_of_publishing__lt=1940).order_by('year_of_publishing')
+            elif self.year_range == '1940s':
+                return Book.objects.filter(year_of_publishing__gte=1941, year_of_publishing__lte=1950).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '1950s':
+                return Book.objects.filter(year_of_publishing__gte=1951, year_of_publishing__lte=1960).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '1960s':
+                return Book.objects.filter(year_of_publishing__gte=1961, year_of_publishing__lte=1970).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '1970s':
+                return Book.objects.filter(year_of_publishing__gte=1971, year_of_publishing__lte=1980).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '1980s':
+                return Book.objects.filter(year_of_publishing__gte=1981, year_of_publishing__lte=1990).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '1990s':
+                return Book.objects.filter(year_of_publishing__gte=1991, year_of_publishing__lte=2000).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '2000s':
+                return Book.objects.filter(year_of_publishing__gte=2001, year_of_publishing__lte=2010).order_by(
+                    'year_of_publishing')
+            elif self.year_range == '2010s':
+                return Book.objects.filter(year_of_publishing__gte=2011, year_of_publishing__lte=2020).order_by(
+                    'year_of_publishing')
+            elif self.year_range == 'after_2020':
+                return Book.objects.filter(year_of_publishing__gte=2021).order_by('year_of_publishing')
+            else:
+                return Book.objects.none()
+
+        #  Zoradenie podľa žánru
+        elif self.sort == 'genre':
+            if self.genre_name:
+                return Book.objects.filter(genre__name=self.genre_name).order_by('title_cz')
+            return Book.objects.none()
+
+        # Zoradenie podľa nakladatelství
+        elif self.sort == 'publisher':
+            publisher_name = self.request.GET.get('publisher_name')
+            if publisher_name:
+                return Book.objects.filter(publisher__name=publisher_name).order_by('title_cz')
+            return Book.objects.none()
+
+        # Zoradenie podľa názvu knihy (abecedne podľa title_cz)
         else:
             return Book.objects.filter(title_cz__istartswith=self.letter).order_by('title_cz')
 
@@ -105,6 +156,44 @@ class BooksListView(ListView):
                 'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
                 'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
             })
+
+
+        #sort podla roku
+        if self.sort == 'year':
+            context['year_ranges'] = [
+                ('before_1940', 'Do 1940'),
+                ('1940s', '1941–1950'),
+                ('1950s', '1951–1960'),
+                ('1960s', '1961–1970'),
+                ('1970s', '1971–1980'),
+                ('1980s', '1981–1990'),
+                ('1990s', '1991–2000'),
+                ('2000s', '2001–2010'),
+                ('2010s', '2011–2020'),
+                ('after_2020', 'Od 2021'),
+            ]
+            context['current_year_range'] = self.request.GET.get('year_range', '1980s')
+
+        #sort podla zanru
+        if self.sort == 'genre':
+            from viewer.models import Genre
+            context['genres'] = Genre.objects.all().order_by('name')
+            context['current_genre'] = self.request.GET.get('genre_name')
+
+        if self.sort == 'publisher':
+            from viewer.models import Publisher
+            context['publishers'] = Publisher.objects.all().order_by('name')
+            context['current_publisher'] = self.request.GET.get('publisher_name')
+
+        # Najnovšie knihy pre ľavý sidebar
+        context['najnovsie_knihy'] = Book.objects.order_by('-created')[:3]
+
+        # Najlepsie hodnotene knihy pre praví sidebar
+        context['top_knihy'] = (
+            Book.objects.annotate(priemer=Avg('comments__rating'))
+            .filter(priemer__isnull=False)
+            .order_by('-priemer')[:3]
+        )
 
         return context
 
