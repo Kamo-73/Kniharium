@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Vyhledávání '{{ search }}'
+{% endblock %}
+
+{% block left_sidebar %}
+    <p>Tu je left sidebar…</p>
+{% endblock %}
+
+{% block content %}
+    <h1>Výsledky vyhledávání dotazu '{{ search }}'</h1>
+
+    <h2>Výsledky pro originální název knihy</h2>
+    <ul>
+        {% for book in books_title_orig %}
+            <li><a href="{% url 'book' book.id %}">{{ book }}</a></li>
+        {% empty %}
+            Nenalezen žádný záznam.
+        {% endfor %}
+    </ul>
+
+    <h2>Výsledky pro český název knihy</h2>
+    <ul>
+        {% for book in books_title_cz %}
+            <li><a href="{% url 'book' book.id %}">{{ book }}</a></li>
+        {% empty %}
+            Nenalezen žádný záznam.
+        {% endfor %}
+    </ul>
+
+    <h2>Výsledky pro žánr knihy</h2>
+    <ul>
+        {% for book in books_genre %}
+            <li><a href="{% url 'book' book.id %}">{{ book }}</a></li>
+        {% empty %}
+            Nenalezen žádný záznam.
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <h2>Výsledky pro jméno autora</h2>
+    <ul>
+        {% for author in author_name %}
+            <li><a href="{% url 'author' author.id %}">{{ author }}</a></li>
+        {% empty %}
+            Nenalezen žádný záznam.
+        {% endfor %}
+    </ul>
+
+    <h2>Výsledky pro příjmení autora</h2>
+    <ul>
+        {% for author in author_surname %}
+            <li><a href="{% url 'author' author.id %}">{{ author }}</a></li>
+        {% empty %}
+            Nenalezen žádný záznam.
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
+
+{% block right_sidebar %}
+    <p>Tu je right sidebar</p>
+{% endblock %}

@@ -513,3 +513,26 @@ class CommentDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse('book', kwargs={'pk': self.object.book.pk})
+
+def search(request):
+    if request.method == 'POST':
+        search_string = request.POST.get('search').strip()
+        if search_string:
+            books_title_orig = Book.objects.filter(title_orig__contains=search_string)
+            books_title_cz = Book.objects.filter(title_cz__contains=search_string)
+
+            books_genre = Book.objects.filter(genres__name__contains=search_string)
+
+            author_name = Author.objects.filter(name__contains=search_string)
+            author_surname = Author.objects.filter(surname__contains=search_string)
+
+
+            context = {'search': search_string,
+                       'books_title_orig': books_title_orig,
+                       'books_title_cz': books_title_cz,
+                       'books_genre': books_genre,
+                       'author_name': author_name,
+                       'creator_surname': author_surname,
+                       }
+            return render(request, 'search.html', context)
+    return render(request, 'home.html')

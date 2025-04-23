@@ -57,6 +57,8 @@ urlpatterns = [
 
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
 
+    path('search/', search, name='search'),
+
 
 ]
 
