@@ -104,6 +104,9 @@ class Book(Model):
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
     in_watchlist = ManyToManyField(Profile, blank=True, related_name='watchlist')
+    read_list = ManyToManyField(Profile, blank=True, related_name='readlist')
+    favourite_list = ManyToManyField(Profile, blank=True, related_name='favouritelist')
+
     image = ImageField(upload_to='images/', default=None, null=True, blank=True)
 
     class Meta:

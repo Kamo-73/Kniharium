@@ -277,6 +277,10 @@ def book(request, pk):
     else:
         reading_time = f"{remaining_minutes} min."
 
+    profile = None
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+
     context = {
         'book': book_,
         'comment_form': CommentModelForm(),  # nezabudni na ()
@@ -286,6 +290,7 @@ def book(request, pk):
         'knihy_od_toho_isteho_autora': knihy_od_toho_isteho_autora,
         'reading_time': reading_time,
         'user_rating_avg': user_rating_avg,
+        'profile': profile,
     }
 
     return render(request, 'book.html', context)
@@ -552,5 +557,27 @@ def watchlist(request, pk):
         profile_.watchlist.remove(book_)
     else:
         profile_.watchlist.add(book_)
+
+    return redirect('book', pk)
+
+def readlist(request, pk):
+    profile_ = Profile.objects.get(user=request.user)
+    book_ = Book.objects.get(id=pk)
+
+    if book_ in profile_.readlist.all():
+        profile_.readlist.remove(book_)
+    else:
+        profile_.readlist.add(book_)
+
+    return redirect('book', pk)
+
+def favouritelist(request, pk):
+    profile_ = Profile.objects.get(user=request.user)
+    book_ = Book.objects.get(id=pk)
+
+    if book_ in profile_.favouritelist.all():
+        profile_.favouritelist.remove(book_)
+    else:
+        profile_.favouritelist.add(book_)
 
     return redirect('book', pk)

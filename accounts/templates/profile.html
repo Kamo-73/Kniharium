@@ -22,6 +22,24 @@
         {% endfor %}
     </ul>
     </p>
+    <p><strong>Seznam přečtených:</strong>
+    <ul>
+        {% for book in profile.readlist.all %}
+            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
+        {% empty %}
+            Žádná kniha v seznamu.
+        {% endfor %}
+    </ul>
+    </p>
+    <p><strong>Seznam oblíbených:</strong>
+    <ul>
+        {% for book in profile.favouritelist.all %}
+            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
+        {% empty %}
+            Žádná kniha v seznamu.
+        {% endfor %}
+    </ul>
+    </p>
 {% endblock %}
 
 {% block right_sidebar %}

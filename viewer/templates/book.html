@@ -140,19 +140,41 @@
     {% endfor %}
 </div>
 
+{% if request.user.is_authenticated %}
     <div style="text-align: center;">
-        {% if request.user.is_authenticated %}
+
     <div style="display: inline-block; margin: 20px;">
-        <a style="font-size: 50px;" href="{% url 'watchlist' book.id%}">❤️</a><br>
-        <span style="font-size: 18px;">Oblíbené</span>
-    {% endif %}
+
+            {% if book in profile.watchlist.all %}
+            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">👀</a><br>
+            <span style="font-size: 18px;">Odebrat</span>
+            {% else %}
+            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">👀</a><br>
+            <span style="font-size: 18px;">Přidat</span>
+            {% endif %}
+
+
     </div>
     <div style="display: inline-block; margin: 20px;">
-        <a style="font-size: 50px;">📖</a><br>
-        <span style="font-size: 18px;">Přečtené</span>
+        {% if book in profile.readlist.all %}
+            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📖</a><br>
+            <span style="font-size: 18px;">Odebrat</span>
+            {% else %}
+            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📘</a><br>
+            <span style="font-size: 18px;">Přidat</span>
+            {% endif %}
+    </div>
+    <div style="display: inline-block; margin: 20px;">
+        {% if book in profile.favouritelist.all %}
+            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">❤️</a><br>
+            <span style="font-size: 18px;">V oblíbených</span>
+            {% else %}
+            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">🤍</a><br>
+            <span style="font-size: 18px;">Přidat</span>
+            {% endif %}
     </div>
 </div>
-
+{% endif %}
     </div>
 
 </div>

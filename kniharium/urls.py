@@ -62,6 +62,10 @@ urlpatterns = [
 
     path('watchlist/<int:pk>/', watchlist, name='watchlist'),
 
+    path('readlist/<int:pk>/', readlist, name='readlist'),
+
+    path('favouritelist/<int:pk>/', favouritelist, name='favouritelist'),
+
 
 ]
 
