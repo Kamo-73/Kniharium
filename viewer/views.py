@@ -543,3 +543,14 @@ def random_book(request):
     random_book = random.choice(books)
 
     return redirect('book', pk=random_book.pk)
+
+def watchlist(request, pk):
+    profile_ = Profile.objects.get(user=request.user)
+    book_ = Book.objects.get(id=pk)
+
+    if book_ in profile_.watchlist.all():
+        profile_.watchlist.remove(book_)
+    else:
+        profile_.watchlist.add(book_)
+
+    return redirect('book', pk)

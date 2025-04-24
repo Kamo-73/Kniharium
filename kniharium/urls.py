@@ -60,6 +60,8 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('book/random/', random_book, name='random_book'),
 
+    path('watchlist/<int:pk>/', watchlist, name='watchlist'),
+
 
 ]
 

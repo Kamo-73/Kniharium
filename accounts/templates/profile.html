@@ -13,16 +13,15 @@
 
     <p><strong>Jméno:</strong> {{ profile.user.first_name }}</p>
     <p><strong>Příjmení:</strong> {{ profile.user.last_name }}</p>
-    {% comment %}<p><strong>Biografie:</strong> {{ profile.biography }}</p>
     <p><strong>Watchlist:</strong>
     <ul>
-        {% for movie in profile.watchlist.all %}
-            <li><a href="{% url 'movie' movie.id %}">{{ movie.title_orig }}</a></li>
+        {% for book in profile.watchlist.all %}
+            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
         {% empty %}
-            Žádný film na seznamu.
+            Žádná kniha v seznamu.
         {% endfor %}
     </ul>
-    </p>{% endcomment %}
+    </p>
 {% endblock %}
 
 {% block right_sidebar %}

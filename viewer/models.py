@@ -103,6 +103,7 @@ class Book(Model):
     format = ManyToManyField(Format, blank=False, related_name='books')
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
+    in_watchlist = ManyToManyField(Profile, blank=True, related_name='watchlist')
     image = ImageField(upload_to='images/', default=None, null=True, blank=True)
 
     class Meta:
