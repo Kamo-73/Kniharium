@@ -178,7 +178,7 @@ class BooksListView(ListView):
         #sort podla zanru
         if self.sort == 'genre':
             from viewer.models import Genre
-            context['genre'] = Genre.objects.all().order_by('name')
+            context['genres'] = Genre.objects.all().order_by('name')
             context['current_genre'] = self.request.GET.get('genre_name')
 
         if self.sort == 'publisher':
@@ -541,4 +541,5 @@ def search(request):
 def random_book(request):
     books = Book.objects.all()
     random_book = random.choice(books)
-    return redirect('book', book_id=random_book.pk)
+
+    return redirect('book', pk=random_book.pk)

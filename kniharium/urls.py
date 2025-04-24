@@ -58,8 +58,7 @@ urlpatterns = [
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
 
     path('search/', search, name='search'),
-
-    path('book/<int:pk>/', book, name='random_book'),
+    path('book/random/', random_book, name='random_book'),
 
 
 ]

@@ -33,104 +33,104 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "A Study in Scarlet",
-        "title_cz": "Štúdia v červenom",
-        "num_of_pages": 188,
-        "publisher": "Ward, Lock & Co",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Sign of Four",
-        "title_cz": "Znamenie štyroch",
-        "num_of_pages": 160,
-        "publisher": "Lippincott's Monthly Magazine",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Hound of the Baskervilles",
-        "title_cz": "Pes Baskervillský",
-        "num_of_pages": 256,
-        "publisher": "George Newnes",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Valley of Fear",
-        "title_cz": "Údolie strachu",
-        "num_of_pages": 320,
-        "publisher": "George Newnes",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Adventures of Sherlock Holmes",
-        "title_cz": "Dobrodružstvá Sherlocka Holmesa",
-        "num_of_pages": 307,
-        "publisher": "George Newnes",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Return of Sherlock Holmes",
-        "title_cz": "Návrat Sherlocka Holmesa",
-        "num_of_pages": 320,
-        "publisher": "George Newnes",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Case-Book of Sherlock Holmes",
-        "title_cz": "Prípadová kniha Sherlocka Holmesa",
-        "num_of_pages": 320,
-        "publisher": "John Murray",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The Lost World",
-        "title_cz": "Stratený svet",
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "The Colour of Magic",
+        "title_cz": "Barva kouzel",
         "num_of_pages": 288,
-        "publisher": "Hodder & Stoughton",
+        "publisher": "Talpress",
         "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "The White Company",
-        "title_cz": "Biela spoločnosť",
-        "num_of_pages": 400,
-        "publisher": "Smith, Elder & Co",
-        "rating_ours": 4,
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "The Light Fantastic",
+        "title_cz": "Lehké fantastično",
+        "num_of_pages": 288,
+        "publisher": "Talpress",
+        "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Sir Arthur Conan",
-        "surname": "Doyle",
-        "title_orig": "Sir Nigel",
-        "title_cz": "Sir Nigel",
-        "num_of_pages": 384,
-        "publisher": "Smith, Elder & Co",
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Equal Rites",
+        "title_cz": "Rovnoprávnost",
+        "num_of_pages": 288,
+        "publisher": "Talpress",
         "rating_ours": 4,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Mort",
+        "title_cz": "Mort",
+        "num_of_pages": 288,
+        "publisher": "Talpress",
+        "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Guards! Guards!",
+        "title_cz": "Stráže! Stráže!",
+        "num_of_pages": 320,
+        "publisher": "Talpress",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Reaper Man",
+        "title_cz": "Sekáč",
+        "num_of_pages": 320,
+        "publisher": "Talpress",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Hogfather",
+        "title_cz": "Otec prasátek",
+        "num_of_pages": 352,
+        "publisher": "Talpress",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "The Fifth Elephant",
+        "title_cz": "Pátý elefant",
+        "num_of_pages": 368,
+        "publisher": "Talpress",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "Thief of Time",
+        "title_cz": "Zloděj času",
+        "num_of_pages": 384,
+        "publisher": "Talpress",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Terry",
+        "surname": "Pratchett",
+        "title_orig": "The Shepherd's Crown",
+        "title_cz": "Pastýřská koruna",
+        "num_of_pages": 288,
+        "publisher": "Talpress",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha"]
     }
 ]
 
