@@ -19,8 +19,8 @@ class SignUpView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_title'] = 'Registrácia'
-        context['submit_button_text'] = 'Zaregistrovať sa'
+        context['form_title'] = 'Registrace'
+        context['submit_button_text'] = 'Zaregistrovat se'
         return context
 
 
