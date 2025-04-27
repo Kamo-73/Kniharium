@@ -33,104 +33,104 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "The Colour of Magic",
-        "title_cz": "Barva kouzel",
-        "num_of_pages": 288,
-        "publisher": "Talpress",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
-    },
-    {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "The Light Fantastic",
-        "title_cz": "Lehké fantastično",
-        "num_of_pages": 288,
-        "publisher": "Talpress",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Equal Rites",
-        "title_cz": "Rovnoprávnost",
-        "num_of_pages": 288,
-        "publisher": "Talpress",
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "101x Česko",
+        "title_cz": "101x Česko",
+        "num_of_pages": 250,
+        "publisher": "Motto",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Mort",
-        "title_cz": "Mort",
-        "num_of_pages": 288,
-        "publisher": "Talpress",
-        "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Guards! Guards!",
-        "title_cz": "Stráže! Stráže!",
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Cesta na konec světa",
+        "title_cz": "Cesta na konec světa",
+        "num_of_pages": 310,
+        "publisher": "Motto",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Na východ vlakem",
+        "title_cz": "Na východ vlakem",
+        "num_of_pages": 290,
+        "publisher": "Motto",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Cesty na východ",
+        "title_cz": "Cesty na východ",
+        "num_of_pages": 350,
+        "publisher": "Motto",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
+    },
+    {
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Pěšky do Indie",
+        "title_cz": "Pěšky do Indie",
         "num_of_pages": 320,
-        "publisher": "Talpress",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Reaper Man",
-        "title_cz": "Sekáč",
-        "num_of_pages": 320,
-        "publisher": "Talpress",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha"]
-    },
-    {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Hogfather",
-        "title_cz": "Otec prasátek",
-        "num_of_pages": 352,
-        "publisher": "Talpress",
+        "publisher": "Motto",
         "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "The Fifth Elephant",
-        "title_cz": "Pátý elefant",
-        "num_of_pages": 368,
-        "publisher": "Talpress",
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Konec světa",
+        "title_cz": "Konec světa",
+        "num_of_pages": 330,
+        "publisher": "Motto",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "Thief of Time",
-        "title_cz": "Zloděj času",
-        "num_of_pages": 384,
-        "publisher": "Talpress",
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Cesty na východ – druhá část",
+        "title_cz": "Cesty na východ – druhá část",
+        "num_of_pages": 310,
+        "publisher": "Motto",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Cesta do Indie",
+        "title_cz": "Cesta do Indie",
+        "num_of_pages": 300,
+        "publisher": "Motto",
         "rating_ours": 5,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Terry",
-        "surname": "Pratchett",
-        "title_orig": "The Shepherd's Crown",
-        "title_cz": "Pastýřská koruna",
-        "num_of_pages": 288,
-        "publisher": "Talpress",
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Cesta kolem světa",
+        "title_cz": "Cesta kolem světa",
+        "num_of_pages": 350,
+        "publisher": "Motto",
         "rating_ours": 4,
-        "format": ["Vázaná kniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Ladislav",
+        "surname": "Zibura",
+        "title_orig": "Pěšky na konec světa",
+        "title_cz": "Pěšky na konec světa",
+        "num_of_pages": 290,
+        "publisher": "Motto",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
     }
 ]
 

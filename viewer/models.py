@@ -56,8 +56,6 @@ class Author(Model):
         return f"{self.name} {self.surname}"
 
 
-
-
 class Format(Model):
     name = CharField(max_length=32, null=False, blank=False, unique=True)
 
