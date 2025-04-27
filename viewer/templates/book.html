@@ -197,8 +197,10 @@
    <h1 align="center">Komentáře</h1>
     <br>
 
-    {% if request.user.is_authenticated %}
+    {% if perms.viewer.change_book %}
         <a href="{% url 'book_update' book.id %}" class="btn btn-primary">Aktualizovat</a>
+    {% endif %}
+    {% if perms.viewer.delete_book %}
         <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Smazat</a><br>
     {% endif %}
 

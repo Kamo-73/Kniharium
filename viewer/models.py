@@ -129,7 +129,9 @@ class Award(Model):
         ordering = ['name', 'year']
 
     def __repr__(self):
-        return f"Book(name={self.name}, year={self.year})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        books = ", ".join([f"{book.title_cz}" for book in self.book.all()])
+        return f"{self.name} ({books} {authors})"
 
     def __str__(self):
         return f"{self.name}"

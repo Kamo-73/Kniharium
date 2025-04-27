@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from django.db.transaction import atomic
 from django.forms import CharField, PasswordInput, DateField, NumberInput, \
     Textarea
@@ -27,6 +28,7 @@ class SignUpForm(UserCreationForm):
         widget=PasswordInput(attrs={'placeholder': 'Heslo znovu'}),
         label='Heslo znovu'
     )
+
 
     date_of_birth = DateField(
         widget=NumberInput(attrs={'type': 'date'}),
@@ -63,3 +65,12 @@ class SignUpForm(UserCreationForm):
         if commit:
             profile.save()
         return user
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data['password1']
+        password2 = cleaned_data['password2']
+
+        if password1 != password2:
+            raise ValidationError("The two password fields didn't match.")
+        return cleaned_data

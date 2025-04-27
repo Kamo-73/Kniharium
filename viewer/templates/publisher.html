@@ -17,8 +17,12 @@
     {% endif %}</h3>
     <a href="{{ publisher.link }}">{{ publisher.link }}</a>
     <br><a>{{ publisher.information }} </a><br>
+    {% if perms.viewer.change_publisher %}
     <a href="{% url 'publisher_update' publisher.id %}" class="btn btn-primary">Aktualizovat</a>
+    {% endif %}
+    {% if perms.viewer.delete_publisher %}
     <a href="{% url 'publisher_delete' publisher.id %}" class="btn btn-danger">Smazat</a>
+    {% endif %}
 {% endblock %}
 
 {% block right_sidebar %}

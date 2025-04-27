@@ -10,7 +10,9 @@
 
 {% block content %}
 <h2 style="text-align: center; padding: 10px;">Seznam nakladatelství</h2>
+    {% if perms.viewer.add_publisher %}
     <a href="{% url 'publisher_create' %}" class="btn btn-primary">Přidat</a>
+    {% endif %}
 
 
 <!-- Navigácia -->
@@ -31,8 +33,12 @@
             <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
                 {{ publisher.name }}
             </a>
+        {% if perms.viewer.change_publisher %}
         <a href="{% url 'publisher_update' publisher.id %}">✏️</a>
+        {% endif %}
+        {% if perms.viewer.delete_publisher %}
         <a href="{% url 'publisher_delete' publisher.id %}">❌</a>
+        {% endif %}
         </p>
     {% empty %}
         <p>Žádné nakladatelství.</p>

@@ -39,7 +39,7 @@
 
 {% block content %}
     <h2 style="text-align: center; padding: 10px;">Seznam knih</h2>
-    {% if request.user.is_authenticated %}
+    {% if perms.viewer.add_book %}
     <a href="{% url 'book_create' %}" class="btn btn-primary">Přidat</a>
     {% endif %}
 <!-- Zobraziť podľa -->

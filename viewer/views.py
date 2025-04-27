@@ -1,6 +1,7 @@
 import random
 from random import sample
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -279,7 +280,10 @@ def book(request, pk):
 
     profile = None
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user=request.user)
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            profile = None
 
     context = {
         'book': book_,
@@ -297,11 +301,11 @@ def book(request, pk):
 
 
 
-class BookCreateView(CreateView):
+class BookCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = BookModelForm
     success_url = reverse_lazy('books')
-    #permission_required = 'viewer.add_book'
+    permission_required = 'viewer.add_book'
 
     def form_invalid(self, form):
         print("Formulář není validní.")
@@ -314,12 +318,12 @@ class BookCreateView(CreateView):
         return context
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'form.html'
     form_class = BookModelForm
     model = Book
     success_url = reverse_lazy('books')
-    #permission_required = 'viewer.change_book'
+    permission_required = 'viewer.change_book'
 
     def form_invalid(self, form):
         print("Formulář není validní.")
@@ -332,11 +336,11 @@ class BookUpdateView(UpdateView):
         return context
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'confirm_delete.html'
     model = Book
     success_url = reverse_lazy('books')
-    #permission_required = 'viewer.delete_book'
+    permission_required = 'viewer.delete_book'
 
 
 class AuthorsListView(ListView):
@@ -411,34 +415,34 @@ class AuthorDetailView(DetailView):
         return context
 
 
-class AuthorCreateView(CreateView):
+class AuthorCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = AuthorModelForm
     success_url = reverse_lazy('authors')
-    #permission_required = 'viewer.add_author'
+    permission_required = 'viewer.add_author'
 
     def form_invalid(self, form):
         print("Formulář 'AuthorModelForm' není validní.")
         return super().form_invalid(form)
 
 
-class AuthorUpdateView(UpdateView):
+class AuthorUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'form.html'
     form_class = AuthorModelForm
     model = Author
     success_url = reverse_lazy('authors')
-    #permission_required = 'viewer.change_author'
+    permission_required = 'viewer.change_author'
 
     def form_invalid(self, form):
         print("Formulář 'AuthorModelForm' není validní.")
         return super().form_invalid(form)
 
 
-class AuthorDeleteView(DeleteView):
+class AuthorDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'confirm_delete.html'
     model = Author
     success_url = reverse_lazy('authors')
-    #permission_required = 'viewer.delete_author'
+    permission_required = 'viewer.delete_author'
 
 
 class PublishersListView(ListView):
@@ -480,33 +484,33 @@ class PublisherDetailView(DetailView):
     context_object_name = 'publisher'
 
 
-class PublisherCreateView(CreateView):
+class PublisherCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = PublisherModelForm
     success_url = reverse_lazy('publishers')
-    #permission_required = 'viewer.add_author'
+    permission_required = 'viewer.add_publisher'
 
     def form_invalid(self, form):
         print("Formulář 'PublisherModelForm' není validní.")
         return super().form_invalid(form)
 
-class PublisherUpdateView(UpdateView):
+class PublisherUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'form.html'
     form_class = PublisherModelForm
     model = Publisher
     success_url = reverse_lazy('publishers')
-    #permission_required = 'viewer.change_author'
+    permission_required = 'viewer.change_publisher'
 
     def form_invalid(self, form):
         print("Formulář 'PublisherModelForm' není validní.")
         return super().form_invalid(form)
 
 
-class PublisherDeleteView(DeleteView):
+class PublisherDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'confirm_delete.html'
     model = Publisher
     success_url = reverse_lazy('publishers')
-    #permission_required = 'viewer.delete_author'
+    permission_required = 'viewer.delete_publisher'
 
 
 def about(request):
