@@ -1,7 +1,9 @@
+import datetime
 import random
 from random import sample
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.sites import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -593,3 +595,21 @@ def favouritelist(request, pk):
         profile_.favouritelist.add(book_)
 
     return redirect('book', pk)
+
+def name_day(request):
+    month = datetime.date.today().month
+    if month < 10:
+        month = f"0{month}"
+    day = datetime.date.today().day
+    if day < 10:
+        day = f"0{day}"
+    url = f"https://svatky.adresa.info/json?date={day}{month}"
+    #print(f"url: {url}")
+    result_request = requests.get(url)
+    #print(f"result_request: {result_request}")
+    result_json = result_request.json()
+    #print(f"result_json: {result_json}")
+    name = result_json[0]['name']
+    #print(f"name = {name}")
+    context = {'name': name}
+    return render(request, 'nameday.html', context)

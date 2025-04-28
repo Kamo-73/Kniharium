@@ -66,6 +66,8 @@ urlpatterns = [
 
     path('favouritelist/<int:pk>/', favouritelist, name='favouritelist'),
 
+    path('nameday/', name_day, name='nameday'),
+
 
 ]
 
