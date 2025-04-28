@@ -3,7 +3,7 @@ import random
 from random import sample
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.sites import requests
+import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -604,12 +604,10 @@ def name_day(request):
     if day < 10:
         day = f"0{day}"
     url = f"https://svatky.adresa.info/json?date={day}{month}"
-    #print(f"url: {url}")
     result_request = requests.get(url)
-    #print(f"result_request: {result_request}")
     result_json = result_request.json()
-    #print(f"result_json: {result_json}")
     name = result_json[0]['name']
-    #print(f"name = {name}")
-    context = {'name': name}
+    date = datetime.date.today()
+    context = {'name': name,
+               'date': date}
     return render(request, 'nameday.html', context)
