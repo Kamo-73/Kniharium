@@ -234,6 +234,14 @@ def book(request, pk):
         rating = request.POST.get('rating')
         user_comment = request.POST.get('user_comment')
 
+        if rating in ('', None):
+            rating = None
+        else:
+            try:
+                rating = int(rating)
+            except ValueError:
+                rating = None
+
         profile = Profile.objects.get(user=request.user)
         comment_qs = Comment.objects.filter(book=book_, commenter=profile)
 

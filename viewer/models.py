@@ -140,7 +140,7 @@ class Award(Model):
 class Comment(Model):
     book = ForeignKey(Book, on_delete=CASCADE, null=False, blank=False, related_name='comments')
     commenter = ForeignKey(Profile, on_delete=SET_NULL, null=True, blank=False, related_name='comments')
-    rating = IntegerField(null=False, blank=False, default=1)
+    rating = IntegerField(null=True, blank=True)
     user_comment = TextField(null=True, blank=True)
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
