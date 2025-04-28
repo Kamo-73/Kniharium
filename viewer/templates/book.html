@@ -230,6 +230,9 @@
                             ☆
                         {% endif %}
                     {% endfor %}
+                {% if request.user == comment.commenter.user %}
+                    <a href="{% url 'comment_delete' comment.id %}">Smazat</a>
+                {% endif %}
                 </span>
             </div>
         </div>

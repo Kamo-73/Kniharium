@@ -237,6 +237,14 @@ class CommentModelForm(ModelForm):
         }
     rating = IntegerField(min_value=1, max_value=5, required=False)
 
+    def clean_rating(self):
+        initial = self.cleaned_data['rating']
+        if initial is not None and initial not in [1, 2, 3, 4, 5]:
+            raise ValidationError("Hodnocení musí být v rozmezí 1–5.")
+        return initial
+
+
+
 
 
 
