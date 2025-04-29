@@ -67,8 +67,6 @@ urlpatterns = [
 
     path('favouritelist/<int:pk>/', favouritelist, name='favouritelist'),
 
-    path('nameday/', name_day, name='nameday'),
-
     path('api/books/', Books.as_view(), name='api_books'),
     path('api/book/<int:pk>/', BookDetail.as_view(), name='api_book'),
     path('api/authors/', Authors.as_view(), name='api_authors'),

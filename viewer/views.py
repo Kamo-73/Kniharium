@@ -596,18 +596,3 @@ def favouritelist(request, pk):
 
     return redirect('book', pk)
 
-def name_day(request):
-    month = datetime.date.today().month
-    if month < 10:
-        month = f"0{month}"
-    day = datetime.date.today().day
-    if day < 10:
-        day = f"0{day}"
-    url = f"https://svatky.adresa.info/json?date={day}{month}"
-    result_request = requests.get(url)
-    result_json = result_request.json()
-    name = result_json[0]['name']
-    date = datetime.date.today()
-    context = {'name': name,
-               'date': date}
-    return render(request, 'nameday.html', context)
