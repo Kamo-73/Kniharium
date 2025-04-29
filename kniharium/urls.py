@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import SubmittableLoginView, user_logout, SignUpView, ProfileDetailView
+from api.views import Books, BookDetail, Authors, AuthorDetail, Publishers
 from viewer.views import *
 
 from django.conf import settings
@@ -67,6 +68,12 @@ urlpatterns = [
     path('favouritelist/<int:pk>/', favouritelist, name='favouritelist'),
 
     path('nameday/', name_day, name='nameday'),
+
+    path('api/books/', Books.as_view(), name='api_books'),
+    path('api/book/<int:pk>/', BookDetail.as_view(), name='api_book'),
+    path('api/authors/', Authors.as_view(), name='api_authors'),
+    path('api/author/<int:pk>/', AuthorDetail.as_view(), name='api_author'),
+    path('api/publishers/', Publishers.as_view(), name='api_publishers'),
 
 
 ]
