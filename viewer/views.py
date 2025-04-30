@@ -295,6 +295,12 @@ def book(request, pk):
         except Profile.DoesNotExist:
             profile = None
 
+    format_names = [f.name for f in book_.format.all()]
+    format_audio = format_names[0]
+    format_e = format_names[1]
+    format_vazana = format_names[2]
+
+
     context = {
         'book': book_,
         'comment_form': CommentModelForm(),  # nezabudni na ()
@@ -305,6 +311,10 @@ def book(request, pk):
         'reading_time': reading_time,
         'user_rating_avg': user_rating_avg,
         'profile': profile,
+        'format_names': format_names,
+        'format_audio': format_audio,
+        'format_e': format_e,
+        'format_vazana': format_vazana,
     }
 
     return render(request, 'book.html', context)
