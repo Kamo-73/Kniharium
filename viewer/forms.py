@@ -243,7 +243,13 @@ class CommentModelForm(ModelForm):
             raise ValidationError("Hodnocení musí být v rozmezí 1–5.")
         return initial
 
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'style': 'width: 100%;'
+            })
 
 
 
