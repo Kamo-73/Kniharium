@@ -296,10 +296,12 @@ def book(request, pk):
             profile = None
 
     format_names = [f.name for f in book_.format.all()]
-    format_audio = format_names[0]
-    format_e = format_names[1]
-    format_vazana = format_names[2]
+    format_audio = 'Audio kniha' if 'Audio kniha' in format_names else ''
+    format_e = 'E-kniha' if 'E-kniha' in format_names else ''
+    format_vazana = 'Vázaná kniha' if 'Vázaná kniha' in format_names else ''
 
+    authors = book_.author.all()
+    autor_string = f"{authors[0].name} {authors[0].surname}" if authors else ""
 
     context = {
         'book': book_,
@@ -315,6 +317,7 @@ def book(request, pk):
         'format_audio': format_audio,
         'format_e': format_e,
         'format_vazana': format_vazana,
+        'author_string': autor_string,
     }
 
     return render(request, 'book.html', context)

@@ -132,53 +132,33 @@
         Recenze:
     </a>  <br><br>
 
-  <div style="text-align: center;">
+<div style="text-align: center;">
+    {% with '' as zobrazeny %}
 
+        {% if 'Vázaná kniha' in format_vazana and not 'vaz' in zobrazeny %}
+            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">Vázaná kniha</a>
+            </span>
+            {% with zobrazeny|add:'vaz' as zobrazeny %}{% endwith %}
+        {% endif %}
 
+        {% if 'E-kniha' in format_e and not 'e' in zobrazeny %}
+            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">E-kniha</a>
+            </span>
+            {% with zobrazeny|add:'e' as zobrazeny %}{% endwith %}
+        {% endif %}
 
-    {% if 'Vázaná kniha' in format_vazana  %}
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}"> Vázana kniha</a>
-         </span>
-         {% endif %}
-    {% if 'Vázaná kniha' in format_vazana and 'E-kniha' in format_e  %}
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}"> Vázana kniha</a>
-        </span>
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}">E-kniha </a>
-        </span>
-  {% endif %}
-    {% if 'Vázaná kniha' in format_vazana and 'Audio kniha' in format_audio  %}
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}"> Vázana kniha</a>
-        </span>
-         <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href=https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}"> Audiokniha </a>
-        </span>
-  {% endif %}
-    {% if 'Vázaná kniha' in format_vazana and 'Audio kniha' in format_audio and 'E-kniha' in format_e  %}
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}"> Vázana kniha</a>
-        </span>
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href=https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}"> Audiokniha </a>
-        </span>
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}">E-kniha </a>
-        </span>
-  {% endif %}
-    {% if 'E-kniha' in format_e and 'Audio kniha' in format_audio  %}
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href=https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}"> Audiokniha </a>
-        </span>
-        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-        <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}">E-kniha </a>
-        </span>
-  {% endif %}
+        {% if 'Audio kniha' in format_audio and not 'audio' in zobrazeny %}
+            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">Audiokniha</a>
+            </span>
+            {% with zobrazeny|add:'audio' as zobrazeny %}{% endwith %}
+        {% endif %}
 
-
+    {% endwith %}
 </div>
+
 
 {% if request.user.is_authenticated %}
     <div style="text-align: center;">
