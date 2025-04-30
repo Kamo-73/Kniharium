@@ -49,9 +49,8 @@
     <div class="container d-flex justify-content-center align-items-center flex-wrap gap-2">
 
         <!-- Vyhľadávanie -->
-        <form method="post" action="{% url 'search' %}" class="d-flex w-50">
-            {% csrf_token %}
-            <input type="text" id="search" name="search" class="form-control" placeholder="Vyhledat">
+        <form method="get" action="{% url 'search' %}" class="d-flex w-50">
+            <input type="text" name="q" class="form-control" placeholder="Vyhledat" value="{{ request.GET.q }}" required>
             <button type="submit" class="btn btn-outline-secondary mx-2">Vyhledat</button>
         </form>
 

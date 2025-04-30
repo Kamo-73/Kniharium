@@ -33,104 +33,54 @@ from math import ceil
 
 ZOZNAM_KNIH = [
     {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "101x Česko",
-        "title_cz": "101x Česko",
-        "num_of_pages": 250,
-        "publisher": "Motto",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Cesta na konec světa",
-        "title_cz": "Cesta na konec světa",
-        "num_of_pages": 310,
-        "publisher": "Motto",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Na východ vlakem",
-        "title_cz": "Na východ vlakem",
-        "num_of_pages": 290,
-        "publisher": "Motto",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Cesty na východ",
-        "title_cz": "Cesty na východ",
-        "num_of_pages": 350,
-        "publisher": "Motto",
-        "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audio kniha"]
-    },
-    {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Pěšky do Indie",
-        "title_cz": "Pěšky do Indie",
-        "num_of_pages": 320,
-        "publisher": "Motto",
+        "name": "Émile",
+        "surname": "Zola",
+        "title_orig": "Germinal",
+        "title_cz": "Germinal",
+        "num_of_pages": 464,
+        "publisher": "Odeon",
         "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Konec světa",
-        "title_cz": "Konec světa",
-        "num_of_pages": 330,
-        "publisher": "Motto",
+        "name": "Émile",
+        "surname": "Zola",
+        "title_orig": "Nana",
+        "title_cz": "Nana",
+        "num_of_pages": 352,
+        "publisher": "Odeon",
         "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "format": ["Vázaná kniha"]
     },
     {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Cesty na východ – druhá část",
-        "title_cz": "Cesty na východ – druhá část",
-        "num_of_pages": 310,
-        "publisher": "Motto",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Cesta do Indie",
-        "title_cz": "Cesta do Indie",
-        "num_of_pages": 300,
-        "publisher": "Motto",
+        "name": "Émile",
+        "surname": "Zola",
+        "title_orig": "The Drunkard",
+        "title_cz": "Zabiják",
+        "num_of_pages": 384,
+        "publisher": "Odeon",
         "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "format": ["Vázaná kniha"]
     },
     {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Cesta kolem světa",
-        "title_cz": "Cesta kolem světa",
-        "num_of_pages": 350,
-        "publisher": "Motto",
+        "name": "Émile",
+        "surname": "Zola",
+        "title_orig": "The Beast Within",
+        "title_cz": "Člověk bestie",
+        "num_of_pages": 400,
+        "publisher": "Odeon",
         "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "format": ["Vázaná kniha"]
     },
     {
-        "name": "Ladislav",
-        "surname": "Zibura",
-        "title_orig": "Pěšky na konec světa",
-        "title_cz": "Pěšky na konec světa",
-        "num_of_pages": 290,
-        "publisher": "Motto",
+        "name": "Émile",
+        "surname": "Zola",
+        "title_orig": "Thérèse Raquin",
+        "title_cz": "Tereza Raquinová",
+        "num_of_pages": 240,
+        "publisher": "Odeon",
         "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
+        "format": ["Vázaná kniha"]
     }
 ]
 

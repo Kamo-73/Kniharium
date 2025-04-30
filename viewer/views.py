@@ -385,6 +385,8 @@ class AuthorsListView(ListView):
         left_authors = page_obj.object_list[:20]
         right_authors = page_obj.object_list[20:]
 
+        all_authors = list(Author.objects.all())
+
         context.update({
             'alphabet': alphabet,  # Pre abecedu
             'current_letter': self.letter,  # Aktuálne zvolené písmeno
@@ -397,6 +399,8 @@ class AuthorsListView(ListView):
             'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
             # Predchádzajúce číslo stránky
             'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,  # Ďalšie číslo stránky
+            'nahodni_autori': sample(all_authors, min(3, len(all_authors))),
+            'posledni_autori': Author.objects.order_by('-created')[:3],
         })
 
         return context
@@ -535,27 +539,53 @@ class CommentDeleteView(DeleteView):
         return reverse('book', kwargs={'pk': self.object.book.pk})
 
 def search(request):
-    if request.method == 'POST':
-        search_string = request.POST.get('search').strip()
-        if search_string:
-            books_title_orig = Book.objects.filter(title_orig__contains=search_string)
-            books_title_cz = Book.objects.filter(title_cz__contains=search_string)
+    query = request.GET.get('q', '').strip()
+    filter_type = request.GET.get('type', 'books')
 
-            books_genre = Book.objects.filter(genre__name__contains=search_string)
+    books = Book.objects.none()
+    authors = Author.objects.none()
+    publishers = Publisher.objects.none()
 
-            author_name = Author.objects.filter(name__contains=search_string)
-            author_surname = Author.objects.filter(surname__contains=search_string)
+    if query:
+        page_number = request.GET.get("page")
 
+        if filter_type == 'books':
+            books_qs = (
+                Book.objects.filter(title_cz__icontains=query)
+                | Book.objects.filter(title_orig__icontains=query)
+                | Book.objects.filter(genre__name__icontains=query)
+            ).distinct()
+            paginator = Paginator(books_qs, 10)
+            books = paginator.get_page(page_number)
 
-            context = {'search': search_string,
-                       'books_title_orig': books_title_orig,
-                       'books_title_cz': books_title_cz,
-                       'books_genre': books_genre,
-                       'author_name': author_name,
-                       'author_surname': author_surname,
-                       }
-            return render(request, 'search.html', context)
-    return render(request, 'home.html')
+        elif filter_type == 'authors':
+            authors_qs = (
+                Author.objects.filter(name__icontains=query)
+                | Author.objects.filter(surname__icontains=query)
+            ).distinct()
+            paginator = Paginator(authors_qs, 10)
+            authors = paginator.get_page(page_number)
+
+        elif filter_type == 'publishers':
+            publishers = Publisher.objects.filter(name__icontains=query).distinct()
+
+        elif filter_type == 'books_from_authors':
+            authors_matching = Author.objects.filter(
+                Q(name__icontains=query) | Q(surname__icontains=query)
+            ).distinct()
+
+            books_qs = Book.objects.filter(author__in=authors_matching).distinct()
+            paginator = Paginator(books_qs, 10)
+            books = paginator.get_page(page_number)
+
+    context = {
+        'query': query,
+        'type': filter_type,
+        'books': books,
+        'authors': authors,
+        'publishers': publishers,
+    }
+    return render(request, 'search.html', context)
 
 def random_book(request):
     books = Book.objects.all()
