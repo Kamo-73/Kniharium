@@ -9,106 +9,125 @@
 {% endblock %}
 
 {% block content %}
-<h1 style="text-align: center; font-size: 32px; margin-top: 30px;">Váš profil</h1>
+<div style="background-image:
+              linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%),
+              linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-color: #eaeaea;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1300px;">
 
-<div style="background-color: #f4f4f4; text-align: center; font-size: 18px; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 500px; margin-left: auto; margin-right: auto;">
 
-  <div style="margin-bottom: 10px;">
-    <strong>Uživatelské meno:</strong> {{ profile.user.username }}
-  </div>
+<div style="background-color: #fcfcfc;
+            font-family: 'Segoe UI', sans-serif;
+            max-width: 500px;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+            overflow: hidden;">
 
-  <div style="margin-bottom: 10px;">
-    <strong>Meno:</strong> {{ profile.user.first_name }}
-  </div>
-
-  <div style="margin-bottom: 10px;">
-    <strong>Priezvisko:</strong> {{ profile.user.last_name }}
-  </div>
-
-  <div style="margin-bottom: 10px;">
-    <strong>E-mail:</strong> {{ profile.user.email }}
-  </div>
-
-  <div style="margin-bottom: 10px;">
-    <strong>Naposledy online:</strong> {{ profile.user.last_login|date:"d.m.Y H:i" }}
-  </div>
-
-  <div>
-    <strong>Bio:</strong><br>
-    {{ profile.biography }}
-  </div>
-
+  <!-- Hlavička -->
+  <div style="background: linear-gradient(to right, #4a4a4a, #1c1c1c);
+            color: white;
+            padding: 20px;
+            text-align: center;">
+  <div style="font-size: 40px;">👤</div>
+  <h2 style="margin: 10px 0 0 0;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+  <p style="margin: 5px 0 0 0; font-size: 14px;">@{{ profile.user.username }}</p>
 </div>
 
+  <!-- Telo profilu -->
+  <div style="padding: 25px 30px; font-size: 17px; color: #333;">
+
+    <div style="margin-bottom: 15px;">
+      <strong>📧 E-mail:</strong><br>{{ profile.user.email }}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <strong>🕒 Naposledy online:</strong><br>{{ profile.user.last_login|date:"d.m.Y H:i" }}
+    </div>
+
+    <div>
+      <strong>📝 Bio:</strong><br>
+      <div style="margin-top: 5px; color: #555;">
+        {{ profile.biography|default:"(žiadne bio)" }}
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
       <!-- watchlist -->
 
-        <!-- 👀 Emoji + text -->
-   <div style="text-align: center; font-size: 30px; margin-top: 40px; margin-bottom: 10px;">
-        👀 Knihy vo watchliste:
-   </div>
+<!-- 👀 Emoji + text -->
+<div style="text-align: center; font-size: 26px; font-weight: bold; margin-top: 60px; margin-bottom: 10px; color: #222;">
+  👀 Knihy vo watchliste:
+</div>
 
-    <div style="display: flex; justify-content: center; margin-top: 40px;">
-    <div style="display: flex; align-items: center;">
-
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+  <div style="display: flex; align-items: center;">
 
     <!-- Šípka doľava -->
     {% if profile.watchlist.count > 5 %}
-    <div onclick="scrollWatchlist(-1)" style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
-        ➤
+    <div onclick="scrollWatchlist(-1)"
+         style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #444;">
+      ➤
     </div>
     {% endif %}
 
     <!-- Viditeľný box na 5 kníh -->
     <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
-    <div id="watchlist-slider" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
-            {% if profile.watchlist.count <= 5 %} justify-content: center; {% endif %}">
-            <style>
-                #watchlist-slider::-webkit-scrollbar {
-                display: none;
-                }
-            </style>
+      <div id="watchlist-slider"
+           style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+                  {% if profile.watchlist.count <= 5 %} justify-content: center; {% endif %}">
 
-            {% for b in profile.watchlist.all %}
-            <div style="text-align:center; flex: 0 0 auto;">
+        <style>
+          #watchlist-slider::-webkit-scrollbar {
+            display: none;
+          }
+        </style>
 
-            <a href="{% url 'book' b.pk %}">
-              {% if b.image and b.image.name %}
-                {% if "http" in b.image.name %}
-                  <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% else %}
-                  <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
+        {% for b in profile.watchlist.all %}
+        <div style="flex: 0 0 auto; background-color: #f7f7f7; padding: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center;">
+
+          <a href="{% url 'book' b.pk %}">
+            {% if b.image and b.image.name %}
+              {% if "http" in b.image.name %}
+                <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
               {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                  </div>
-                </div>
+                <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
               {% endif %}
+            {% else %}
+              <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.9em; color: #444;">Chýba obrázok</span>
+              </div>
+            {% endif %}
+          </a>
+
+          <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+            <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
+              {{ b.title_cz }}
             </a>
+          </p>
 
-            <p style="margin: 5px 0 0 0;">
-              <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
-                {{ b.title_cz }}
-              </a>
-            </p>
-
-          </div>
+        </div>
         {% empty %}
-          <div>Žádná kniha v seznamu.</div>
+          <div style="font-size: 18px; color: #666;">Žádná kniha v zozname.</div>
         {% endfor %}
-
       </div>
     </div>
 
     <!-- Šípka doprava -->
- {% if profile.watchlist.count > 5 %}
-  <div onclick="scrollWatchlist(1)" style="font-size: 30px; user-select: none; cursor: pointer;">
-    ➤
-  </div>
-{% endif %}
+    {% if profile.watchlist.count > 5 %}
+    <div onclick="scrollWatchlist(1)" style="font-size: 30px; user-select: none; cursor: pointer; color: #444;">
+      ➤
+    </div>
+    {% endif %}
 
   </div>
 </div>
@@ -116,70 +135,70 @@
 
 <!-- prečítané knihy -->
 
-<!-- 📖 Emoji + text -->
-<div style="text-align: center; font-size: 30px; margin-top: 60px; margin-bottom: 10px;">
+<!-- 📖 Nadpis -->
+<div style="text-align: center; font-size: 26px; font-weight: bold; margin-top: 60px; margin-bottom: 10px; color: #222;">
   📖 Prečítané knihy:
 </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 40px;">
-    <div style="display: flex; align-items: center;">
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+  <div style="display: flex; align-items: center;">
 
     <!-- Šípka doľava -->
     {% if profile.readlist.count > 5 %}
-    <div onclick="scrollReadlist(-1)" style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
-        ➤
+    <div onclick="scrollReadlist(-1)"
+         style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #444;">
+      ➤
     </div>
     {% endif %}
 
     <!-- Viditeľný box na 5 kníh -->
     <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
-      <div id="readlist-slider" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
-      {% if profile.readlist.count <= 5 %} justify-content: center; {% endif %}">
-          <style>
-            #readlist-slider::-webkit-scrollbar {
+      <div id="readlist-slider"
+           style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+                  {% if profile.readlist.count <= 5 %} justify-content: center; {% endif %}">
+
+        <style>
+          #readlist-slider::-webkit-scrollbar {
             display: none;
-            }
-          </style>
+          }
+        </style>
 
         {% for book in profile.readlist.all %}
-          <div style="text-align:center; flex: 0 0 auto;">
+        <div style="flex: 0 0 auto; background-color: #f7f7f7; padding: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center;">
 
-            <a href="{% url 'book' book.pk %}">
-              {% if book.image and book.image.name %}
-                {% if "http" in book.image.name %}
-                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% else %}
-                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
+          <a href="{% url 'book' book.pk %}">
+            {% if book.image and book.image.name %}
+              {% if "http" in book.image.name %}
+                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
               {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                  </div>
-                </div>
-      {% endif %}
+                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+              {% endif %}
+            {% else %}
+              <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.9em; color: #444;">Chýba obrázok</span>
+              </div>
+            {% endif %}
+          </a>
+
+          <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+            <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
+              {{ book.title_cz }}
             </a>
+          </p>
 
-            <p style="margin: 5px 0 0 0;">
-              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
-                {{ book.title_cz }}
-              </a>
-            </p>
-
-          </div>
+        </div>
         {% empty %}
-          <div>Žádná kniha v seznamu.</div>
+          <div style="font-size: 18px; color: #666;">Žádná kniha v zozname.</div>
         {% endfor %}
       </div>
     </div>
 
     <!-- Šípka doprava -->
- {% if profile.readlist.count > 5 %}
-  <div onclick="scrollReadlist(1)"
-       style="font-size: 30px; user-select: none; cursor: pointer;">
-    ➤
-  </div>
-{% endif %}
+    {% if profile.readlist.count > 5 %}
+    <div onclick="scrollReadlist(1)" style="font-size: 30px; user-select: none; cursor: pointer; color: #444;">
+      ➤
+    </div>
+    {% endif %}
 
   </div>
 </div>
@@ -187,75 +206,75 @@
 
  <!-- obľúbené knihy -->
 
-<!-- ❤️ Emoji + text -->
-<div style="text-align: center; font-size: 30px; margin-top: 60px; margin-bottom: 10px;">
+<!-- ❤️ Nadpis -->
+<div style="text-align: center; font-size: 26px; font-weight: bold; margin-top: 60px; margin-bottom: 10px; color: #222;">
   ❤️ Obľúbené knihy:
 </div>
 
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 30px;">
   <div style="display: flex; align-items: center;">
 
     <!-- Šípka doľava -->
-   {% if profile.favouritelist.count > 5 %}
-  <div onclick="scrollFavourites(-1)"
-       style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
-    ➤
-  </div>
-{% endif %}
+    {% if profile.favouritelist.count > 5 %}
+    <div onclick="scrollFavourites(-1)"
+         style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #444;">
+      ➤
+    </div>
+    {% endif %}
+
     <!-- Viditeľný box na 5 kníh -->
     <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
       <div id="favouritelist-slider"
-     style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
-     {% if profile.favouritelist.count <= 5 %} justify-content: center; {% endif %}">
-          <style>
+           style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+                  {% if profile.favouritelist.count <= 5 %} justify-content: center; {% endif %}">
+
+        <style>
           #favouritelist-slider::-webkit-scrollbar {
             display: none;
           }
         </style>
 
         {% for book in profile.favouritelist.all %}
-          <div style="text-align:center; flex: 0 0 auto;">
+        <div style="flex: 0 0 auto; background-color: #f7f7f7; padding: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center;">
 
-            <a href="{% url 'book' book.pk %}">
-              {% if book.image and book.image.name %}
-                {% if "http" in book.image.name %}
-                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% else %}
-                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
+          <a href="{% url 'book' book.pk %}">
+            {% if book.image and book.image.name %}
+              {% if "http" in book.image.name %}
+                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
               {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                  </div>
-                </div>
+                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
               {% endif %}
+            {% else %}
+              <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.9em; color: #444;">Chýba obrázok</span>
+              </div>
+            {% endif %}
+          </a>
+
+          <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+            <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
+              {{ book.title_cz }}
             </a>
+          </p>
 
-            <p style="margin: 5px 0 0 0;">
-              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
-                {{ book.title_cz }}
-              </a>
-            </p>
-
-          </div>
+        </div>
         {% empty %}
-          <div>Žádná kniha v seznamu.</div>
+          <div style="font-size: 18px; color: #666;">Žádna kniha v zozname.</div>
         {% endfor %}
       </div>
     </div>
 
     <!-- Šípka doprava -->
     {% if profile.favouritelist.count > 5 %}
-  <div onclick="scrollFavourites(1)"
-       style="font-size: 30px; user-select: none; cursor: pointer;">
-    ➤
-  </div>
-{% endif %}
+    <div onclick="scrollFavourites(1)" style="font-size: 30px; user-select: none; cursor: pointer; color: #444;">
+      ➤
+    </div>
+    {% endif %}
 
   </div>
 </div>
 
+ </div>
 <!-- JavaScript -->
 <script>
   function scrollWatchlist(direction) {
