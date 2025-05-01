@@ -232,6 +232,11 @@ def book(request, pk):
 
     book_ = Book.objects.get(id=pk)
 
+    comments = book_.comments.select_related('commenter__user').all()
+
+    for comment in comments:
+        comment.is_partner = comment.commenter.user.groups.filter(name='Partners').exists()
+
     if request.method == 'POST':
         rating = request.POST.get('rating')
         user_comment = request.POST.get('user_comment')
@@ -318,6 +323,7 @@ def book(request, pk):
         'format_e': format_e,
         'format_vazana': format_vazana,
         'author_string': autor_string,
+        'comments': comments,
     }
 
     return render(request, 'book.html', context)

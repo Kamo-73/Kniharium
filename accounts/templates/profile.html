@@ -22,6 +22,23 @@
             max-width: 1300px;">
 
 
+  <!-- tlacidla -->
+{% if request.user == profile.user %}
+<div style="text-align: right;">
+    <a href="{% url 'profile_update' profile.user.id %}">
+        <button style="padding: 8px 16px; border-radius: 5px; background-color: black; color: white; border: none;">
+            Upraviť profil
+        </button>
+    </a>
+
+    <a href="{% url 'profile_delete' profile.user.id %}">
+        <button style="padding: 8px 16px; background-color: red; color: white; border: none; border-radius: 5px;">
+            Odstrániť profil
+        </button>
+    </a>
+</div>
+{% endif %}
+
 <div style="background-color: #fcfcfc;
             font-family: 'Segoe UI', sans-serif;
             max-width: 500px;
@@ -31,10 +48,20 @@
             overflow: hidden;">
 
   <!-- Hlavička -->
-  <div style="background: linear-gradient(to right, #4a4a4a, #1c1c1c);
+<div style="background: linear-gradient(to right, #4a4a4a, #1c1c1c);
             color: white;
             padding: 20px;
-            text-align: center;">
+            text-align: center;
+            position: relative;">  <!-- dôležité pre umiestnenie badge -->
+
+  <!-- Badge v ľavom hornom rohu -->
+  {% if is_partner %}
+    <div style="position: absolute; top: 20px; left: 20px; background-color: #2ecc71; color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px;">
+      🏅 Badge of Partners
+    </div>
+  {% endif %}
+
+  <!-- Ikona + meno + username zarovnané na stred -->
   <div style="font-size: 40px;">👤</div>
   <h2 style="margin: 10px 0 0 0;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
   <p style="margin: 5px 0 0 0; font-size: 14px;">@{{ profile.user.username }}</p>

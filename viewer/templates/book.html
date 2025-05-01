@@ -225,14 +225,23 @@
     {% endif %}
 
 
-   {% for comment in book.comments.all %}
+  {% for comment in comments %}
     <div style="width: 80%; border: 1px solid #ccc; border-radius: 15px; padding: 10px 15px; margin: 15px auto; font-family: sans-serif;">
 
-        <!-- Horný riadok: meno, hodnotenie -->
-        <div style="display: flex; align-items: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; margin-bottom: 8px;">
-            <div style="font-weight: bold; margin-right: 10px;">
+        <!-- Horný riadok: meno, badge, hodnotenie -->
+        <div style="display: flex; align-items: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; margin-bottom: 8px; flex-wrap: wrap; gap: 10px;">
+
+            <!-- Meno a badge -->
+            <div style="display: flex; align-items: center; font-weight: bold; margin-right: 10px; gap: 8px;">
                 {{ comment.commenter }}
+                {% if comment.is_partner %}
+                    <span style="background-color: #2ecc71; color: white; padding: 2px 6px; border-radius: 10px; font-size: 0.8em;">
+                        🏅 Badge of Partners
+                    </span>
+                {% endif %}
             </div>
+
+            <!-- Hodnotenie -->
             <div style="white-space: nowrap;">
                 Hodnocení:
                 <span style="color: black;">
@@ -243,9 +252,10 @@
                             ☆
                         {% endif %}
                     {% endfor %}
-                {% if request.user == comment.commenter.user %}
-                    <a href="{% url 'comment_delete' comment.id %}">Smazat</a>
-                {% endif %}
+
+                    {% if request.user == comment.commenter.user %}
+                        <a href="{% url 'comment_delete' comment.id %}" style="margin-left: 10px; font-size: 0.9em;">Smazat</a>
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -261,7 +271,7 @@
         </div>
     </div>
 {% empty %}
-    Tuto knihu zatím nikdo nehodnotil.
+    <p style="text-align: center; font-style: italic;">Tuto knihu zatím nikdo nehodnotil.</p>
 {% endfor %}
 
 {% if request.user.is_authenticated %}

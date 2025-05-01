@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from accounts.views import SubmittableLoginView, user_logout, SignUpView, ProfileDetailView
+from accounts.views import SubmittableLoginView, user_logout, SignUpView, ProfileDetailView, ProfileUpdateView, \
+    ProfileDeleteView
 from api.views import Books, BookDetail, Authors, AuthorDetail, Publishers
 from viewer.views import *
 
@@ -55,6 +56,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path('profile/<int:pk>/', ProfileDetailView.as_view(), name='profile'),
+    path('<int:pk>/update/', ProfileUpdateView.as_view(), name='profile_update'),
+    path('<int:pk>/delete/', ProfileDeleteView.as_view(), name='profile_delete'),
 
     path('comment/delete/<int:pk>/', CommentDeleteView.as_view(), name='comment_delete'),
 

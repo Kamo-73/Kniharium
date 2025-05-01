@@ -1,8 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.transaction import atomic
 from django.forms import CharField, PasswordInput, DateField, NumberInput, \
-    Textarea
+    Textarea, ModelForm, DateInput
 
 from accounts.models import Profile
 
@@ -74,3 +75,29 @@ class SignUpForm(UserCreationForm):
         if password1 != password2:
             raise ValidationError("The two password fields didn't match.")
         return cleaned_data
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        labels = {
+            'username': 'Uživatelské jméno',
+            'first_name': 'Jméno',
+            'last_name': 'Příjmení',
+            'email': 'E-mail',
+        }
+
+
+class ProfileModelForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['date_of_birth', 'biography', 'phone']
+        labels = {
+            'date_of_birth': 'Datum narození',
+            'biography': 'Biografie',
+            'phone': 'Telefonní číslo',
+        }
+        widgets = {
+            'date_of_birth': DateInput(attrs={'type': 'date'}),
+            'biography': Textarea(attrs={'rows': 4}),
+        }
