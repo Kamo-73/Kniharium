@@ -5,43 +5,293 @@
 {% endblock %}
 
 {% block left_sidebar %}
-    <p>Tu je left sidebar…</p>
+
 {% endblock %}
 
 {% block content %}
-    <h1>Profil uživatele {{ profile.user.username }}</h1>
+<h1 style="text-align: center; font-size: 32px; margin-top: 30px;">Váš profil</h1>
 
-    <p><strong>Jméno:</strong> {{ profile.user.first_name }}</p>
-    <p><strong>Příjmení:</strong> {{ profile.user.last_name }}</p>
-    <p><strong>Watchlist:</strong>
-    <ul>
-        {% for book in profile.watchlist.all %}
-            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
+<div style="background-color: #f4f4f4; text-align: center; font-size: 18px; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 500px; margin-left: auto; margin-right: auto;">
+
+  <div style="margin-bottom: 10px;">
+    <strong>Uživatelské meno:</strong> {{ profile.user.username }}
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <strong>Meno:</strong> {{ profile.user.first_name }}
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <strong>Priezvisko:</strong> {{ profile.user.last_name }}
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <strong>E-mail:</strong> {{ profile.user.email }}
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <strong>Naposledy online:</strong> {{ profile.user.last_login|date:"d.m.Y H:i" }}
+  </div>
+
+  <div>
+    <strong>Bio:</strong><br>
+    {{ profile.biography }}
+  </div>
+
+</div>
+
+
+
+      <!-- watchlist -->
+
+        <!-- 👀 Emoji + text -->
+   <div style="text-align: center; font-size: 30px; margin-top: 40px; margin-bottom: 10px;">
+        👀 Knihy vo watchliste:
+   </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="display: flex; align-items: center;">
+
+
+    <!-- Šípka doľava -->
+    {% if profile.watchlist.count > 5 %}
+    <div onclick="scrollWatchlist(-1)" style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
+        ➤
+    </div>
+    {% endif %}
+
+    <!-- Viditeľný box na 5 kníh -->
+    <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
+    <div id="watchlist-slider" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+            {% if profile.watchlist.count <= 5 %} justify-content: center; {% endif %}">
+            <style>
+                #watchlist-slider::-webkit-scrollbar {
+                display: none;
+                }
+            </style>
+
+            {% for b in profile.watchlist.all %}
+            <div style="text-align:center; flex: 0 0 auto;">
+
+            <a href="{% url 'book' b.pk %}">
+              {% if b.image and b.image.name %}
+                {% if "http" in b.image.name %}
+                  <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% else %}
+                  <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% endif %}
+              {% else %}
+                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                  </div>
+                </div>
+              {% endif %}
+            </a>
+
+            <p style="margin: 5px 0 0 0;">
+              <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
+                {{ b.title_cz }}
+              </a>
+            </p>
+
+          </div>
         {% empty %}
-            Žádná kniha v seznamu.
+          <div>Žádná kniha v seznamu.</div>
         {% endfor %}
-    </ul>
-    </p>
-    <p><strong>Seznam přečtených:</strong>
-    <ul>
+
+      </div>
+    </div>
+
+    <!-- Šípka doprava -->
+ {% if profile.watchlist.count > 5 %}
+  <div onclick="scrollWatchlist(1)" style="font-size: 30px; user-select: none; cursor: pointer;">
+    ➤
+  </div>
+{% endif %}
+
+  </div>
+</div>
+
+
+<!-- prečítané knihy -->
+
+<!-- 📖 Emoji + text -->
+<div style="text-align: center; font-size: 30px; margin-top: 60px; margin-bottom: 10px;">
+  📖 Prečítané knihy:
+</div>
+
+    <div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="display: flex; align-items: center;">
+
+    <!-- Šípka doľava -->
+    {% if profile.readlist.count > 5 %}
+    <div onclick="scrollReadlist(-1)" style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
+        ➤
+    </div>
+    {% endif %}
+
+    <!-- Viditeľný box na 5 kníh -->
+    <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
+      <div id="readlist-slider" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+      {% if profile.readlist.count <= 5 %} justify-content: center; {% endif %}">
+          <style>
+            #readlist-slider::-webkit-scrollbar {
+            display: none;
+            }
+          </style>
+
         {% for book in profile.readlist.all %}
-            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
+          <div style="text-align:center; flex: 0 0 auto;">
+
+            <a href="{% url 'book' book.pk %}">
+              {% if book.image and book.image.name %}
+                {% if "http" in book.image.name %}
+                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% else %}
+                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% endif %}
+              {% else %}
+                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                  </div>
+                </div>
+      {% endif %}
+            </a>
+
+            <p style="margin: 5px 0 0 0;">
+              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
+                {{ book.title_cz }}
+              </a>
+            </p>
+
+          </div>
         {% empty %}
-            Žádná kniha v seznamu.
+          <div>Žádná kniha v seznamu.</div>
         {% endfor %}
-    </ul>
-    </p>
-    <p><strong>Seznam oblíbených:</strong>
-    <ul>
+      </div>
+    </div>
+
+    <!-- Šípka doprava -->
+ {% if profile.readlist.count > 5 %}
+  <div onclick="scrollReadlist(1)"
+       style="font-size: 30px; user-select: none; cursor: pointer;">
+    ➤
+  </div>
+{% endif %}
+
+  </div>
+</div>
+
+
+ <!-- obľúbené knihy -->
+
+<!-- ❤️ Emoji + text -->
+<div style="text-align: center; font-size: 30px; margin-top: 60px; margin-bottom: 10px;">
+  ❤️ Obľúbené knihy:
+</div>
+
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+  <div style="display: flex; align-items: center;">
+
+    <!-- Šípka doľava -->
+   {% if profile.favouritelist.count > 5 %}
+  <div onclick="scrollFavourites(-1)"
+       style="font-size: 30px; user-select: none; cursor: pointer; transform: rotate(180deg);">
+    ➤
+  </div>
+{% endif %}
+    <!-- Viditeľný box na 5 kníh -->
+    <div style="width: 1000px; overflow: hidden; margin-left: 20px; margin-right: 20px;">
+      <div id="favouritelist-slider"
+     style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none;
+     {% if profile.favouritelist.count <= 5 %} justify-content: center; {% endif %}">
+          <style>
+          #favouritelist-slider::-webkit-scrollbar {
+            display: none;
+          }
+        </style>
+
         {% for book in profile.favouritelist.all %}
-            <li><a href="{% url 'book' book.id %}">{{ book.title_orig }}</a></li>
+          <div style="text-align:center; flex: 0 0 auto;">
+
+            <a href="{% url 'book' book.pk %}">
+              {% if book.image and book.image.name %}
+                {% if "http" in book.image.name %}
+                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% else %}
+                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                {% endif %}
+              {% else %}
+                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                  </div>
+                </div>
+              {% endif %}
+            </a>
+
+            <p style="margin: 5px 0 0 0;">
+              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
+                {{ book.title_cz }}
+              </a>
+            </p>
+
+          </div>
         {% empty %}
-            Žádná kniha v seznamu.
+          <div>Žádná kniha v seznamu.</div>
         {% endfor %}
-    </ul>
-    </p>
+      </div>
+    </div>
+
+    <!-- Šípka doprava -->
+    {% if profile.favouritelist.count > 5 %}
+  <div onclick="scrollFavourites(1)"
+       style="font-size: 30px; user-select: none; cursor: pointer;">
+    ➤
+  </div>
+{% endif %}
+
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  function scrollWatchlist(direction) {
+    const slider = document.getElementById('watchlist-slider');
+    const scrollAmount = 1000; // 5 kníh * 200px
+    slider.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+
+<script>
+  function scrollReadlist(direction) {
+    const slider = document.getElementById('readlist-slider');
+    const scrollAmount = 1000;
+    slider.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+
+<script>
+  function scrollFavourites(direction) {
+    const slider = document.getElementById('favouritelist-slider');
+    const scrollAmount = 1000;
+    slider.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+
 {% endblock %}
 
 {% block right_sidebar %}
-    <p>Tu je right sidebar</p>
+
 {% endblock %}
