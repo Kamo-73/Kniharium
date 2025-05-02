@@ -1,18 +1,18 @@
 import requests
 from urllib.parse import quote
 
-def ziskaj_url_obrazka(nazov_knihy):
-    query = quote(nazov_knihy)
+def get_cover_url(book_title):
+    query = quote(book_title)
     url = f"https://openlibrary.org/search.json?title={query}"
     response = requests.get(url)
 
     if response.status_code != 200:
-        print("❌ Nepodarilo sa získať údaje z OpenLibrary.")
+        print("❌ Nepodařilo se získat údaje z OpenLibrary.")
         return None
 
     data = response.json()
     if "docs" not in data or not data["docs"]:
-        print("❌ Kniha nebola nájdená.")
+        print("❌ Kniha nebyla nalezena.")
         return None
 
     doc = data["docs"][0]
@@ -22,5 +22,9 @@ def ziskaj_url_obrazka(nazov_knihy):
         print(f"🖼️ URL obálky: {image_url}")
         return image_url
     else:
-        print("⚠️ Obálka nebola nájdená.")
+        print("⚠️ Obálka nebyla nalezena.")
         return None
+
+if __name__ == "__main__":
+    book_title = input("Zadej název knihy: ")
+    get_cover_url(book_title)
