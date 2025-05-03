@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from viewer.models import *
 
+
+# Test line for test commit
+
+
 admin.site.register(Genre)
 admin.site.register(Nationality)
 admin.site.register(Author)
