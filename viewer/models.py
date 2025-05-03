@@ -1,11 +1,13 @@
 from django.db import models
 
 from django.db.models import Model, CharField, DateField, TextField, ForeignKey, SET_NULL, DateTimeField, ImageField, \
-    URLField, ManyToManyField, IntegerField
+    URLField, ManyToManyField, IntegerField, CASCADE
+
+from accounts.models import Profile
 
 
 class Genre(Model):
-    name = CharField(max_length=32, null=False, blank=False, unique=True)
+    name = CharField(max_length=100, null=False, blank=False, unique=True)
 
     class Meta:
         ordering = ['name']
@@ -71,8 +73,8 @@ class Publisher(Model):
     name = CharField(max_length=150, null=False, blank=False, unique=True)
     information = TextField(null=True, blank=True)
     link = URLField(max_length=200, null=True, blank=True, unique=True)
-    date_of_establishment = DateField(null=True, blank=True)
-    date_of_dissolution = DateField(null=True, blank=True)
+    year_of_establishment = IntegerField(null=True, blank=True)
+    year_of_dissolution = IntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -94,21 +96,27 @@ class Book(Model):
     genre = ManyToManyField(Genre, blank=False, related_name='books')
     rating_ours = IntegerField(null=True, blank=True)
     review = TextField(null=True, blank=True)
-    publishing_date = DateField(null=True, blank=True)
+    year_of_publishing = IntegerField(null=True, blank=True)
     time_of_reading = IntegerField(null=True, blank=True)
     format = ManyToManyField(Format, blank=False, related_name='books')
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
+    in_watchlist = ManyToManyField(Profile, blank=True, related_name='watchlist')
+    read_list = ManyToManyField(Profile, blank=True, related_name='readlist')
+    favourite_list = ManyToManyField(Profile, blank=True, related_name='favouritelist')
+
     image = ImageField(upload_to='images/', default=None, null=True, blank=True)
 
     class Meta:
-        ordering = ['title_cz', 'title_orig', 'publishing_date']
+        ordering = ['title_cz', 'title_orig', 'year_of_publishing']
 
     def __repr__(self):
-        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, author={self.author}, publishing_date={self.publishing_date})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        return f"Book(title_cz={self.title_cz}, title_orig={self.title_orig}, authors={authors}, year_of_publishing={self.year_of_publishing})"
 
     def __str__(self):
-        return f"{self.title_cz} ({self.author})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        return f"{self.title_cz} ({authors})"
 
 
 class Award(Model):
@@ -121,13 +129,33 @@ class Award(Model):
         ordering = ['name', 'year']
 
     def __repr__(self):
-        return f"Book(name={self.name}, year={self.year})"
+        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
+        books = ", ".join([f"{book.title_cz}" for book in self.book.all()])
+        return f"{self.name} ({books} {authors})"
 
     def __str__(self):
         return f"{self.name}"
 
 
+class Comment(Model):
+    book = ForeignKey(Book, on_delete=CASCADE, null=False, blank=False, related_name='comments')
+    commenter = ForeignKey(Profile, on_delete=SET_NULL, null=True, blank=False, related_name='comments')
+    rating = IntegerField(null=True, blank=True)
+    user_comment = TextField(null=True, blank=True)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-updated']
+
+    def __repr__(self):
+        return (f"Comment(book={self.book}, "
+                f"commenter={self.commenter}, "
+                f"rating={self.rating},"
+                f"user_comment={self.user_comment[:20]})")
+
+    def __str__(self):
+        return f"{self.commenter}: {self.book} ({self.rating})"
 
 
 

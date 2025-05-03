@@ -2,3 +2,6 @@
 /.env
 /db.sqlite3
 /viewer/migrations/
+
+/api/migrations/
+/accounts/migrations/
