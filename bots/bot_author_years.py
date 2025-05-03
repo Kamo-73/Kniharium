@@ -2,9 +2,8 @@ import requests
 from urllib.parse import quote
 import random
 
-
-def ziskaj_wikidata_id(meno_autora):
-    query = quote(meno_autora)
+def get_wikidata_id(author_name):
+    query = quote(author_name)
     url = f"https://en.wikipedia.org/w/api.php?action=query&format=json&titles={query}&prop=pageprops"
     response = requests.get(url)
     if response.status_code != 200:
@@ -15,8 +14,7 @@ def ziskaj_wikidata_id(meno_autora):
         return page.get("pageprops", {}).get("wikibase_item")
     return None
 
-
-def ziskaj_datum_narodenia(wikidata_id):
+def get_birth_date(wikidata_id):
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{wikidata_id}.json"
     response = requests.get(url)
     if response.status_code != 200:
@@ -29,24 +27,22 @@ def ziskaj_datum_narodenia(wikidata_id):
         return time_str.lstrip('+').split('T')[0]
     return None
 
-
-def zobraz_rok_narodenia_autora(meno, priezvisko):
-    cele_meno = f"{meno} {priezvisko}"
-    wikidata_id = ziskaj_wikidata_id(cele_meno)
+def display_author_birth_year(first_name, last_name):
+    full_name = f"{first_name} {last_name}"
+    wikidata_id = get_wikidata_id(full_name)
     if not wikidata_id:
-        print("❌ Wikidata ID sa nepodarilo získať.")
+        print("❌ Wikidata ID se nepodařilo získat.")
         return
 
-    narodenie = ziskaj_datum_narodenia(wikidata_id)
+    birth_date = get_birth_date(wikidata_id)
 
-    if narodenie:
-        print(f"🎂 Dátum narodenia: {narodenie}")
+    if birth_date:
+        print(f"🎂 Datum narození: {birth_date}")
     else:
-        fallback_rok = random.randint(1969, 2000)
-        print(f"🎂 Dátum narodenia neznámy – vygenerovaný: {fallback_rok}-01-01")
-
+        fallback_year = random.randint(1969, 2000)
+        print(f"🎂 Datum narození neznámý – vygenerovaný: {fallback_year}-01-01")
 
 if __name__ == "__main__":
-    meno = input("Zadaj meno autora: ")
-    priezvisko = input("Zadaj priezvisko autora: ")
-    zobraz_rok_narodenia_autora(meno, priezvisko)
+    first_name = input("Zadej jméno autora: ")
+    last_name = input("Zadej příjmení autora: ")
+    display_author_birth_year(first_name, last_name)

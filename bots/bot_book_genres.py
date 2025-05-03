@@ -1,11 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote
+import random
+
+import os, sys, django
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kniharium.settings")
+django.setup()
+
 from viewer.models import Genre
 from django.db import transaction
 
 # Mapa anglických žánrov na české
-PREKLAD_ZANROV = {
+GENRE_TRANSLATION = {
     "Fiction": "Beletria",
     "Nonfiction": "Literatura faktu",
     "Romance": "Romantika",
@@ -95,61 +102,60 @@ PREKLAD_ZANROV = {
     "Literary Criticism": "Literární kritika"
 }
 
-def ziskaj_subjects_openlibrary(nazov_knihy):
-    query = quote(nazov_knihy)
+def get_subjects_from_openlibrary(book_title):
+    query = quote(book_title)
     search_url = f"https://openlibrary.org/search?q={query}"
     response = requests.get(search_url)
     if response.status_code != 200:
-        print("❌ Nepodarilo sa získať výsledky vyhľadávania.")
+        print("❌ Nepodařilo se získat výsledky vyhledávání.")
         return []
 
     soup = BeautifulSoup(response.text, "html.parser")
-    prvy_odkaz = soup.select_one("li.searchResultItem a")
-    if not prvy_odkaz:
-        print("❌ Kniha nebola nájdená.")
+    first_link = soup.select_one("li.searchResultItem a")
+    if not first_link:
+        print("❌ Kniha nebyla nalezena.")
         return []
 
-    detail_url = "https://openlibrary.org" + prvy_odkaz['href']
+    detail_url = "https://openlibrary.org" + first_link['href']
     detail_response = requests.get(detail_url)
     if detail_response.status_code != 200:
-        print("❌ Nepodarilo sa načítať stránku knihy.")
+        print("❌ Nepodařilo se načíst stránku knihy.")
         return []
 
     soup = BeautifulSoup(detail_response.text, "html.parser")
     subject_box = soup.select_one("div.link-box span.clamp")
     if not subject_box:
-        print("⚠️ Subjekty neboli nájdené.")
+        print("⚠️ Žánry nebyly nalezeny.")
         return []
 
     tags = subject_box.select("a")
     subjects = [tag.get_text(strip=True) for tag in tags]
     return subjects
 
-def ziskaj_zanre(nazov_knihy):
-    subjects = ziskaj_subjects_openlibrary(nazov_knihy)
-    zhody = []
+def get_genres(book_title):
+    subjects = get_subjects_from_openlibrary(book_title)
+    matches = []
 
-    for s in subjects:
-        for en, cz in PREKLAD_ZANROV.items():
-            if en.lower() in s.lower():
-                zhody.append(cz)
+    for subject in subjects:
+        for en, cz in GENRE_TRANSLATION.items():
+            if en.lower() in subject.lower():
+                matches.append(cz)
                 break
 
-    zhody = list(set(zhody))
-    return zhody
+    return list(set(matches))
 
 @transaction.atomic
-def uloz_zanre_do_databazy(nazov_knihy):
-    zhody = ziskaj_zanre(nazov_knihy)
-    if not zhody:
-        print("❌ Nenašli sa žiadne známe žánre.")
-        return []
+def save_genres_to_database(book_title):
+    matches = get_genres(book_title)
 
-    print(f"\n✅ Pridávam žánre do DB pre knihu '{nazov_knihy}':")
-    for zaner in zhody:
-        obj, created = Genre.objects.get_or_create(name=zaner)
-        if created:
-            print(f"  ➕ Pridaný žáner: {zaner}")
-        else:
-            print(f"  ✔️ Už existuje: {zaner}")
-    return zhody
+    if matches:
+        for genre in matches:
+            Genre.objects.get_or_create(name=genre)
+        return matches
+
+    # Fallback, ak sa nič nenašlo
+    fallback_genres = random.sample(list(GENRE_TRANSLATION.values()), 3)
+    print(f"⚠️ Nebyly nalezeny žádné žánry – použit fallback: {', '.join(fallback_genres)}")
+    for genre in fallback_genres:
+        Genre.objects.get_or_create(name=genre)
+    return fallback_genres

@@ -3,7 +3,7 @@ import random
 from urllib.parse import quote
 
 # 🔁 Fallback popisy – použijú sa, ak sa nenašiel alebo bol slabý originálny popis
-FALLBACK_POPISY = [
+FALLBACK_DESCRIPTIONS = [
     "Tato kniha je jako tiché posezení v zapadlém knihkupectví, kde voní starý papír a čas plyne pomaleji. Nabízí nenápadný, ale hluboký příběh, který se pomalu rozvíjí jako květina v prvním jarním slunci. Ideální pro chvíle, kdy potřebujete na chvíli vypnout a znovu se zamilovat do světa slov.",
     "Tahle kniha si na nic nehraje – prostě si vás získá. Možná nenápadně, ale o to vytrvaleji. Každá stránka dýchá atmosférou, která vás obejme jako starý známý.",
     "Tato kniha je jako tajný deník, který někdo zanechal ve staré zásuvce. Každé otočení stránky je jako objev nového zákoutí lidské duše. Čtení, které nenutí běžet, ale kráčet.",
@@ -46,22 +46,22 @@ FALLBACK_POPISY = [
     "Je to kniha, kterou si nepamatujete po kapitolách, ale po pocitech. Po náladách, které ve vás vyvolala. Po momentech, kdy jste se přistihli, že na chvíli zapomněli, kde jste. Nečeká na váš obdiv – jen na vaši pozornost. A kdo ji dá, dostane víc, než by čekal."
 ]
 
-def preloz_do_cestiny(text):
+def translate_to_czech(text):
     try:
-        casti = [text[i:i+500] for i in range(0, len(text), 500)]
-        prelozene_casti = []
-        for cast in casti:
-            resp = requests.get(f"https://api.mymemory.translated.net/get?q={quote(cast)}&langpair=en|cs")
+        parts = [text[i:i+500] for i in range(0, len(text), 500)]
+        translated_parts = []
+        for part in parts:
+            resp = requests.get(f"https://api.mymemory.translated.net/get?q={quote(part)}&langpair=en|cs")
             data = resp.json()
-            preklad = data['responseData']['translatedText']
-            prelozene_casti.append(preklad)
-        spojeny_text = " ".join(prelozene_casti)
-        return spojeny_text.replace("\n", " ").strip()
+            translation = data['responseData']['translatedText']
+            translated_parts.append(translation)
+        joined = " ".join(translated_parts)
+        return joined.replace("\n", " ").strip()
     except:
         return text.replace("\n", " ").strip()
 
-def ziskaj_work_key(nazov_knihy):
-    query = quote(nazov_knihy)
+def get_work_key(book_title):
+    query = quote(book_title)
     url = f"https://openlibrary.org/search.json?title={query}"
     response = requests.get(url)
     if response.status_code != 200:
@@ -71,7 +71,7 @@ def ziskaj_work_key(nazov_knihy):
         return None
     return data["docs"][0].get("key")
 
-def ziskaj_popis_z_openlibrary(work_key):
+def get_description_from_openlibrary(work_key):
     url = f"https://openlibrary.org{work_key}.json"
     response = requests.get(url)
     if response.status_code != 200:
@@ -82,28 +82,29 @@ def ziskaj_popis_z_openlibrary(work_key):
         return desc.get("value")
     return desc
 
-def ziskaj_a_preloz_popis(nazov_knihy):
-    work_key = ziskaj_work_key(nazov_knihy)
+def get_and_translate_description(book_title):
+    work_key = get_work_key(book_title)
     if not work_key:
-        fallback = random.choice(FALLBACK_POPISY)
-        print(f"⚠️ Neúspešné vyhľadanie – použitý fallback popis.")
+        fallback = random.choice(FALLBACK_DESCRIPTIONS)
+        print("⚠️ Neúspěšné vyhledání – použitý fallback popis.")
         return fallback
 
-    popis_en = ziskaj_popis_z_openlibrary(work_key)
-    if not popis_en:
-        fallback = random.choice(FALLBACK_POPISY)
-        print(f"⚠️ Popis nenájdený – použitý fallback popis.")
+    description_en = get_description_from_openlibrary(work_key)
+    if not description_en:
+        fallback = random.choice(FALLBACK_DESCRIPTIONS)
+        print("⚠️ Popis nenalezen – použitý fallback popis.")
         return fallback
 
-    popis_cs = preloz_do_cestiny(popis_en)
+    description_cz = translate_to_czech(description_en)
 
-    if (
-        len(popis_cs) < 50 or
-        "MYMEMORY WARNING" in popis_cs.upper()
-    ):
-        fallback = random.choice(FALLBACK_POPISY)
-        print(f"⚠️ Popis je chybný alebo príliš krátky – použitý fallback popis.")
+    if len(description_cz) < 50 or "MYMEMORY WARNING" in description_cz.upper():
+        fallback = random.choice(FALLBACK_DESCRIPTIONS)
+        print("⚠️ Popis je chybný nebo příliš krátký – použitý fallback popis.")
         return fallback
 
-    print(f"📖 Preložený popis pre '{nazov_knihy}':\n{popis_cs}")
-    return popis_cs
+    print(f"📖 Přeložený popis pro '{book_title}':\n{description_cz}")
+    return description_cz
+
+if __name__ == "__main__":
+    book_title = input("Zadej název knihy: ")
+    get_and_translate_description(book_title)

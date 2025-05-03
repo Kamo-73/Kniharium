@@ -2,8 +2,8 @@ import requests
 import random
 from urllib.parse import quote
 
-# ✅ Zoznam českých národností z databázy
-CESKE_NARODNOSTI = [
+# ✅ Česká národnosť – zoznam
+CZECH_NATIONALITIES = [
     "Americká", "Anglická", "Argentinská", "Australská", "Belgická", "Brazilská", "Britská",
     "Dánská", "Egyptská", "Finská", "Francouzská", "Indická", "Irská", "Italská", "Izraelská",
     "Japonská", "Kanadská", "Korejská", "Kubánská", "Maďarská", "Mexická", "Nizozemská",
@@ -12,8 +12,8 @@ CESKE_NARODNOSTI = [
     "Rakouská"
 ]
 
-# 🔤 Mapa anglických národností na české
-MAPA_NARODNOSTI = {
+# 🔤 Preklad anglických národností na české
+NATIONALITY_MAP = {
     "United States of America": "Americká", "United States": "Americká", "USA": "Americká", "US": "Americká", "American": "Americká",
     "England": "Anglická", "English": "Anglická", "United Kingdom": "Britská", "Great Britain": "Britská", "British": "Britská",
     "Argentina": "Argentinská", "Argentine": "Argentinská", "Australia": "Australská", "Australian": "Australská",
@@ -37,11 +37,11 @@ MAPA_NARODNOSTI = {
     "Czechoslovakia": "Česká", "Cisleithania": "Rakouská"
 }
 
-def preloz_narodnost_do_cestiny(anglicka):
-    return MAPA_NARODNOSTI.get(anglicka.strip(), None)
+def translate_nationality_to_czech(english):
+    return NATIONALITY_MAP.get(english.strip(), None)
 
-def ziskaj_wikidata_id(meno_autora):
-    query = quote(meno_autora)
+def get_wikidata_id(author_name):
+    query = quote(author_name)
     url = f"https://en.wikipedia.org/w/api.php?action=query&format=json&titles={query}&prop=pageprops"
     response = requests.get(url)
     if response.status_code != 200:
@@ -52,14 +52,14 @@ def ziskaj_wikidata_id(meno_autora):
         return page.get("pageprops", {}).get("wikibase_item")
     return None
 
-def ziskaj_narodnosti_z_wikidata(wikidata_id):
+def get_nationalities_from_wikidata(wikidata_id):
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{wikidata_id}.json"
     response = requests.get(url)
     if response.status_code != 200:
         return []
     data = response.json()
     claims = data['entities'][wikidata_id].get('claims', {})
-    narodnosti = []
+    nationalities = []
     if 'P27' in claims:
         for item in claims['P27']:
             qid = item['mainsnak']['datavalue']['value']['id']
@@ -67,30 +67,30 @@ def ziskaj_narodnosti_z_wikidata(wikidata_id):
             detail_resp = requests.get(detail_url)
             if detail_resp.status_code == 200:
                 label_data = detail_resp.json()
-                en_nazov = label_data['entities'][qid]['labels'].get('en', {}).get('value')
-                if en_nazov:
-                    narodnosti.append(en_nazov)
-    return narodnosti
+                en_name = label_data['entities'][qid]['labels'].get('en', {}).get('value')
+                if en_name:
+                    nationalities.append(en_name)
+    return nationalities
 
-def zisti_narodnost_autora(meno, priezvisko):
-    cele_meno = f"{meno} {priezvisko}"
-    wikidata_id = ziskaj_wikidata_id(cele_meno)
+def detect_author_nationality(first_name, last_name):
+    full_name = f"{first_name} {last_name}"
+    wikidata_id = get_wikidata_id(full_name)
     if not wikidata_id:
-        print("❌ Wikidata ID sa nepodarilo získať.")
+        print("❌ Wikidata ID se nepodařilo získat.")
         return
 
-    narodnosti_en = ziskaj_narodnosti_z_wikidata(wikidata_id)
+    nationalities_en = get_nationalities_from_wikidata(wikidata_id)
 
-    for en_narodnost in narodnosti_en:
-        cz_narodnost = preloz_narodnost_do_cestiny(en_narodnost)
-        if cz_narodnost:
-            print(f"🌍 Národnosť: {cz_narodnost}")
+    for en_nationality in nationalities_en:
+        cz_nationality = translate_nationality_to_czech(en_nationality)
+        if cz_nationality:
+            print(f"🌍 Národnost: {cz_nationality}")
             return
 
-    nahodna = random.choice(CESKE_NARODNOSTI)
-    print(f"🌍 Národnosť (náhodná): {nahodna}")
+    fallback = random.choice(CZECH_NATIONALITIES)
+    print(f"🌍 Národnost (náhodná): {fallback}")
 
 if __name__ == "__main__":
-    meno = input("Zadaj meno autora: ")
-    priezvisko = input("Zadaj priezvisko autora: ")
-    zisti_narodnost_autora(meno, priezvisko)
+    first_name = input("Zadej jméno autora: ")
+    last_name = input("Zadej příjmení autora: ")
+    detect_author_nationality(first_name, last_name)

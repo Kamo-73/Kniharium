@@ -3,7 +3,7 @@ import random
 from urllib.parse import quote
 
 # 🔁 Fallback biografie – muži
-FALLBACK_BIO_MUZ = [
+FALLBACK_BIO_MALE = [
     "Autor začal písať už v desiatich rokoch, keď vznikli prvé básne inšpirované prírodou a rodinným prostredím, v ktorom vyrastal. Básnické obrazy sa často viazali na zmeny ročných období a melancholickú atmosféru jesene, ktorá sa neskôr stala aj symbolickým rámcom mnohých próz. Postupne sa jeho tvorba prirodzene presunula k písaniu príbehov, no poézia nikdy úplne nezmizla – ostala prítomná v jazyku, rytme aj v symbolike. V mladosti ho výrazne ovplyvnil Stephen King, čo sa odrazilo na temnejších prvkoch v niektorých poviedkach a románoch. Fascinácia strachom, vnútorným napätím a nevysvetliteľnými javmi pretrváva dodnes. Autor verí, že najlepší príbeh je ten, ktorý sa dotkne niečoho osobného, aj keď ho čítateľ zažije v úplne inom svete.",
     "Literárna cesta autora sa začala počas dlhých letných prázdnin na dedine, kde prístup k technológiám bol minimálny a knihy nahrádzali televíziu aj internet. V tom tichu a spomalenom čase vznikla potreba tvoriť – najprv formou denníkov, neskôr ako eseje plné otázok o identite, spoločnosti a zmysle bytia. Tie sa neskôr premenili na psychologické romány, v ktorých sa čitateľ ponára do vnútorného sveta postáv – ich myšlienok, pochybností, spomienok. Témy ako strata, čas, ticho, izolácia či návrat domov sú pre autora charakteristické. Silný vplyv má aj klasická literatúra – najmä Dostojevskij a Kafka – no autor si vybudoval vlastný štýl, ktorý sa vyznačuje introspektívnym tónom a presnosťou výrazu.",
     "Autor sa dlhé roky venoval divadlu a filmovej tvorbe, pričom pôsobil ako dramaturg aj scenárista. Práca s dramatickou štruktúrou a vizuálnym vyjadrovaním sa výrazne odrazila v jeho knihách – dialógy sú živé, dej má napätie a mnohé scény sa čitateľovi doslova premietajú pred očami. Literatúru objavil ako prostriedok, kde môže naplno vyjadriť myšlienky bez produkčných obmedzení. Jeho tvorba často balansuje medzi realitou a snovým svetom – autor verí, že skutočný príbeh sa odohráva medzi tým, čo postavy hovoria, a tým, čo prežívajú. Hoci má za sebou aj experimentálne texty, vždy kladie dôraz na emocionálnu pravdivosť a vnútornú logiku príbehu.",
@@ -17,7 +17,7 @@ FALLBACK_BIO_MUZ = [
 ]
 
 # 🔁 Fallback biografie – ženy
-FALLBACK_BIO_ZENA = [
+FALLBACK_BIO_FEMALE  = [
     "Autorka začala písať už ako dieťa, keď si vymýšľala príbehy pre svoje bábiky a zapisovala ich do školských zošitov. V desiatich rokoch napísala svoju prvú báseň a odvtedy nikdy neprestala tvoriť. Láska k slovu ju sprevádzala počas celého dospievania, no k písaniu sa vrátila naplno až po štúdiách. Jej tvorbu ovplyvnili viacerí autori, najmä Stephen King, vďaka ktorému sa nevyhýba temnejším témam ani psychologickému napätiu. V jej príbehoch sa stretáva každodennosť so záhadou, vnútorné sily postáv často zrkadlia vonkajšie udalosti. Autorka verí, že literatúra má moc odhaliť to, čo bežne skrývame – pred inými, aj pred sebou samými.",
     "Autorka vyrastala obklopená knihami, ktoré jej matka nosila z knižnice. Už ako tínedžerka si viedla čitateľský denník, v ktorom si nevšímala len príbehy, ale analyzovala štýl a rytmus viet. Táto precíznosť sa neskôr odrazila aj v jej vlastnej tvorbe. Hoci začínala s poéziou, jej texty sa postupne rozvinuli do dlhších foriem – najmä do introspektívnych próz, kde sa snúbi jemný jazyk s hlbokým emocionálnym nábojom. V jej knihách nájdeme postavy, ktoré sa hľadajú, zraňujú, odpúšťajú si – často potichu a medzi riadkami. Autorka verí, že skutočné príbehy sa odohrávajú v tichu, v pohľadoch, v rozhodnutiach, ktoré sa zdajú byť malé, no menia všetko.",
     "Autorka pôsobila dlhé roky v oblasti filmu a divadla, kde sa venovala réžii a scenáristike. Dramatická štruktúra, cit pre scénu a schopnosť vystavať silný konflikt sú znaky, ktoré si preniesla aj do literárnej tvorby. V jej knihách je každý dialóg nositeľom napätia a každá situácia má presný rytmus. Postavy sa často ocitajú na hrane – medzi túžbou a zodpovednosťou, medzi tým, čo chcú, a tým, čo si od nich vyžaduje svet. Témy ako identita, hranice slobody či vzťahy medzi ženami sú v jej dielach spracované s jemnosťou, no aj odvahou. Autorka verí, že práve v krehkosti sa ukrýva najväčšia sila.",
@@ -30,21 +30,21 @@ FALLBACK_BIO_ZENA = [
     "Autorka si prešla rôznymi fázami – najprv písala pre deti, potom pre mládež, neskôr skúšala žurnalistiku, až napokon objavila historickú fikciu. V tomto žánri sa našla, pretože jej umožňuje spájať rešpekt k minulosti s citom pre rozprávanie. Venuje sa príbehom, ktoré oživujú zabudnuté osudy žien, remeselníkov, ľudí z okraja dejín. Nesústredí sa na veľké mená, ale na malých hrdinov každodennosti. Jej knihy sú dôsledne rešeršované, no vždy s dôrazom na emócie a ľudskosť. Autorka verí, že história nie je len dátum – ale pamäť, ktorú môžeme uchovať práve cez príbeh."
 ]
 
-def preloz_do_cestiny(text):
+def translate_to_czech(text):
     try:
-        casti = [text[i:i+500] for i in range(0, len(text), 500)]
-        prelozene_casti = []
-        for cast in casti:
-            resp = requests.get(f"https://api.mymemory.translated.net/get?q={quote(cast)}&langpair=en|cs")
+        parts = [text[i:i + 500] for i in range(0, len(text), 500)]
+        translated_parts = []
+        for part in parts:
+            resp = requests.get(f"https://api.mymemory.translated.net/get?q={quote(part)}&langpair=en|cs")
             data = resp.json()
-            preklad = data['responseData']['translatedText']
-            prelozene_casti.append(preklad)
-        return " ".join(prelozene_casti).strip()
+            translated = data['responseData']['translatedText']
+            translated_parts.append(translated)
+        return " ".join(translated_parts).strip()
     except:
         return text.strip()
 
-def ziskaj_popis_z_wikipedie(cele_meno):
-    query = quote(cele_meno)
+def get_description_from_wikipedia(full_name):
+    query = quote(full_name)
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query}"
     response = requests.get(url)
     if response.status_code != 200:
@@ -52,31 +52,32 @@ def ziskaj_popis_z_wikipedie(cele_meno):
     data = response.json()
     return data.get("extract", "")
 
-def zobraz_biografiu(meno, priezvisko, pohlavie):
-    cele_meno = f"{meno} {priezvisko}"
-    popis_en = ziskaj_popis_z_wikipedie(cele_meno)
+def display_biography(first_name, last_name, gender):
+    full_name = f"{first_name} {last_name}"
+    description_en = get_description_from_wikipedia(full_name)
 
-    if not popis_en or len(popis_en.strip()) < 50:
-        fallback = random.choice(FALLBACK_BIO_MUZ if pohlavie == "muž" else FALLBACK_BIO_ZENA)
-        print(f"⚠️ Popis chýba alebo je príliš krátky – použitý fallback:")
-        print(f"📖 Biografia:\n{fallback}")
+    if not description_en or len(description_en.strip()) < 50:
+        fallback = random.choice(FALLBACK_BIO_MALE if gender == "muž" else FALLBACK_BIO_FEMALE)
+        print("⚠️ Popis chýba alebo je příliš krátký – použitý fallback:")
+        print(f"📖 Biografie:\n{fallback}")
         return
 
-    popis_cs = preloz_do_cestiny(popis_en)
-    if len(popis_cs.strip()) < 50 or "MYMEMORY WARNING" in popis_cs.upper():
-        fallback = random.choice(FALLBACK_BIO_MUZ if pohlavie == "muž" else FALLBACK_BIO_ZENA)
-        print(f"⚠️ Preklad zlyhal alebo je príliš krátky – použitý fallback:")
-        print(f"📖 Biografia:\n{fallback}")
+    description_cz = translate_to_czech(description_en)
+    if len(description_cz.strip()) < 50 or "MYMEMORY WARNING" in description_cz.upper():
+        fallback = random.choice(FALLBACK_BIO_MALE if gender == "muž" else FALLBACK_BIO_FEMALE)
+        print("⚠️ Preklad zlyhal alebo je příliš krátký – použitý fallback:")
+        print(f"📖 Biografie:\n{fallback}")
         return
 
-    print(f"📖 Biografia (preložená):\n{popis_cs}")
+    print(f"📖 Biografie (přeložená):\n{description_cz}")
 
 if __name__ == "__main__":
-    meno = input("Zadaj meno autora/autorky: ")
-    priezvisko = input("Zadaj priezvisko autora/autorky: ")
-    pohlavie = input("Zadaj pohlavie (muž/žena): ").strip().lower()
-    if pohlavie not in ["muž", "zena", "žena"]:
-        print("⚠️ Neplatné pohlavie. Použi 'muž' alebo 'žena'.")
+    first_name = input("Zadej jméno autora/autorky: ")
+    last_name = input("Zadej příjmení autora/autorky: ")
+    gender = input("Zadej pohlaví (muž/žena): ").strip().lower()
+
+    if gender not in ["muž", "zena", "žena"]:
+        print("⚠️ Neplatné pohlaví. Použij 'muž' nebo 'žena'.")
     else:
-        pohlavie = "žena" if pohlavie in ["žena", "zena"] else "muž"
-        zobraz_biografiu(meno, priezvisko, pohlavie)
+        gender = "žena" if gender in ["žena", "zena"] else "muž"
+        display_biography(first_name, last_name, gender)
