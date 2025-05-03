@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block left_sidebar %}
-     <h3 style="text-align:center;">Najnovšie pridané knihy</h3>
+     <h3 style="text-align:center;">Nejnovější přidané knihy</h3>
 
     {% for b in najnovsie_knihy %}
         <div style="text-align:center; margin-bottom: 25px;">
@@ -33,7 +33,7 @@
             </p>
         </div>
     {% empty %}
-        <p style="text-align:center;">Zatiaľ žiadne knihy</p>
+        <p style="text-align:center;">Zatím žádné knihy.</p>
     {% endfor %}
 {% endblock %}
 
@@ -159,7 +159,7 @@
         {% if sort == 'title' %}
             Žádná kniha nezačíná na písmeno <strong>{{ current_letter }}</strong>.
         {% elif sort == 'genre' %}
-            Žádná kniha ve žánru <strong>{{ current_genre }}</strong> zatím není.
+            Žádná kniha v žánru <strong>{{ current_genre }}</strong> zatím není.
         {% elif sort == 'publisher' %}
             Žádná kniha od nakladatelství <strong>{{ current_publisher }}</strong> zatím není.
         {% elif sort == 'year' %}
@@ -169,7 +169,7 @@
                         {{ year_label }}
                     {% endif %}
                 {% endfor %}
-            </strong> zatím není.
+            </strong> Zatím není.
         {% endif %}
     </p>
 {% endif %}
@@ -369,7 +369,7 @@
 
 
 {% block right_sidebar %}
-    <h3 style="text-align:center;">Najlepšie hodnotené knihy</h3>
+    <h3 style="text-align:center;">Nejlepší hodnocené knihy</h3>
 
     {% for book in top_knihy %}
         <div style="text-align:center; margin-bottom: 25px;">
@@ -397,7 +397,7 @@
             </p>
         </div>
     {% empty %}
-        <p style="text-align:center;">Zatiaľ žiadne hodnotené knihy</p>
+        <p style="text-align:center;">Zatím žádné hodnocené knihy</p>
     {% endfor %}
 {% endblock %}
 
