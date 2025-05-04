@@ -1,3 +1,4 @@
+import datetime
 import os
 import django
 from django.conf import settings
@@ -64,8 +65,11 @@ def fill_author_data():
             print(f"👤 Priezvisko pridané: {author.surname}")
 
         # Dopĺňa dátum narodenia, ak chýba
+
+
         if not author.date_of_birth:
-            author.date_of_birth = random.randint(1950, 2000)
+            year = random.randint(1950, 2000)
+            author.date_of_birth = datetime.date(year, 1, 1)
             print(f"🎂 Dátum narodenia pridaný: {author.date_of_birth}")
 
         # Dopĺňa biografiu, ak chýba
