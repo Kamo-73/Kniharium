@@ -2,14 +2,17 @@ import datetime
 import random
 from random import sample
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from accounts.models import Profile
+from bots import bot_author_add, bot_book_add
 from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm
 from viewer.models import Book, Author, Publisher, Comment
 from django.core.paginator import Paginator
@@ -645,3 +648,142 @@ def favouritelist(request, pk):
 
     return redirect('book', pk)
 
+
+class DataEntryView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        user = request.user
+        if user.is_staff or user.groups.filter(name="Partners").exists():
+            return render(request, 'data_entry.html')
+        return redirect('home')
+
+    def post(self, request):
+        user = request.user
+        if not (user.is_staff or user.groups.filter(name="Partners").exists()):
+            return redirect('home')
+
+        novy_autor = None
+        chyba = None
+        pridana_kniha = None
+        vysledok_komentare = None
+        comment_info = None  # Premenná pre komentáre
+        update_info = None  # Preddefinovanie update_info
+
+        # Pridávanie autora
+        if 'add_author' in request.POST:
+            name = request.POST.get('name')
+            surname = request.POST.get('surname')
+            gender = request.POST.get('gender')
+
+            if name and surname and gender:
+                try:
+                    bot_author_add.run(name=name, surname=surname, gender=gender)
+                    novy_autor = Author.objects.latest('id')
+                except Exception as e:
+                    chyba = f"❌ Chyba: {e}"
+            else:
+                chyba = "❗ Všetky polia sú povinné."
+
+        # Pridávanie knihy
+        elif 'add_book' in request.POST:
+            name = request.POST.get('author_name')
+            surname = request.POST.get('author_surname')
+            title_orig = request.POST.get('title_original')
+            title_cz = request.POST.get('title_cz')
+            pages = request.POST.get('pages')
+            publisher = request.POST.get('publisher')
+            rating = request.POST.get('rating')
+            format_selected = request.POST.getlist('format') or [request.POST.get('format')]
+
+            if all([name, surname, title_orig, title_cz, pages, publisher, rating, format_selected[0]]):
+                try:
+                    book_data = {
+                        "name": name.strip(),
+                        "surname": surname.strip(),
+                        "title_orig": title_orig.strip(),
+                        "title_cz": title_cz.strip(),
+                        "num_of_pages": int(pages),
+                        "publisher": publisher.strip(),
+                        "rating_ours": int(rating),
+                        "format": format_selected,
+                    }
+                    bot_book_add.run(book_data)
+                    pridana_kniha = f"Kniha „{title_cz}“ bola úspešne pridaná."
+                    nova_kniha = Book.objects.latest('id')
+                except Exception as e:
+                    pridana_kniha = f"❌ Chyba pri pridávaní knihy: {e}"
+            else:
+                pridana_kniha = "❗ Všetky polia sú povinné."
+
+        # Pridávanie komentárov
+        elif 'add_comment' in request.POST:
+            try:
+                num_users = int(request.POST.get('num_users'))
+                comments_per_user = int(request.POST.get('comments_per_user'))
+                typ = request.POST.get('add_comment')
+
+                if typ == "good":
+                    from bots import bot_comment_good
+                    bot_comment_good.run(num_users, comments_per_user)
+                    vysledok_komentare = "✅ Dobré komentáre boli pridané."
+                elif typ == "neutral":
+                    from bots import bot_comment_neutral
+                    bot_comment_neutral.run(num_users, comments_per_user)
+                    vysledok_komentare = "✅ Neutrálne komentáre boli pridané."
+                elif typ == "bad":
+                    from bots import bot_comment_bad
+                    bot_comment_bad.run(num_users, comments_per_user)
+                    vysledok_komentare = "✅ Zlé komentáre boli pridané."
+                else:
+                    vysledok_komentare = "❗ Neznámy typ komentára."
+
+                # Zavoláme funkciu na získanie posledných 10 komentárov
+                comment_info = self.get_last_comments(10)
+
+            except Exception as e:
+                vysledok_komentare = f"❌ Chyba pri pridávaní komentárov: {e}"
+
+        # Aktualizácia autorov
+        elif 'update_authors' in request.POST:
+            try:
+                from bots import bot_fill_author
+                bot_fill_author.run()  # Zavolanie botu na vyplnenie autorov
+                update_info = "✅ Autori boli aktualizovaní."
+            except Exception as e:
+                update_info = f"❌ Chyba pri aktualizácii autorov: {e}"
+
+        # Aktualizácia kníh
+        elif 'update_books' in request.POST:
+            try:
+                from bots import bot_fill_book
+                bot_fill_book.run()  # Zavolanie botu na vyplnenie kníh
+                update_info = "✅ Knihy boli aktualizované."
+            except Exception as e:
+                update_info = f"❌ Chyba pri aktualizácii kníh: {e}"
+
+        # Vrátime odpoveď s potrebnými informáciami
+        return render(request, 'data_entry.html', {
+            'novy_autor': novy_autor,
+            'chyba': chyba,
+            'pridana_kniha': pridana_kniha,
+            'nova_kniha': nova_kniha if 'nova_kniha' in locals() else None,
+            'vysledok_komentare': vysledok_komentare,
+            'comment_info': comment_info if comment_info else [],
+            'update_info': update_info if update_info else None  # Posielame správu o aktualizácii
+        })
+
+    def get_last_comments(self, num_comments=10):
+        # Získa posledné 'num_comments' komentárov zoradené podľa dátumu (od najnovších)
+        comments = Comment.objects.all().order_by('-created')[:num_comments]
+
+        # Pre každý komentár vypíšeme údaje o knihe a používateľovi
+        comment_info = []
+        for comment in comments:
+            comment_info.append({
+                'username': comment.commenter.user.username,
+                'book_title': comment.book.title_cz,
+                'rating': comment.rating,
+                'comment': comment.user_comment[:50]  # Zobrazíme prvých 50 znakov komentára
+            })
+
+        return comment_info

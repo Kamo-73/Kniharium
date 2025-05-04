@@ -93,6 +93,9 @@ def fill_author_data():
         author.save()
         print(f"✅ Autor {author.name} {author.surname} bol úspešne aktualizovaný.")
 
+def run():
+    fill_author_data()
+
 
 if __name__ == "__main__":
     fill_author_data()

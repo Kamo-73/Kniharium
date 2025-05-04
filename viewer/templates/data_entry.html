@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Pridávanie údajov
+{% endblock %}
+
+{% block left_sidebar %}
+    <p>Tu je left sidebar…</p>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container mt-4">
+    <h2>Pridať autora</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex gap-3 mb-3">
+            <input type="text" name="name" placeholder="Meno" class="form-control" style="max-width: 200px;">
+            <input type="text" name="surname" placeholder="Priezvisko" class="form-control" style="max-width: 200px;">
+            <select name="gender" class="form-control" style="max-width: 150px;">
+                <option value="">Vyber pohlavie</option>
+                <option value="muž">Muž</option>
+                <option value="žena">Žena</option>
+            </select>
+            <button type="submit" name="add_author" class="btn btn-primary">Pridať</button>
+        </div>
+    </form>
+
+    {% if pridane_autor %}
+        <div class="alert alert-success">{{ pridane_autor }}</div>
+    {% endif %}
+</div>
+
+
+
+{% if novy_autor %}
+    <hr>
+    <h4 style="text-align:center;">Autor bol úspešne pridaný:</h4>
+
+    <div class="d-flex gap-4 mt-3 align-items-start" style="justify-content: center;">
+
+        {% if novy_autor.image and novy_autor.image.name %}
+            {% if "http" in novy_autor.image.name %}
+                <img src="{{ novy_autor.image.name }}" alt="Foto autora" style="width: 150px; height: 220px; object-fit: cover;">
+            {% else %}
+                <img src="/media/{{ novy_autor.image.name }}" alt="Foto autora" style="width: 150px; height: 220px; object-fit: cover;">
+            {% endif %}
+        {% else %}
+            <div style="width: 150px; height: 220px; background-color: #ccc; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.9em; color: #444;">Chýba obrázok</span>
+            </div>
+        {% endif %}
+
+        <div>
+            <p><strong>Meno:</strong> {{ novy_autor.name }} {{ novy_autor.surname }}</p>
+            <p><strong>Biografia:</strong> {{ novy_autor.biography }}</p>
+            <p><strong>Dátum narodenia:</strong> {{ novy_autor.date_of_birth }}</p>
+            {% if novy_autor.date_of_death %}
+                <p><strong>Dátum úmrtia:</strong> {{ novy_autor.date_of_death }}</p>
+            {% endif %}
+            <p><strong>Národnosť:</strong> {{ novy_autor.nationality.name }}</p>
+        </div>
+    </div>
+{% endif %}
+
+{% if chyba %}
+    <div class="alert alert-danger mt-3">{{ chyba }}</div>
+{% endif %}
+
+
+
+
+<hr>
+<div class="container mt-4">
+    <h2>Pridať knihu</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex flex-wrap gap-3 mb-3">
+
+            <input type="text" name="author_name" placeholder="Meno autora" class="form-control" style="max-width: 200px;">
+            <input type="text" name="author_surname" placeholder="Priezvisko autora" class="form-control" style="max-width: 200px;">
+            <input type="text" name="title_original" placeholder="Originálny názov" class="form-control" style="max-width: 220px;">
+            <input type="text" name="title_cz" placeholder="Český názov" class="form-control" style="max-width: 220px;">
+            <input type="number" name="pages" placeholder="Počet strán" class="form-control" style="max-width: 150px;">
+            <input type="text" name="publisher" placeholder="Vydavateľstvo" class="form-control" style="max-width: 200px;">
+
+            <select name="rating" class="form-control" style="max-width: 150px;">
+                <option value="">Rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <select name="format" class="form-control" style="max-width: 200px;">
+                <option value="">Formát</option>
+                <option value="Vázaná kniha">Vázaná kniha</option>
+                <option value="E-kniha">E-kniha</option>
+                <option value="Audiokniha">Audiokniha</option>
+            </select>
+
+            <button type="submit" name="add_book" class="btn btn-success">Pridať knihu</button>
+        </div>
+    </form>
+
+    {% if pridana_kniha %}
+        <div class="alert alert-success">{{ pridana_kniha }}</div>
+    {% endif %}
+</div>
+
+
+{% if nova_kniha %}
+    <hr>
+    <h4 style="text-align:center;">Kniha bola úspešne pridaná:</h4>
+
+    <div class="d-flex gap-4 mt-3 align-items-start" style="justify-content: center;">
+        {% if nova_kniha.image and nova_kniha.image.name %}
+            {% if "http" in nova_kniha.image.name %}
+                <img src="{{ nova_kniha.image.name }}" alt="Obálka" style="width: 150px; height: 220px; object-fit: cover;">
+            {% else %}
+                <img src="/media/{{ nova_kniha.image.name }}" alt="Obálka" style="width: 150px; height: 220px; object-fit: cover;">
+            {% endif %}
+        {% else %}
+            <div style="width: 150px; height: 220px; background-color: #ccc; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.9em; color: #444;">Chýba obrázok</span>
+            </div>
+        {% endif %}
+
+        <div>
+            <p><strong>Názov (originál):</strong> {{ nova_kniha.title_orig }}</p>
+            <p><strong>Názov (česky):</strong> {{ nova_kniha.title_cz }}</p>
+            <p><strong>Počet strán:</strong> {{ nova_kniha.num_of_pages }}</p>
+            <p><strong>Čas čítania:</strong> {{ nova_kniha.time_of_reading }} minút</p>
+            <p><strong>Rok vydania:</strong> {{ nova_kniha.year_of_publishing }}</p>
+            <p><strong>Hodnotenie:</strong> {{ nova_kniha.rating_ours }}/5</p>
+            <p><strong>Vydavateľ:</strong> {{ nova_kniha.publisher.name }}</p>
+            <p><strong>Formáty:</strong>
+                {% for f in nova_kniha.format.all %}
+                    {{ f.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p><strong>Žánre:</strong>
+                {% for g in nova_kniha.genre.all %}
+                    {{ g.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p><strong>Popis:</strong> {{ nova_kniha.description }}</p>
+        </div>
+    </div>
+{% endif %}
+
+
+
+
+
+
+<hr>
+<div class="container mt-4">
+    <h2>Pridať komentáre</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-flex flex-wrap gap-3 mb-3">
+            <input type="number" name="num_users" placeholder="Počet komentujúcich" class="form-control" style="max-width: 220px;" min="1" required>
+            <input type="number" name="comments_per_user" placeholder="Komentárov na každého" class="form-control" style="max-width: 220px;" min="1" required>
+
+            <button type="submit" name="add_comment" value="good" class="btn btn-success">Dobré komentáre</button>
+            <button type="submit" name="add_comment" value="neutral" class="btn btn-secondary">Neutrálne komentáre</button>
+            <button type="submit" name="add_comment" value="bad" class="btn btn-danger">Zlé komentáre</button>
+        </div>
+    </form>
+
+    {% if vysledok_komentare %}
+        <div class="alert alert-info mt-3">{{ vysledok_komentare }}</div>
+    {% endif %}
+</div>
+
+
+
+{% if vysledok_komentare %}
+    <div class="alert alert-info mt-3">{{ vysledok_komentare }}</div>
+{% endif %}
+
+{% if comment_info %}
+    <div class="alert alert-info mt-3">
+        <h4>Posledné komentáre:</h4>
+        <ul>
+            {% for info in comment_info %}
+                <li>
+                    Používateľ {{ info.username }} pridal komentár k knihe „{{ info.book_title }}“:
+                    <strong>{{ info.rating }}★</strong> – {{ info.comment }}...
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+
+
+<hr>
+<div class="container mt-4">
+    <h2>Vyplniť prázdne miesta v databáze</h2>
+
+    <div class="d-flex align-items-center mb-3">
+        <p class="mr-3">Doplniť prázdne miesta u autorov:</p>
+        <form method="post" class="mb-0">
+            {% csrf_token %}
+            <button type="submit" name="update_authors" class="btn btn-primary">Doplniť</button>
+        </form>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+        <p class="mr-3">Doplniť prázdne miesta v knihách:</p>
+        <form method="post" class="mb-0">
+            {% csrf_token %}
+            <button type="submit" name="update_books" class="btn btn-primary">Doplniť</button>
+        </form>
+    </div>
+
+    {% if update_info %}
+        <div class="alert alert-info mt-3">{{ update_info }}</div>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
+
+{% block right_sidebar %}
+    <p>Tu je right sidebar</p>
+{% endblock %}
+
+

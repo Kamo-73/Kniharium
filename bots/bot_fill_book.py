@@ -174,6 +174,9 @@ def check_and_fill_books():
         book.save()
         print(f"✅ Kniha '{book.title_orig}' bola úspešne aktualizována.")
 
+def run():
+    check_and_fill_books()
+
 if __name__ == "__main__":
     check_and_fill_books()
 

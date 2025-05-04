@@ -76,6 +76,8 @@ urlpatterns = [
     path('api/author/<int:pk>/', AuthorDetail.as_view(), name='api_author'),
     path('api/publishers/', Publishers.as_view(), name='api_publishers'),
 
+    path('data-entry/', DataEntryView.as_view(), name='data_entry'),
+
 
 ]
 

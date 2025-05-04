@@ -92,6 +92,10 @@ def create_author(first_name, last_name, gender):
     print(f"🎂 Datum narození: {birth_date_obj}")
     print(f"🖼️ Obrázek: {picture_url}")
 
+def run(name, surname, gender):
+    create_author(name, surname, gender)
+
+
 if __name__ == "__main__":
     first_name = input("Zadej jméno autora/autorky: ")
     last_name = input("Zadej příjmení autora/autorky: ")

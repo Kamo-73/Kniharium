@@ -7,6 +7,17 @@
         <a class="text-dark text-decoration-none" href="{% url 'publishers' %}">Nakladatelství</a>
         <a class="text-dark text-decoration-none" href="#" onclick="openLoginModal()">Přihlášení</a>
         <a class="text-dark text-decoration-none" href="{% url 'about' %}">O nás</a>
+
+       {% if request.user.is_authenticated %}
+        {% for group in request.user.groups.all %}
+        {% if group.name == "Partners" %}
+            <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Pridávanie údajov</a>
+        {% endif %}
+    {% endfor %}
+    {% if request.user.is_staff %}
+        <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Pridávanie údajov</a>
+    {% endif %}
+{% endif %}
     </div>
 </div>
 

@@ -42,7 +42,7 @@ bad_male_comments = [
     "Mám pocit, že to psal někdo bez zkušeností.",
     "Hodně slov, málo obsahu.",
     "Všechno bylo předvídatelné a bez nápadu.",
-    "Téma bylo zajímavé, ale provedení mě zklamalo.",
+    "Téma bylo zaujímavé, ale provedení mě zklamalo.",
     "Zbytečně komplikované a přitom bez hloubky.",
     "Nedokázal jsem se do toho vůbec začíst.",
     "Nechápu, proč má tahle kniha tolik dobrých recenzí.",
@@ -94,48 +94,40 @@ bad_female_comments = [
 
 ALL_USERS = bad_males + bad_females
 
-try:
-    num_users = int(input("Za koľkých používateľov sa mám prihlásiť? (max 10): "))
-    num_comments_per_user = int(input("Koľko komentárov má každý z nich pridať?: "))
-except ValueError:
-    print("❌ Zadaj celé čísla.")
-    exit()
-
-if num_users < 1 or num_users > len(ALL_USERS):
-    print("❌ Zlý počet používateľov.")
-    exit()
-
-selected_users = random.sample(ALL_USERS, num_users)
-
-for username, full_name in selected_users:
-    print(f"\n🧑‍💻 Prihlasujem sa za {username} ({full_name})")
-
-    try:
-        user = User.objects.get(username=username)
-        profile = Profile.objects.get(user=user)
-    except User.DoesNotExist:
-        print(f"❌ Užívateľ {username} neexistuje.")
-        continue
-
-    is_female = (username in dict(bad_females))
-    comments_pool = bad_female_comments if is_female else bad_male_comments
-
+def create_bad_comments(num_users, num_comments_per_user):
+    selected_users = random.sample(ALL_USERS, min(num_users, len(ALL_USERS)))
     available_books = list(Book.objects.all())
     if not available_books:
-        print("❌ Žiadne knihy v databáze.")
-        break
+        return
 
-    books_to_comment = random.sample(available_books, min(num_comments_per_user, len(available_books)))
+    for username, _ in selected_users:
+        try:
+            user = User.objects.get(username=username)
+            profile = Profile.objects.get(user=user)
+        except User.DoesNotExist:
+            continue
 
-    for book in books_to_comment:
-        comment_text = random.choice(comments_pool)
-        rating = random.choice([1, 2])
+        is_female = username in dict(bad_females)
+        comment_pool = bad_female_comments if is_female else bad_male_comments
 
-        Comment.objects.create(
-            book=book,
-            commenter=profile,
-            rating=rating,
-            user_comment=comment_text
-        )
+        books_to_comment = random.sample(available_books, min(num_comments_per_user, len(available_books)))
 
-        print(f"📘 {book.title_cz}: {rating}★ – {comment_text[:40]}...")
+        for book in books_to_comment:
+            comment_text = random.choice(comment_pool)
+            rating = random.choice([1, 2])
+
+            Comment.objects.create(
+                book=book,
+                commenter=profile,
+                rating=rating,
+                user_comment=comment_text
+            )
+
+            print(f"👤 {username} komentoval 📖 „{book.title_cz}“ ({rating}★): {comment_text[:50]}...")
+
+
+def run(num_users, num_comments_per_user):
+    create_bad_comments(num_users, num_comments_per_user)
+
+if __name__ == "__main__":
+    run(2, 3)
