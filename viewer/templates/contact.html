@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Kontaktní formulář
+{% endblock %}
+
+{% block left_sidebar %}
+    <p>Tu je left sidebar…</p>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="name">
+            Jméno
+        </label>
+        <input type="text" name="name" id="name" placeholder="Jméno" class="form-control">
+        <label for="email">
+            Email
+        </label>
+        <input type="text" name="email" id="email" placeholder="Email" class="form-control">
+        <button type="submit" name="odeslat" class="btn btn-dark px-4">Odeslat</button>
+    </form>
+{% endblock %}
+
+{% block right_sidebar %}
+    <p>Tu je right sidebar</p>
+{% endblock %}
+
+{% include "footer.html" %}

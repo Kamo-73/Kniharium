@@ -2,9 +2,11 @@ import datetime
 import random
 from random import sample
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 import requests
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
@@ -790,3 +792,17 @@ class DataEntryView(View):
             })
 
         return comment_info
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+
+        if name and email:
+            subject = f"Zpráva z formuláře - {name}"
+            body = f"Odesílatel: {name}, {email}"
+
+            send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, ['kniharium.online@gmail.com'])
+            return render(request, 'home.html')
+    return render(request, 'contact.html')

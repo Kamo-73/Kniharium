@@ -2,7 +2,7 @@ import re
 from datetime import date
 
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput, IntegerField
+from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput, IntegerField, Form
 
 from viewer.models import Book, Author, Publisher, Comment
 
@@ -250,6 +250,9 @@ class CommentModelForm(ModelForm):
                 'class': 'form-control',
                 'style': 'width: 100%;'
             })
+
+
+
 
 
 
