@@ -22,6 +22,11 @@ from django.db.models import Q, Avg
 
 import math
 
+from django.views.generic import ListView
+from viewer.models import Book, Author
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 def home_view(request):
     recommended_titles = [
         "Andělé a démoni",
@@ -46,16 +51,6 @@ def home_view(request):
         'recommended_books': recommended_books,
     })
 
-
-from django.views.generic import ListView
-from viewer.models import Book, Author
-from django.core.paginator import Paginator
-from django.db.models import Q
-
-from django.views.generic import ListView
-from viewer.models import Book, Author
-from django.core.paginator import Paginator
-from django.db.models import Q
 
 class BooksListView(ListView):
     template_name = 'books.html'
@@ -797,12 +792,28 @@ class DataEntryView(View):
 def contact_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
+        surname = request.POST.get('surname')
+        username = request.POST.get('username')
         email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        gender = request.POST.get('gender')
+        bio = request.POST.get('bio')
 
         if name and email:
-            subject = f"Zpráva z formuláře - {name}"
-            body = f"Odesílatel: {name}, {email}"
+            subject = f"Nová žádost o partnerství od {name} {surname}"
+            body = f"""
+            Obdrželi jsme novou žádost o partnerství prostřednictvím webového formuláře:
+
+            👤 Jméno: {name} {surname}
+            🔗 Uživatelské jméno: {username}
+            📧 E-mail: {email}
+            📱 Telefonní číslo: {phone}
+            ⚧ Pohlaví: {gender}
+
+            📝 Proč se chce stát partnerem:
+            {bio}
+            """
 
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, ['kniharium.online@gmail.com'])
-            return render(request, 'home.html')
+            return render(request, 'about_us.html')
     return render(request, 'contact.html')
