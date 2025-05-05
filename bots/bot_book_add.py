@@ -19,44 +19,54 @@ from bots.bot_book_genres import save_genres_to_database
 # Zoznam kníh na pridanie
 BOOK_LIST = [
     {
-        "name": "Lucy",
-        "surname": "Foley",
-        "title_orig": "The Hunting Party",
-        "title_cz": "Lovecká společnost",
-        "num_of_pages": 384,
+        "name": "Umberto",
+        "surname": "Eco",
+        "title_orig": "The Name of the Rose",
+        "title_cz": "Jméno růže",
+        "num_of_pages": 536,
+        "publisher": "Argo",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
+    },
+    {
+        "name": "Umberto",
+        "surname": "Eco",
+        "title_orig": "Foucault's Pendulum",
+        "title_cz": "Foucaultovo kyvadlo",
+        "num_of_pages": 656,
+        "publisher": "Argo",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
+    },
+    {
+        "name": "Umberto",
+        "surname": "Eco",
+        "title_orig": "Baudolino",
+        "title_cz": "Baudolino",
+        "num_of_pages": 544,
+        "publisher": "SLOVART",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Umberto",
+        "surname": "Eco",
+        "title_orig": "The Prague Cemetery",
+        "title_cz": "Pražský hřbitov",
+        "num_of_pages": 464,
+        "publisher": "Argo",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
+    },
+    {
+        "name": "Umberto",
+        "surname": "Eco",
+        "title_orig": "The Island of the Day Before",
+        "title_cz": "Ostrov včerejšího dne",
+        "num_of_pages": 528,
         "publisher": "Argo",
         "rating_ours": 4,
         "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Lucy",
-        "surname": "Foley",
-        "title_orig": "The Guest List",
-        "title_cz": "Zoznam hostí",
-        "num_of_pages": 320,
-        "publisher": "Tatran",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Lucy",
-        "surname": "Foley",
-        "title_orig": "The Paris Apartment",
-        "title_cz": "Byt v Paříži",
-        "num_of_pages": 400,
-        "publisher": "Argo",
-        "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha"]
-    },
-    {
-        "name": "Lucy",
-        "surname": "Foley",
-        "title_orig": "The Book of Lost and Found",
-        "title_cz": "Kniha strát a nálezov",
-        "num_of_pages": 400,
-        "publisher": "Fortuna Libri",
-        "rating_ours": 3,
-        "format": ["Vázaná kniha"]
     }
 ]
 
@@ -133,9 +143,10 @@ def run(book_data):
     if not author_obj:
         raise Exception(f"❌ Autor {book_data['name']} {book_data['surname']} neexistuje v databáze.")
 
-    if Book.objects.filter(title_orig=book_data["title_orig"], author=author_obj).exists():
+    books_with_same_title = Book.objects.filter(title_orig=book_data["title_orig"])
+    already_exists = any(author_obj in b.author.all() for b in books_with_same_title)
+    if already_exists:
         raise Exception(f"⚠️ Kniha s názvom {book_data['title_orig']} od daného autora už existuje.")
-
     publisher_obj, _ = Publisher.objects.get_or_create(name=book_data["publisher"])
 
     format_objects = []
