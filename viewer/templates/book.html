@@ -268,7 +268,7 @@
 
             {% if request.user == comment.commenter.user %}
                 <div style="margin-left: auto; font-size: 0.85rem;">
-                    <a href="{% url 'comment_delete' comment.id %}" style="color: #888;">Smazat</a>
+                    <a href="{% url 'comment_delete' comment.id %}" style="color: #888;"><strong>Smazat</strong></a>
                 </div>
             {% endif %}
         </div>

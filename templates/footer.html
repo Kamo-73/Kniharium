@@ -1,5 +1,33 @@
-<footer class="text-center text-white bg-dark p-4">
-    <div class="container">
-        <p>&copy; 2025 Kniharium. Vytvořili Patrik a Kamil.</p>
+{% load static %}
+<footer style="
+    padding: 40px 20px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.95rem;
+    color: #444;
+    background-color: #fff;
+    text-align: center;
+">
+    <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 30px;
+    ">
+        <!-- Logo -->
+       <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="{% url 'home' %}" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 50px;">
+        </a>
+        </div>
+
+        <!-- Kontakt -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="font-weight: 500;">Kontakt:</div>
+            <div style="line-height: 1.5; text-align: left;">
+                <div><a style="color: inherit; text-decoration: none;">kniharium.online@gmail.com</a></div>
+                <div>+421 987 654 321</div>
+            </div>
+        </div>
     </div>
 </footer>
