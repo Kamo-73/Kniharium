@@ -70,14 +70,25 @@
             color: white;
             padding: 20px;
             text-align: center;
-            position: relative;">  <!-- dôležité pre umiestnenie badge -->
+            position: relative;">
 
   <!-- Badge v ľavom hornom rohu -->
-  {% if is_partner %}
-    <div style="position: absolute; top: 20px; left: 20px; background-color: #2ecc71; color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px;">
-      🏅 Badge of Partners
-    </div>
-  {% endif %}
+{% if is_partner %}
+  <div style="
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: 500;
+  ">
+    🏅 Partner
+  </div>
+{% endif %}
 
   <!-- Ikona + meno + username zarovnané na stred -->
   <div style="font-size: 40px;">👤</div>
