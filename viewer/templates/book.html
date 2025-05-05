@@ -149,7 +149,7 @@
             {% with zobrazeny|add:'e' as zobrazeny %}{% endwith %}
         {% endif %}
 
-        {% if 'Audio kniha' in format_audio and not 'audio' in zobrazeny %}
+        {% if 'Audiokniha' in format_audio and not 'audio' in zobrazeny %}
             <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
                 <a href="https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">Audiokniha</a>
             </span>
