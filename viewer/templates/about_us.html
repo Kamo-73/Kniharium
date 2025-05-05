@@ -5,29 +5,52 @@
 {% endblock %}
 
 {% block left_sidebar %}
-    <p>Tu je left sidebar…</p>
+
 {% endblock %}
 
 {% block content %}
-    <h1>O nás</h1>
-    <p>Vítejte v naší knižní databázi, unikátní platformě, která slouží k objevování
-        a sdílení informací o knihách z celého světa. Naším cílem je přiblížit literaturu
-        každému, kdo má zájem o čtení a vzdělávání.</p><br>
-    <h1>Historie</h1>
-    <p>Naše databáze byla založena v roce 2025 dvěma vášnivými milovníky knih, kteří se rozhodli
-        sdílet svoji vášeň s ostatními. Od malého blogu jsme vybudovali obrovskou databázi
-        s tisíci záznamy a recenzemi.</p><br>
-    <h1>Spolupráce a partnerství</h1>
-    <p>Pokud máte zájem o spolupráci s naší databází, nabízíme možnost aktivního zapojení se
-        do rozvoje naší platformy. Můžete přispívat k jejímu obsahu tím, že budete mít možnost
-        editovat existující záznamy, přidávat nové knihy a zapojovat se do dalších aktivit, které
-        pomohou naší stránce růst a zlepšovat se. V případě zájmu o spolupráci, prosím klikni <a href="{% url 'contact' %}">ZDE</a>,
-        kde najdete formulář k vyplnění. Tento formulář následně přezkoumáme a budeme
-        Vás kontaktovat s dalšími informacemi. Těšíme se na možnost spolupráce.</p>
+   <div style="max-width: 1400px; margin: 40px auto; padding: 60px; background: #fff; border-radius: 20px; box-shadow: 0 0 30px rgba(0,0,0,0.06); font-family: 'Segoe UI', sans-serif; color: #111;">
+
+    <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px;">O nás</h1>
+    <p style="text-align: center; max-width: 1000px; margin: 0 auto 60px; font-size: 1.15rem; line-height: 1.8;">
+        Vítejte v naší knižní databázi, unikátní platformě, která slouží k objevování a sdílení informací o knihách z celého světa.
+        Naším cílem je přiblížit literaturu každému, kdo má zájem o čtení a vzdělávání.
+    </p>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 60px; justify-content: center; margin-bottom: 60px;">
+        <div style="flex: 1; min-width: 300px; max-width: 600px;">
+            <h2 style="font-size: 2rem; margin-bottom: 15px; text-align: center;">Historie</h2>
+            <p style="font-size: 1.15rem; line-height: 1.8; text-align: center;">
+                Naše databáze byla založena v roce 2025 dvěma vášnivými milovníky knih, kteří se rozhodli
+                sdílet svoji vášeň s ostatními. Od malého blogu jsme vybudovali obrovskou databázi s tisíci záznamy a recenzemi.
+            </p>
+        </div>
+
+        <div style="flex: 1; min-width: 300px; max-width: 600px;">
+            <h2 style="font-size: 2rem; margin-bottom: 15px; text-align: center;">Tým</h2>
+            <p style="font-size: 1.15rem; line-height: 1.8; text-align: center;">
+                Náš tím vedú Kamil Kotlař a Patrik Liptaj, ktorí spolu s tímom nadšených editorov a technologických expertov denne pracujú na vylepšovaní databázy.
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <h2 style="font-size: 2rem; margin-bottom: 15px; text-align: center;">Spolupráce a partnerství</h2>
+        <p style="font-size: 1.15rem; line-height: 1.8; text-align: center; max-width: 1000px; margin: 0 auto;">
+            Pokud máte zájem o spolupráci s naší databází, nabízíme možnost aktivního zapojení se
+            do rozvoje naší platformy. Můžete přispívat k jejímu obsahu tím, že budete mít možnost
+            editovat existující záznamy, přidávat nové knihy a zapojovat se do dalších aktivit, které
+            pomohou naší stránce růst a zlepšovat se. V případě zájmu o spolupráci, prosím klikni
+            <a href="{% url 'contact' %}" style="color: black; font-weight: bold;">ZDE</a>,
+            kde najdete formulář k vyplnění. Tento formulář následně přezkoumáme a budeme
+            Vás kontaktovat s dalšími informacemi. Těšíme se na možnost spolupráce.
+        </p>
+    </div>
+</div>
 {% endblock %}
 
 {% block right_sidebar %}
-    <p>Tu je right sidebar</p>
+
 {% endblock %}
 
 {% include "footer.html" %}
