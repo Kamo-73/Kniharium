@@ -677,8 +677,11 @@ class DataEntryView(View):
 
             if name and surname and gender:
                 try:
-                    bot_author_add.run(name=name, surname=surname, gender=gender)
-                    novy_autor = Author.objects.latest('id')
+                    if Author.objects.filter(name__iexact=name.strip(), surname__iexact=surname.strip()).exists():
+                        chyba = "❗ Autor s týmto menom už existuje."
+                    else:
+                        bot_author_add.run(name=name, surname=surname, gender=gender)
+                        novy_autor = Author.objects.latest('id')
                 except Exception as e:
                     chyba = f"❌ Chyba: {e}"
             else:
