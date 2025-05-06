@@ -78,6 +78,7 @@ urlpatterns = [
 
     path('data-entry/', DataEntryView.as_view(), name='data_entry'),
     path('contact/', contact_view, name='contact'),
+    path('chat/', chat_api, name='chat_api'),
 
 
 ]

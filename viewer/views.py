@@ -1,17 +1,23 @@
 import datetime
+import json
+import os
 import random
 from random import sample
+
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 import requests
 from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from dotenv import load_dotenv
 
 from accounts.models import Profile
 from bots import bot_author_add, bot_book_add
@@ -817,3 +823,38 @@ def contact_view(request):
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, ['kniharium.online@gmail.com'])
             return render(request, 'about_us.html')
     return render(request, 'contact.html')
+
+import json
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from dotenv import load_dotenv
+# Načítaj premenné z .env
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+@csrf_exempt
+def chat_api(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            user_message = data.get("message", "")
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {OPENAI_API_KEY}"
+            }
+            payload = {
+                "model": "gpt-3.5-turbo",  # alebo "gpt-4" ak máš prístup
+                "messages": [
+                    {"role": "system", "content": "Jsi přátelský AI asistent, odpovídej stručně a česky. Odpovídej pouze na otázky, které se týkají knih."},
+                    {"role": "user", "content": user_message}
+                ]
+            }
+            response = requests.post("https://api.openai.com/v1/chat/completions",
+                                     headers=headers, json=payload)
+            response.raise_for_status()  # Ak API vráti chybu, vyhodí výnimku
+            response_json = response.json()
+            reply = response_json["choices"][0]["message"]["content"]
+            return JsonResponse({"reply": reply})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request"}, status=400)
