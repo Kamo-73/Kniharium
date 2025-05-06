@@ -9,6 +9,38 @@
 {% endblock %}
 
 {% block content %}
+{% if perms.viewer.change_publisher %}
+    <a href="{% url 'publisher_update' publisher.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-right: 10px;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
+        Aktualizovat nakladatelství
+    </a>
+{% endif %}
+{% if perms.viewer.delete_publisher %}
+    <a href="{% url 'publisher_delete' publisher.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #c0392b;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#a93226';" onmouseout="this.style.backgroundColor='#c0392b';">
+        Smazat nakladatelství
+    </a>
+{% endif %}
+
     <h1>{{ publisher.name }}</h1>
     <h3>{% if publisher.year_of_dissolution %}
         ( {{ publisher.year_of_establishment }}-{{ publisher.year_of_dissolution }} )
@@ -17,12 +49,7 @@
     {% endif %}</h3>
     <a href="{{ publisher.link }}">{{ publisher.link }}</a>
     <br><a>{{ publisher.information }} </a><br>
-    {% if perms.viewer.change_publisher %}
-    <a href="{% url 'publisher_update' publisher.id %}" class="btn btn-primary">Aktualizovat</a>
-    {% endif %}
-    {% if perms.viewer.delete_publisher %}
-    <a href="{% url 'publisher_delete' publisher.id %}" class="btn btn-danger">Smazat</a>
-    {% endif %}
+
 {% endblock %}
 
 {% block right_sidebar %}

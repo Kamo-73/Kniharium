@@ -40,8 +40,20 @@
 {% block content %}
     <h2 style="text-align: center; padding: 10px;">Seznam knih</h2>
     {% if perms.viewer.add_book %}
-    <a href="{% url 'book_create' %}" class="btn btn-primary">Přidat</a>
-    {% endif %}
+    <a href="{% url 'book_create' %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
+        Přidat knihu
+    </a>
+{% endif %}
 <!-- Zobraziť podľa -->
 <div style="margin: 20px 80px; font-size: 18px;">
     <strong>Zobrazit podle:</strong>
@@ -61,44 +73,44 @@
             </a>
         {% endfor %}
     {% elif sort == 'genre' %}
-        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-            {% for genre in genres %}
-                <a href="?sort=genre&genre_name={{ genre.name }}" style="text-decoration: none;">
-                    <span style="
-                        padding: 6px 12px;
-                        background-color: {% if current_genre == genre.name %}#d0e6ff{% else %}#f0f0f0{% endif %};
-                        border-radius: 20px;
-                        font-size: 20px;
-                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                        margin: 7px;
-                        display: inline-block;
-                        color: black;
-                        font-weight: {% if current_genre == genre.name %}bold{% else %}normal{% endif %};
-                        text-decoration: {% if current_genre == genre.name %}underline{% else %}none{% endif %};">
-                        {{ genre.name }}
-                    </span>
-                </a>
-            {% endfor %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px;">
+    {% for genre in genres %}
+        <a href="?sort=genre&genre_name={{ genre.name }}" style="text-decoration: none;">
+            <span style="
+                padding: 8px 16px;
+                background-color: {% if current_genre == genre.name %}#222{% else %}#f5f5f5{% endif %};
+                color: {% if current_genre == genre.name %}#fff{% else %}#222{% endif %};
+                border-radius: 20px;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                display: inline-block;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            " onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';" onmouseout="this.style.backgroundColor='{% if current_genre == genre.name %}#222{% else %}#f5f5f5{% endif %}'; this.style.color='{% if current_genre == genre.name %}#fff{% else %}#222{% endif %}';">
+                {{ genre.name }}
+            </span>
+        </a>
+    {% endfor %}
         </div>
     {% elif sort == 'publisher' %}
-        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-            {% for publisher in publishers %}
-                <a href="?sort=publisher&publisher_name={{ publisher.name }}" style="text-decoration: none;">
-                    <span style="
-                        padding: 6px 12px;
-                        background-color: {% if current_publisher == publisher.name %}#d0e6ff{% else %}#f0f0f0{% endif %};
-                        border-radius: 20px;
-                        font-size: 20px;
-                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                        margin: 7px;
-                        display: inline-block;
-                        color: black;
-                        font-weight: {% if current_publisher == publisher.name %}bold{% else %}normal{% endif %};
-                        text-decoration: {% if current_publisher == publisher.name %}underline{% else %}none{% endif %};">
-                        {{ publisher.name }}
-                    </span>
-                </a>
-            {% endfor %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px;">
+    {% for publisher in publishers %}
+        <a href="?sort=publisher&publisher_name={{ publisher.name }}" style="text-decoration: none;">
+            <span style="
+                padding: 8px 16px;
+                background-color: {% if current_publisher == publisher.name %}#222{% else %}#f5f5f5{% endif %};
+                color: {% if current_publisher == publisher.name %}#fff{% else %}#222{% endif %};
+                border-radius: 20px;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                display: inline-block;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            " onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';" onmouseout="this.style.backgroundColor='{% if current_publisher == publisher.name %}#222{% else %}#f5f5f5{% endif %}'; this.style.color='{% if current_publisher == publisher.name %}#fff{% else %}#222{% endif %}';">
+                {{ publisher.name }}
+            </span>
+        </a>
+    {% endfor %}
         </div>
     {% else %}
         {% for letter in alphabet %}
@@ -201,6 +213,12 @@
                                     <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
                                         {{ book.title_cz }}
                                     </a>
+                                {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -221,6 +239,12 @@
                                     <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
                                         {{ book.title_cz }}
                                     </a>
+                                 {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -246,6 +270,12 @@
                                 <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
                                     {{ book.title_cz }}
                                 </a>
+                             {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>
@@ -275,7 +305,14 @@
                         {% if sort == 'year' and book.year_of_publishing %}
                             – <strong>{{ book.year_of_publishing }}</strong>
                         {% endif %}
+                                {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                     </p>
+
                 {% endfor %}
             </div>
             <div style="padding-left: 150px;">
@@ -292,6 +329,12 @@
                         {% if sort == 'year' and book.year_of_publishing %}
                             – <strong>{{ book.year_of_publishing }}</strong>
                         {% endif %}
+                                {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                     </p>
                 {% endfor %}
             </div>
@@ -314,6 +357,12 @@
                     {% if sort == 'year' and book.year_of_publishing %}
                         – <strong>{{ book.year_of_publishing }}</strong>
                     {% endif %}
+                                {% if perms.viewer.change_book %}
+                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                {% endif %}
+                                {% if perms.viewer.delete_book %}
+                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                {% endif %}
                 </p>
             {% endfor %}
         </div>

@@ -11,18 +11,34 @@
 {% block content %}
 <h2 style="text-align: center; padding: 10px;">Seznam nakladatelství</h2>
     {% if perms.viewer.add_publisher %}
-    <a href="{% url 'publisher_create' %}" class="btn btn-primary">Přidat</a>
-    {% endif %}
+    <a href="{% url 'publisher_create' %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
+        Přidat nakladatelství
+    </a>
+{% endif %}
 
 
 <!-- Navigácia -->
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }}
     {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px; color: inherit; text-decoration: none;">
+            &#x3C; Předcházející
+        </a>
     {% endif %}
     {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Další &#x3E;</a>
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px; color: inherit; text-decoration: none;">
+            Další &#x3E;
+        </a>
     {% endif %}
 </div>
 
@@ -37,7 +53,7 @@
         <a href="{% url 'publisher_update' publisher.id %}">✏️</a>
         {% endif %}
         {% if perms.viewer.delete_publisher %}
-        <a href="{% url 'publisher_delete' publisher.id %}">❌</a>
+        <a href="{% url 'publisher_delete' publisher.id %}">🗑</a>
         {% endif %}
         </p>
     {% empty %}
@@ -49,10 +65,14 @@
 <div style="text-align: center; margin: 20px 0; font-size: 16px;">
     Strana {{ current_page }}
     {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px;">&#x3C; Předcházející</a>
+        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px; color: inherit; text-decoration: none;">
+            &#x3C; Předcházející
+        </a>
     {% endif %}
     {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px;">Další &#x3E;</a>
+        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px; color: inherit; text-decoration: none;">
+            Další &#x3E;
+        </a>
     {% endif %}
 </div>
 {% endblock %}

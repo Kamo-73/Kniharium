@@ -42,15 +42,39 @@
 
 
 {% block content %}
+{% if perms.viewer.change_author %}
+    <a href="{% url 'author_update' author.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-right: 10px;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
+        Aktualizovat autora
+    </a>
+{% endif %}
+{% if perms.viewer.delete_author %}
+    <a href="{% url 'author_delete' author.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #c0392b;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#a93226';" onmouseout="this.style.backgroundColor='#c0392b';">
+        Smazat autora
+    </a>
+{% endif %}
 
-    <h1 style="text-align: center;"><strong>{{ author.name }} {{ author.surname }}</strong>
-    {% if perms.viewer.change_author %}
-        <a href="{% url 'author_update' author.id %}" class="btn btn-primary">Aktualizovat</a>
-    {% endif %}
-    {% if perms.viewer.delete_author %}
-        <a href="{% url 'author_delete' author.id %}" class="btn btn-danger">Smazat</a>
-    {% endif %}
-    </h1>
+    <h1 style="text-align: center;"><strong>{{ author.name }} {{ author.surname }}</strong></h1>
     <h3 style="text-align: center;">{% if author.date_of_death %}
         ( {{ author.date_of_birth }}-✝️{{ author.date_of_death }} )
         {% else %}

@@ -43,6 +43,38 @@
 
 {% block content %}
 
+{% if perms.viewer.change_book %}
+    <a href="{% url 'book_update' book.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-right: 10px;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
+        Aktualizovat knihu
+    </a>
+{% endif %}
+{% if perms.viewer.delete_book %}
+    <a href="{% url 'book_delete' book.id %}" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #c0392b;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='#a93226';" onmouseout="this.style.backgroundColor='#c0392b';">
+        Smazat knihu
+    </a>
+{% endif %}
+
 <div style="display: flex; gap: 30px; margin: 40px 0;">
 
     <!-- Ľavý blok = rámček obsahujúci obrázok + text vedľa neho -->
@@ -217,12 +249,6 @@
    <h1 align="center">Komentáře</h1>
     <br>
 
-    {% if perms.viewer.change_book %}
-        <a href="{% url 'book_update' book.id %}" class="btn btn-primary">Aktualizovat</a>
-    {% endif %}
-    {% if perms.viewer.delete_book %}
-        <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Smazat</a><br>
-    {% endif %}
 
 
   {% for comment in comments %}
