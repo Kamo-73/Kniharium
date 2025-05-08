@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Pridávanie údajov
+    Přidávání údajů
 {% endblock %}
 
 {% block left_sidebar %}
@@ -13,26 +13,26 @@
 
 
 <div class="container mt-5 p-4 rounded bg-light shadow-sm">
-    <h2 class="mb-4"><i class="bi bi-person-plus-fill"></i> Pridať autora</h2>
+    <h2 class="mb-4"><i class="bi bi-person-plus-fill"></i> Přidat autora</h2>
 
     <form method="post">
         {% csrf_token %}
 
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="name">Meno</label>
-                <input type="text" name="name" id="name" placeholder="Meno" class="form-control">
+                <label for="name">Jméno</label>
+                <input type="text" name="name" id="name" placeholder="Jméno" class="form-control">
             </div>
 
             <div class="form-group col-md-4">
-                <label for="surname">Priezvisko</label>
-                <input type="text" name="surname" id="surname" placeholder="Priezvisko" class="form-control">
+                <label for="surname">Příjmení</label>
+                <input type="text" name="surname" id="surname" placeholder="Příjmení" class="form-control">
             </div>
 
             <div class="form-group col-md-4">
-                <label for="gender">Pohlavie</label>
+                <label for="gender">Pohlaví</label>
                 <select name="gender" id="gender" class="form-control">
-                    <option value="">Vyber pohlavie</option>
+                    <option value="">Výběr pohlaví</option>
                     <option value="muž">Muž</option>
                     <option value="žena">Žena</option>
                 </select>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="text-right mt-3">
-            <button type="submit" name="add_author" class="btn btn-dark px-4">Pridať autora</button>
+            <button type="submit" name="add_author" class="btn btn-dark px-4">Přidat autora</button>
         </div>
     </form>
 
@@ -55,7 +55,7 @@
 
 {% if novy_autor %}
     <div class="container mt-5 p-4 rounded bg-white shadow-sm">
-        <h4 class="text-center mb-4 text-success"><i class="bi bi-check-circle-fill"></i> Autor bol úspešne pridaný</h4>
+        <h4 class="text-center mb-4 text-success"><i class="bi bi-check-circle-fill"></i> Autor byl úspěšně přidán.</h4>
 
         <div class="d-flex gap-4 flex-wrap justify-content-center align-items-start">
 
@@ -67,18 +67,19 @@
                 {% endif %}
             {% else %}
                 <div style="width: 150px; height: 220px; background-color: #dee2e6;" class="d-flex align-items-center justify-content-center rounded">
-                    <span class="text-muted">Chýba obrázok</span>
+                    <span class="text-muted">Chybí obrázek</span>
                 </div>
             {% endif %}
 
             <div>
-                <p><strong>Meno:</strong> {{ novy_autor.name }} {{ novy_autor.surname }}</p>
-                <p><strong>Biografia:</strong> {{ novy_autor.biography }}</p>
-                <p><strong>Dátum narodenia:</strong> {{ novy_autor.date_of_birth }}</p>
+                <p><strong>Jméno autora:</strong> {{ novy_autor.name }} {{ novy_autor.surname }}</p>
+                <p><strong>Biografie:</strong> {{ novy_autor.biography }}</p>
+                <p><strong>Datum narození:</strong> {{ novy_autor.date_of_birth }}</p>
+
                 {% if novy_autor.date_of_death %}
-                    <p><strong>Dátum úmrtia:</strong> {{ novy_autor.date_of_death }}</p>
+                    <p><strong>Datum úmrtí:</strong> {{ novy_autor.date_of_death }}</p>
                 {% endif %}
-                <p><strong>Národnosť:</strong> {{ novy_autor.nationality.name }}</p>
+                <p><strong>Národnost:</strong> {{ novy_autor.nationality.name }}</p>
             </div>
         </div>
     </div>
@@ -88,44 +89,44 @@
 
 
 <div class="container mt-5 p-4 rounded bg-white shadow-sm">
-    <h2 class="mb-4"><i class="bi bi-book-fill"></i> Pridať knihu</h2>
+    <h2 class="mb-4"><i class="bi bi-book-fill"></i> Přidat knihu</h2>
 
     <form method="post">
         {% csrf_token %}
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="author_name">Meno autora</label>
-                <input type="text" name="author_name" id="author_name" placeholder="Meno autora" class="form-control">
+                <label for="author_name">Jméno autora</label>
+                <input type="text" name="author_name" id="author_name" placeholder="Jméno autora" class="form-control">
             </div>
             <div class="form-group col-md-6">
-                <label for="author_surname">Priezvisko autora</label>
-                <input type="text" name="author_surname" id="author_surname" placeholder="Priezvisko autora" class="form-control">
+                <label for="author_surname">Příjmení autora</label>
+                <input type="text" name="author_surname" id="author_surname" placeholder="Příjmení autora" class="form-control">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="title_original">Originálny názov</label>
-                <input type="text" name="title_original" id="title_original" placeholder="Originálny názov" class="form-control">
+                <label for="title_original">Originální název</label>
+                <input type="text" name="title_original" id="title_original" placeholder="Originální název" class="form-control">
             </div>
             <div class="form-group col-md-6">
-                <label for="title_cz">Český názov</label>
-                <input type="text" name="title_cz" id="title_cz" placeholder="Český názov" class="form-control">
+                <label for="title_cz">Český název</label>
+                <input type="text" name="title_cz" id="title_cz" placeholder="Český název" class="form-control">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="pages">Počet strán</label>
-                <input type="number" name="pages" id="pages" placeholder="Počet strán" class="form-control">
+                <label for="pages">Počet stran</label>
+                <input type="number" name="pages" id="pages" placeholder="Počet stran" class="form-control">
             </div>
             <div class="form-group col-md-4">
-                <label for="publisher">Vydavateľstvo</label>
-                <input type="text" name="publisher" id="publisher" placeholder="Vydavateľstvo" class="form-control">
+                <label for="publisher">Nakladatelství</label>
+                <input type="text" name="publisher" id="publisher" placeholder="Nakladatelství" class="form-control">
             </div>
             <div class="form-group col-md-4">
-                <label for="rating">Hodnotenie</label>
+                <label for="rating">Hodnocení</label>
                 <select name="rating" id="rating" class="form-control">
                     <option value="">Rating</option>
                     <option value="1">1</option>
@@ -154,7 +155,7 @@
         </div>
 
         <div class="text-right mt-3">
-            <button type="submit" name="add_book" class="btn btn-dark px-4">Pridať knihu</button>
+            <button type="submit" name="add_book" class="btn btn-dark px-4">Přidat knihu</button>
         </div>
     </form>
 
@@ -165,7 +166,7 @@
 
 {% if nova_kniha %}
     <div class="container mt-5 p-4 rounded bg-light shadow-sm">
-        <h4 class="text-center mb-4 text-success"><i class="bi bi-check-circle-fill"></i> Kniha bola úspešne pridaná</h4>
+        <h4 class="text-center mb-4 text-success"><i class="bi bi-check-circle-fill"></i> Kniha byla úspěšně přidána.</h4>
 
         <div class="d-flex gap-4 flex-wrap justify-content-center align-items-start">
 
@@ -177,7 +178,7 @@
                 {% endif %}
             {% else %}
                 <div style="width: 150px; height: 220px; background-color: #dee2e6;" class="d-flex align-items-center justify-content-center rounded">
-                    <span class="text-muted">Chýba obálka</span>
+                    <span class="text-muted">Chybí obálka</span>
                 </div>
             {% endif %}
 
@@ -187,19 +188,19 @@
                         {{ a.name }} {{ a.surname }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
-                <p><strong>Názov (originál):</strong> {{ nova_kniha.title_orig }}</p>
-                <p><strong>Názov (česky):</strong> {{ nova_kniha.title_cz }}</p>
-                <p><strong>Počet strán:</strong> {{ nova_kniha.num_of_pages }}</p>
-                <p><strong>Čas čítania:</strong> {{ nova_kniha.time_of_reading }} minút</p>
-                <p><strong>Rok vydania:</strong> {{ nova_kniha.year_of_publishing }}</p>
-                <p><strong>Hodnotenie:</strong> {{ nova_kniha.rating_ours }}/5</p>
-                <p><strong>Vydavateľ:</strong> {{ nova_kniha.publisher.name }}</p>
+                <p><strong>Název (originál):</strong> {{ nova_kniha.title_orig }}</p>
+                <p><strong>Název (česky):</strong> {{ nova_kniha.title_cz }}</p>
+                <p><strong>Počet stran:</strong> {{ nova_kniha.num_of_pages }}</p>
+                <p><strong>Čas čtení:</strong> {{ nova_kniha.time_of_reading }} minút</p>
+                <p><strong>Rok vydání:</strong> {{ nova_kniha.year_of_publishing }}</p>
+                <p><strong>Hodnocení:</strong> {{ nova_kniha.rating_ours }}/5</p>
+                <p><strong>Nakladatelství:</strong> {{ nova_kniha.publisher.name }}</p>
                 <p><strong>Formáty:</strong>
                     {% for f in nova_kniha.format.all %}
                         {{ f.name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
-                <p><strong>Žánre:</strong>
+                <p><strong>Žánry:</strong>
                     {% for g in nova_kniha.genre.all %}
                         {{ g.name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
@@ -217,25 +218,25 @@
 
 
 <div class="container mt-5 p-4 rounded bg-light shadow-sm">
-    <h2 class="mb-4"><i class="bi bi-chat-left-dots-fill"></i> Pridať komentáre</h2>
+    <h2 class="mb-4"><i class="bi bi-chat-left-dots-fill"></i> Přidat komentář</h2>
 
     <form method="post">
         {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="num_users">Počet komentujúcich</label>
-                <input type="number" name="num_users" id="num_users" placeholder="Počet komentujúcich" class="form-control" min="1" required>
+                <label for="num_users">Počet komentujících</label>
+                <input type="number" name="num_users" id="num_users" placeholder="Počet komentujících" class="form-control" min="1" required>
             </div>
             <div class="form-group col-md-6">
-                <label for="comments_per_user">Komentárov na každého</label>
-                <input type="number" name="comments_per_user" id="comments_per_user" placeholder="Komentárov na každého" class="form-control" min="1" required>
+                <label for="comments_per_user">Počet komentářu pro každého</label>
+                <input type="number" name="comments_per_user" id="comments_per_user" placeholder="Počet komentářu pro každého" class="form-control" min="1" required>
             </div>
         </div>
 
         <div class="text-right mt-3">
-            <button type="submit" name="add_comment" value="good" class="btn btn-success mr-2 px-4">Dobré komentáre</button>
-            <button type="submit" name="add_comment" value="neutral" class="btn btn-warning mr-2 px-4">Neutrálne komentáre</button>
-            <button type="submit" name="add_comment" value="bad" class="btn btn-danger px-4">Zlé komentáre</button>
+            <button type="submit" name="add_comment" value="good" class="btn btn-success mr-2 px-4">Dobré komentáře</button>
+            <button type="submit" name="add_comment" value="neutral" class="btn btn-warning mr-2 px-4">Neutrální komentáře</button>
+            <button type="submit" name="add_comment" value="bad" class="btn btn-danger px-4">Špatné komentáře</button>
         </div>
     </form>
 
@@ -255,7 +256,7 @@
     {% endif %}
 
     {% if comment_info %}
-        <h4 class="mb-3"><i class="bi bi-chat-left-quote-fill"></i> Posledné komentáre</h4>
+        <h4 class="mb-3"><i class="bi bi-chat-left-quote-fill"></i> Poslední komentáře</h4>
 
         <ul class="list-group">
             {% for info in comment_info %}
@@ -284,21 +285,21 @@
 
 
 <div class="container mt-5 p-4 rounded bg-white shadow-sm">
-    <h2 class="mb-4"><i class="bi bi-tools"></i> Vyplniť prázdne miesta v databáze</h2>
+    <h2 class="mb-4"><i class="bi bi-tools"></i> Vyplnit prázdná místa v databázi</h2>
 
     <form method="post">
         {% csrf_token %}
         <div class="d-flex align-items-center mb-3 flex-wrap">
-            <p class="mb-0 mr-3">Doplniť prázdne miesta u autorov:</p>
-            <button type="submit" name="update_authors" class="btn btn-dark px-4 ms-3">Doplniť</button>
+            <p class="mb-0 mr-3">Doplnit prázdná místa u autorů:</p>
+            <button type="submit" name="update_authors" class="btn btn-dark px-4 ms-3">Doplnit</button>
         </div>
     </form>
 
     <form method="post">
         {% csrf_token %}
         <div class="d-flex align-items-center mb-3 flex-wrap">
-            <p class="mb-0 mr-3">Doplniť prázdne miesta v knihách:</p>
-            <button type="submit" name="update_books" class="btn btn-dark px-4 ms-3">Doplniť</button>
+            <p class="mb-0 mr-3">Doplnit prázdná místa v knihách:</p>
+            <button type="submit" name="update_books" class="btn btn-dark px-4 ms-3">Doplnit</button>
         </div>
     </form>
 

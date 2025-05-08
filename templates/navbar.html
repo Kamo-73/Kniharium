@@ -11,11 +11,11 @@
        {% if request.user.is_authenticated %}
         {% for group in request.user.groups.all %}
         {% if group.name == "Partners" %}
-            <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Pridávanie údajov</a>
+            <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
         {% endif %}
     {% endfor %}
     {% if request.user.is_staff %}
-        <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Pridávanie údajov</a>
+        <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
     {% endif %}
 {% endif %}
     </div>
