@@ -116,7 +116,7 @@ class GuiTestWithSelenium(TestCase):
         submit_button.send_keys(Keys.RETURN)
         time.sleep(2)
 
-        assert ("The two password fields didn't match."
+        assert ("Hesla se neshodují."
                 in driver.page_source)
 
 

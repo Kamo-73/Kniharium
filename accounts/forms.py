@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -69,11 +71,14 @@ class SignUpForm(UserCreationForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data['password1']
-        password2 = cleaned_data['password2']
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        date_of_birth = cleaned_data.get('date_of_birth')
 
-        if password1 != password2:
-            raise ValidationError("The two password fields didn't match.")
+        if password1 and password1 != password2:
+            raise ValidationError("Hesla se neshodují.")
+        if date_of_birth and date_of_birth > datetime.date.today():
+            raise ValidationError("Datum narození nesmí být v budoucnosti.")
         return cleaned_data
 
 class UserForm(ModelForm):

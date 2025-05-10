@@ -76,8 +76,8 @@ class BookModelForm(ModelForm):
 
     def clean_year_of_publishing(self):
         initial = self.cleaned_data.get('year_of_publishing')
-        if initial is not None and initial <= 0 or initial > date.today().year:
-            raise ValidationError("Rok vydání musí být větší než nula a nesmí být v budoucnosti.")
+        if initial is not None and initial <= 0:
+            raise ValidationError("Rok vydání musí být větší než nula.")
         return initial
 
     def clean_time_of_reading(self):
@@ -86,6 +86,14 @@ class BookModelForm(ModelForm):
             raise ValidationError("Čas čtení musí být větší než nula.")
         return initial
 
+    def clean(self):
+        cleaned_data = super().clean()
+        year_of_publishing = cleaned_data['year_of_publishing']
+        if year_of_publishing is None:
+            return cleaned_data
+        if year_of_publishing > date.today().year:
+            raise ValidationError("Rok vydání nesmí být v budoucnosti")
+        return cleaned_data
 
 
 class AuthorModelForm(ModelForm):
