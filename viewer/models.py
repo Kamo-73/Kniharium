@@ -43,6 +43,8 @@ class Author(Model):
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
     image = ImageField(upload_to='images/', default=None, null=True, blank=True)
+    primary_genre = ForeignKey(Genre, null=True, blank=True, on_delete=SET_NULL)
+    quote = TextField(null=True, blank=True)
 
     class Meta:
         ordering = ['surname', 'name', 'date_of_birth']
@@ -75,6 +77,7 @@ class Publisher(Model):
     link = URLField(max_length=200, null=True, blank=True, unique=True)
     year_of_establishment = IntegerField(null=True, blank=True)
     year_of_dissolution = IntegerField(null=True, blank=True)
+    image = ImageField(upload_to='images/', default=None, null=True, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -117,24 +120,6 @@ class Book(Model):
     def __str__(self):
         authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
         return f"{self.title_cz} ({authors})"
-
-
-class Award(Model):
-    name = CharField(max_length=150, null=False, blank=False, unique=True)
-    author = ManyToManyField(Author, blank=True, related_name='awards')
-    book = ManyToManyField(Book, blank=True, related_name='awards')
-    year = IntegerField(null=True, blank=True)
-
-    class Meta:
-        ordering = ['name', 'year']
-
-    def __repr__(self):
-        authors = ", ".join([f"{author.name} {author.surname}" for author in self.author.all()])
-        books = ", ".join([f"{book.title_cz}" for book in self.book.all()])
-        return f"{self.name} ({books} {authors})"
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Comment(Model):
