@@ -36,15 +36,15 @@ from django.db.models import Q
 def home_view(request):
     recommended_titles = [
         "Andělé a démoni",
-        "Mesiáš Duny",
-        "Osvícení",
-        "Pán prstenů",
-        "Hobit",
-        "To",
-        "Řbitov zviřátek",
-        "Hellstromův úl",
-        "Cíl: Prázdnota",
-        "Svědectví",
+        "Bostonská společnost",
+        "Bouře",
+        "Bílá velryba",
+        "Bílý jelen",
+        "Bílý mor",
+        "Bůh císař Duny",
+        "Carrie",
+        "Casino Royale",
+        "Cesta do Indie",
     ]
 
     query = Q()

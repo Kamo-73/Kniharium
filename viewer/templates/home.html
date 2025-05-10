@@ -2,64 +2,58 @@
 
 {% block title %}Domů{% endblock %}
 
-{% block left_sidebar %}
-    <p></p>
-{% endblock %}
-
 {% block content %}
 <!-- Nadpis sekcie -->
 <h2 style="padding: 10px; text-align: center;">
     Naše doporučení na měsíc duben
 </h2>
+<!-- Centrovanie a max-width -->
+<div style="
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+">
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 30px;
+        padding: 30px;
+        min-width: 1200px;
+        max-width: 1500px;
+    ">
 
-<!-- Grid layout: 5 stĺpcov, medzery 30px, centrované do max. 1400px -->
-<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; padding: 30px; max-width: 1400px; margin: auto;">
-
-    <!-- Prechádzame odporúčané knihy -->
-    {% for book in recommended_books %}
-        <!-- Každá kniha v samostatnom boxe -->
-        <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #fdfdfd;">
-
-            <!-- Klik na obrázok → presmeruje na detail knihy -->
-            <a href="{% url 'book' book.id %}">
-
-                <!-- Ak kniha má obrázok -->
-               {% if book.image and book.image.name %}
-                    {% if "http" in book.image.name %}
-                        <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+        {% for book in recommended_books %}
+            <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #FDFDFD;">
+                <a href="{% url 'book' book.id %}">
+                    {% if book.image and book.image.name %}
+                        {% if "http" in book.image.name %}
+                            <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="width: 100%; max-width: 225px; height: auto; object-fit: cover; border-radius: 6px;">
+                        {% else %}
+                            <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="width: 100%; max-width: 225px; height: auto; object-fit: cover; border-radius: 6px;">
+                        {% endif %}
                     {% else %}
-                         <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                        <div style="width: 100%; max-width: 225px; height: auto; object-fit: cover; border-radius: 6px;">
+                            Chybí obrázek
+                        </div>
                     {% endif %}
-               {% else %}
-                   <div style="height: 350px; width: 225px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 6px;">
-                       Chybí obrázek
-                    </div>
-               {% endif %}
-            </a>
-
-            <!-- Zoznam autorov (každý klikateľný, vedie na detail autora) -->
-            <p style="margin: 10px 0 0 0; font-weight: bold;">
-                {% for author in book.author.all %}
-                    <a href="{% url 'author' author.id %}" style="text-decoration: none; color: inherit;">
-                        {{ author.name }} {{ author.surname }}
-                    </a>
-                    {% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-
-            <!-- Klikateľný názov knihy (vedie na detail knihy) -->
-            <p>
-                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
-                    {{ book.title_cz }}
                 </a>
-            </p>
-        </div>
-    {% endfor %}
+                <p style="margin: 10px 0 0 0; font-weight: bold;">
+                    {% for author in book.author.all %}
+                        <a href="{% url 'author' author.id %}" style="text-decoration: none; color: inherit;">
+                            {{ author.name }} {{ author.surname }}
+                        </a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p>
+                    <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
+                        {{ book.title_cz }}
+                    </a>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
-{% endblock %}
-
-{% block right_sidebar %}
-    <p></p>
 {% endblock %}
 
 {% include "footer.html" %}

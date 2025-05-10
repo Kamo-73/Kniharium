@@ -19,3 +19,32 @@ def nameday(request):
         'name_day': name,
         'today': formatted_date
     }
+
+def month(request):
+    today = datetime.date.today().month
+
+    if today == 1:
+        mesic = "leden"
+    elif today == 2:
+        mesic = "únor"
+    elif today == 3:
+        mesic = "březen"
+    elif today == 4:
+        mesic = "duben"
+    elif today == 5:
+        mesic = "květen"
+    elif today == 6:
+        mesic = "červen"
+    elif today == 7:
+        mesic = "červenec"
+    elif today == 8:
+        mesic = "srpen"
+    elif today == 9:
+        mesic = "září"
+    elif today == 10:
+        mesic = "říjen"
+    elif today == 11:
+        mesic = "listopad"
+    elif today == 12:
+        mesic = "prosinec"
+    return {'current_month_name': mesic}
