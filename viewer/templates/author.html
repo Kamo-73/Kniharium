@@ -76,7 +76,7 @@
 
     <h1 style="text-align: center;"><strong>{{ author.name }} {{ author.surname }}</strong></h1>
     <h3 style="text-align: center;">{% if author.date_of_death %}
-        ( {{ author.date_of_birth|date:"d. m. Y" }}-✝️{{ author.date_of_death|date:"d. m. Y" }} )
+        ( {{ author.date_of_birth|date:"d. m. Y" }}-✟{{ author.date_of_death|date:"d. m. Y" }} )
         {% else %}
         ( {{ author.date_of_birth|date:"d. m. Y" }} )
     {% endif %}

@@ -50,10 +50,10 @@
                 {{ publisher.name }}
             </a>
         {% if perms.viewer.change_publisher %}
-        <a href="{% url 'publisher_update' publisher.id %}">✏️</a>
+        <a href="{% url 'publisher_update' publisher.id %}" style="text-decoration: none; color: inherit;">✎️</a>
         {% endif %}
         {% if perms.viewer.delete_publisher %}
-        <a href="{% url 'publisher_delete' publisher.id %}">🗑</a>
+        <a href="{% url 'publisher_delete' publisher.id %}" style="text-decoration: none; color: inherit;">⊘</a>
         {% endif %}
         </p>
     {% empty %}

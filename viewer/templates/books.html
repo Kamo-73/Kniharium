@@ -214,10 +214,10 @@
                                         {{ book.title_cz }}
                                     </a>
                                 {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                     <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                        <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                                 </li>
                             {% endfor %}
@@ -240,10 +240,10 @@
                                         {{ book.title_cz }}
                                     </a>
                                  {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                      <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                    <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                                 </li>
                             {% endfor %}
@@ -271,10 +271,10 @@
                                     {{ book.title_cz }}
                                 </a>
                              {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                    <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                    <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                             </li>
                         {% endfor %}
@@ -306,10 +306,10 @@
                             – <strong>{{ book.year_of_publishing }}</strong>
                         {% endif %}
                                 {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                    <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                    <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                     </p>
 
@@ -330,10 +330,10 @@
                             – <strong>{{ book.year_of_publishing }}</strong>
                         {% endif %}
                                 {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                     <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                    <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                     </p>
                 {% endfor %}
@@ -358,10 +358,10 @@
                         – <strong>{{ book.year_of_publishing }}</strong>
                     {% endif %}
                                 {% if perms.viewer.change_book %}
-                                    <a href="{% url 'book_update' book.id %}">✏️</a>
+                                     <a href="{% url 'book_update' book.id %}" style="text-decoration: none; color: inherit;">✎</a>
                                 {% endif %}
                                 {% if perms.viewer.delete_book %}
-                                    <a href="{% url 'book_delete' book.id %}">🗑</a>
+                                    <a href="{% url 'book_delete' book.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                                 {% endif %}
                 </p>
             {% endfor %}

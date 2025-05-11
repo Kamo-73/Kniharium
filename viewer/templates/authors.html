@@ -89,10 +89,10 @@
                     <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
                         {{ author.name }} <strong>{{ author.surname }}</strong>
                         {% if perms.viewer.change_author %}
-                            <a href="{% url 'author_update' author.id %}">✏️</a>
+                            <a href="{% url 'author_update' author.id %}" style="text-decoration: none; color: inherit;">✎</a>
                         {% endif %}
                         {% if perms.viewer.delete_author %}
-                            <a href="{% url 'author_delete' author.id %}">🗑</a>
+                            <a href="{% url 'author_delete' author.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                         {% endif %}
                     </a>
                 </p>
@@ -104,10 +104,10 @@
                     <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
                         {{ author.name }} <strong>{{ author.surname }}</strong>
                         {% if perms.viewer.change_author %}
-                            <a href="{% url 'author_update' author.id %}">✏️</a>
+                            <a href="{% url 'author_update' author.id %}" style="text-decoration: none; color: inherit;">✎</a>
                         {% endif %}
                         {% if perms.viewer.delete_author %}
-                            <a href="{% url 'author_delete' author.id %}">🗑</a>
+                            <a href="{% url 'author_delete' author.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                         {% endif %}
                     </a>
                 </p>
@@ -124,10 +124,10 @@
                 <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
                     {{ author.name }} <strong>{{ author.surname }}</strong>
                     {% if perms.viewer.change_author %}
-                            <a href="{% url 'author_update' author.id %}">✏️</a>
+                             <a href="{% url 'author_update' author.id %}" style="text-decoration: none; color: inherit;">✎</a>
                         {% endif %}
                         {% if perms.viewer.delete_author %}
-                            <a href="{% url 'author_delete' author.id %}">🗑</a>
+                            <a href="{% url 'author_delete' author.id %}" style="text-decoration: none; color: inherit;">⊘</a>
                         {% endif %}
                 </a>
             </p>
