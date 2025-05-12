@@ -144,3 +144,13 @@ class Comment(Model):
 
 
 
+class RecommendedBooks(Model):
+    books = ManyToManyField(Book, related_name='recommended_books')
+
+    def __repr__(self):
+        book_titles = ", ".join([book.title_cz for book in self.books.all()])
+        return f"RecommendedBooks(books=[{book_titles}])"
+
+    def __str__(self):
+        book_titles = ", ".join([book.title_cz for book in self.books.all()])
+        return f"Recommended: {book_titles}"

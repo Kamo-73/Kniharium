@@ -86,6 +86,7 @@ admin.site.register(Author, AuthorAdmin)
 admin.site.register(Format)
 admin.site.register(Publisher)
 admin.site.register(Book, BookAdmin)
+admin.site.register(RecommendedBooks)
 
 
 

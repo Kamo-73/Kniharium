@@ -2,9 +2,10 @@ import re
 from datetime import date
 
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput, IntegerField, Form
+from django.forms import ModelForm, CharField, TextInput, DateField, NumberInput, IntegerField, Form, \
+    CheckboxSelectMultiple
 
-from viewer.models import Book, Author, Publisher, Comment
+from viewer.models import Book, Author, Publisher, Comment, RecommendedBooks
 
 
 class BookModelForm(ModelForm):
@@ -259,9 +260,18 @@ class CommentModelForm(ModelForm):
                 'style': 'width: 100%;'
             })
 
+class RecommendedBooksForm(ModelForm):
+    class Meta:
+        model = RecommendedBooks
+        fields = ['books']
+        widgets = {
+            'books': CheckboxSelectMultiple()
+        }
 
-
-
-
+    def clean_books(self):
+        books = self.cleaned_data['books']
+        if books.count() > 10:
+            raise ValidationError("Môžeš vybrať maximálne 10 kníh.")
+        return books
 
 

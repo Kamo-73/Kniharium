@@ -7,7 +7,7 @@ from random import sample
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 import requests
 from django.core.mail import send_mail
 from django.http import JsonResponse
@@ -21,8 +21,8 @@ from dotenv import load_dotenv
 
 from accounts.models import Profile
 from bots import bot_author_add, bot_book_add
-from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm
-from viewer.models import Book, Author, Publisher, Comment
+from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm, RecommendedBooksForm
+from viewer.models import Book, Author, Publisher, Comment, RecommendedBooks
 from django.core.paginator import Paginator
 from django.db.models import Q, Avg, Count
 
@@ -33,30 +33,31 @@ from viewer.models import Book, Author
 from django.core.paginator import Paginator
 from django.db.models import Q
 
+from django.utils.timezone import now
+from .models import RecommendedBooks
+import calendar
+
 def home_view(request):
-    recommended_titles = [
-        "Andělé a démoni",
-        "Bostonská společnost",
-        "Bouře",
-        "Bílá velryba",
-        "Bílý jelen",
-        "Bílý mor",
-        "Bůh císař Duny",
-        "Carrie",
-        "Casino Royale",
-        "Cesta do Indie",
-    ]
-
-    query = Q()
-    for title in recommended_titles:
-        query |= Q(title_cz__iexact=title)
-
-    recommended_books = Book.objects.filter(query).prefetch_related('author')
+    recommended = RecommendedBooks.objects.first()
+    recommended_books = recommended.books.all() if recommended else []
 
     return render(request, 'home.html', {
         'recommended_books': recommended_books,
     })
 
+class RecommendedBooksUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = RecommendedBooks
+    form_class = RecommendedBooksForm
+    template_name = 'form.html'
+    success_url = reverse_lazy('home')
+
+    def test_func(self):
+        return self.request.user.has_perm('viewer.change_recommendedbooks')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Upraviť odporúčané knihy'
+        return context
 
 class BooksListView(ListView):
     template_name = 'books.html'
