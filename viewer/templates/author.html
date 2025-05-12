@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block left_sidebar %}
-    <h3 style="text-align:center;">Knihy autora</h3>
+<h3 style="text-align:center;">Podobní autoři</h3>
 
-{% for b in knihy_autora %}
+{% for similar in similar_authors %}
     <div style="text-align:center; margin-bottom: 25px;">
 
-        <a href="{% url 'book' b.pk %}">
-            {% if b.image and b.image.name %}
-                {% if "http" in b.image.name %}
-                    <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+        <a href="{% url 'author' similar.pk %}">
+            {% if similar.image and similar.image.name %}
+                {% if "http" in similar.image.name %}
+                    <img src="{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
+                         style="height: 280px; width: 180px; object-fit: cover;">
                 {% else %}
-                    <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                    <img src="/media/{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
+                         style="height: 280px; width: 180px; object-fit: cover;">
                 {% endif %}
             {% else %}
                 <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
@@ -28,16 +30,15 @@
 
         <p style="margin: 5px 0 0 0;">
             {{ forloop.counter }}.
-            <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
-                {{ b.title_cz }}
+            <a href="{% url 'author' similar.pk %}" style="text-decoration: none; color: inherit;">
+                {{ similar.name }} {{ similar.surname }}
             </a>
         </p>
 
     </div>
 {% empty %}
-    <p style="text-align:center;">Autor zatím nemá další knihy</p>
+    <p style="text-align:center;">Žádní podobní autoři</p>
 {% endfor %}
-
 {% endblock %}
 
 
@@ -184,9 +185,9 @@
 {% endblock %}
 
 {% block right_sidebar %}
-  <h3 style="text-align:center;">Náhodní autoři</h3>
+<h3 style="text-align:center;">Nejnovější autoři</h3>
 
-{% for a in nahodni_autori %}
+{% for a in latest_authors %}
     <div style="text-align:center; margin-bottom: 25px;">
 
         <a href="{% url 'author' a.pk %}">

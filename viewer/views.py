@@ -441,15 +441,42 @@ class AuthorDetailView(DetailView):
         author = self.get_object()
         books = author.books.all()
 
-        # vypocet poctu stran
+        # výpočet priemerného počtu strán
         avg = books.aggregate(avg=Avg('num_of_pages')).get('avg') or 0
         context['average_pages'] = round(avg)
 
-        # Ďalšie knihy autora – limit 5
+        # Ďalšie knihy autora – limit 3
         context['knihy_autora'] = books.order_by('-year_of_publishing')[:3]
 
-        all_authors = list(Author.objects.exclude(id=self.get_object().id))  # bez aktuálneho autora
-        context['nahodni_autori'] = sample(all_authors, min(3, len(all_authors)))
+        latest_authors = Author.objects.exclude(id=author.id).order_by('-created')[:3]
+        context['latest_authors'] = latest_authors
+
+        # Podobní autori
+        similar_authors_set = set()
+
+        if author.primary_genre:
+            genre_authors = Author.objects.filter(primary_genre=author.primary_genre).exclude(id=author.id)
+            similar_authors_set.update(genre_authors)
+
+        if len(similar_authors_set) < 3 and author.nationality:
+            nationality_authors = Author.objects.filter(nationality=author.nationality).exclude(id=author.id)
+            similar_authors_set.update(nationality_authors)
+
+        if len(similar_authors_set) < 3:
+            remaining_needed = 3 - len(similar_authors_set)
+            random_authors = Author.objects.exclude(id=author.id).exclude(
+                id__in=[a.id for a in similar_authors_set]).order_by('?')[:remaining_needed]
+            similar_authors_set.update(random_authors)
+
+        if len(similar_authors_set) < 3:
+            remaining_needed = 3 - len(similar_authors_set)
+            by_books = Author.objects.annotate(book_count=Count('books')).exclude(id=author.id).exclude(
+                id__in=[a.id for a in similar_authors_set]).order_by('-book_count')[:remaining_needed]
+            similar_authors_set.update(by_books)
+
+        # vyber náhodne 3 z výsledku
+        similar_authors_list = list(similar_authors_set)
+        context['similar_authors'] = sample(similar_authors_list, min(3, len(similar_authors_list)))
 
         return context
 
