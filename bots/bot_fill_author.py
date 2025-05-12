@@ -8,7 +8,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kniharium.settings')
 django.setup()
 
 import random
-from viewer.models import Author, Nationality
+from viewer.models import Author, Nationality, Genre
 
 # Zo zoznamov pre autorov a priezviská
 names = [
@@ -51,6 +51,41 @@ nationalities = [
     "Slovenská", "Turecká", "USA", "Ukrajinská", "Íránská", "Česká", "Čínská", "Řecká", "Španělská", "Švédská", "Švýcarská"
 ]
 
+quotes = [
+    "A reader lives a thousand lives before he dies.",
+    "Books are a uniquely portable magic.",
+    "Until I feared I would lose it, I never loved to read. One does not love breathing.",
+    "So many books, so little time.",
+    "A room without books is like a body without a soul.",
+    "I have always imagined that Paradise will be a kind of library.",
+    "Reading gives us someplace to go when we have to stay where we are.",
+    "There is no friend as loyal as a book.",
+    "That’s the thing about books. They let you travel without moving your feet.",
+    "Books are the mirrors of the soul.",
+    "We read to know we're not alone.",
+    "You can never get a cup of tea large enough or a book long enough to suit me.",
+    "The only thing that you absolutely have to know, is the location of the library.",
+    "Books wash away from the soul the dust of everyday life.",
+    "You don’t have to burn books to destroy a culture. Just get people to stop reading them.",
+    "Reading is essential for those who seek to rise above the ordinary.",
+    "Books are the quietest and most constant of friends.",
+    "The man who does not read has no advantage over the man who cannot read.",
+    "Once you learn to read, you will be forever free.",
+    "I do believe something very magical can happen when you read a good book.",
+    "Some books leave us free and some books make us free.",
+    "Books are a form of political action. Books are knowledge. Books are reflection. Books change your mind.",
+    "A book is a dream that you hold in your hands.",
+    "There are worse crimes than burning books. One of them is not reading them.",
+    "No two persons ever read the same book.",
+    "If you only read the books that everyone else is reading, you can only think what everyone else is thinking.",
+    "Books can be dangerous. The best ones should be labeled 'This could change your life.'",
+    "Books are the treasured wealth of the world and the fit inheritance of generations and nations.",
+    "A book is a device to ignite the imagination.",
+    "You don’t read a book to pass the time. You read to discover yourself."
+]
+
+
+
 def fill_author_data():
     # Prejde všetkých autorov
     for author in Author.objects.all():
@@ -65,8 +100,6 @@ def fill_author_data():
             print(f"👤 Priezvisko pridané: {author.surname}")
 
         # Dopĺňa dátum narodenia, ak chýba
-
-
         if not author.date_of_birth:
             year = random.randint(1950, 2000)
             author.date_of_birth = datetime.date(year, 1, 1)
@@ -83,6 +116,18 @@ def fill_author_data():
             nationality_obj, created = Nationality.objects.get_or_create(name=nationality_name)
             author.nationality = nationality_obj
             print(f"🌍 Národnosť pridaná: {nationality_name}")
+
+        # Dopĺňa primarny zaner, ak chýba
+        if not author.primary_genre:
+            all_genres = Genre.objects.all()
+            if all_genres.exists():
+                author.primary_genre = random.choice(list(all_genres))
+                print(f"Hlavny zaner pridany.")
+
+        # Dopĺňa citat, ak chýba
+        if not author.quote:
+            author.quote = random.choice(quotes)
+            print(f"Citat pridany.")
 
         # Nastaví obrázok, ak chýba
         if not author.image:
