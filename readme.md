@@ -1,49 +1,67 @@
-Název projektu a autoři.
+![Logo Kniharium](viewer/static/images/Logo.png)
 
-Co jsme zamýšleli naším projektem Kniharium.
+Autoři: Patrik Liptaj a Kamil Kotlář
+
+### Cíl projektu Kniharium
+Naším cílem bylo vytvořit platformu, která propojí milovníky knih a poskytne přehledný systém správu a sdílení informací o knihách.
+
+#### Hlavní záměry:
 - vytvořit databázi knih
 - spojit uživatele a jejich názory
-- zjednodušit přistup údajům o knihách
+- zjednodušit přistup k údajům o knihách
 - vytvořit přehledný systém pro správu knih
 
 
-Co dokáže naše stránka.
-- zobrazit detailní informace o knihách, autorech a vydavatelstvích
-- dokáže vyhledávat
-- dokáže vyhledat knihy pomocí filtrů
-- dokáže vytvořit a upravit profily uživatelů
+### Co dokáže náš projekt
+- přidávání dat přes admin rozhraní, botů nebo UI
+- vytvoření boti dokážou přidávat data, překládat data, vypočítat dobu čtení, doplnit prázdné místa v databázi a komentovat
+- nabízí detailní informace o knihách, autorech a nakladatelstvích
+- nabízí seznam všech knih, autorů a nakladatelství
+- umožňuje uživatelům vyhledávat knihy, autory, nakladatelství
+- umožňuje uživatelům filtrovat knihy
+- umožňuje vytvořit a upravit profily uživatelů
 - uživatelé mohou přidávat komentáře
 - uživatelé si mohou přidávat knihy do svých profilů
-- přidávat data přes admin rozhraní
-- vytvoření boti dokážou přidávat data, překládat data, vypočítat dobu čtení, doplnit prázdné místa v databázi a komentovat
+- pomáhá uživatelům najít knihu na portálu Heuréka
 - stránka má chatbot, funkci náhodné knihy
-- zobrazit list všech knih, autorů a nakladatelství
-- api
-- přesměrování na zakoupení knihy
-- aktuální zobrazení dnešního data a svátku
-- vypisuje naposledy přidané knihy (autory), nejlépe hodnocené knihy
+- stránka zobrazuje dnešní datum a svátek
+- stránka nabízí:
+  - naposledy přidané knihy, autory, nakladatelství
+  - nejlépe hodnocené knihy
+  - náhodnou knihu, náhodné autory
+  - největší nakladatelství
+- stránka nabízí API
 
 
-Uživatel a stránka.
+### Uživatel a stránka
+#### Neregistrovaný uživatel může:
 - využívat rady chatbota
 - získat informace o knihách, autorech a nakladatelstvích
 - číst recenze
-- najít link na zakoupení knihy
+- najít knihu na portálu Heuréka
 - vyhledat knihu
-- zaregistrovat se a vytvořit profil
-- hodnotit a komentovat knihu
-- vymazat a aktualizovat profil
-- prohlížet profily ostatních uživatelů
-- přidat si knihy do watchlistu, oblíbených a přečtených
-- přidat se mezi partnery
-- partner může přidávat a aktualizovat data
-- partneři mohou využívat boty
+- nerozhodný uživatel může využít funkci vyhledání náhodné knihy
 - připomenout si datum a svátek
-- může kontaktovat admin
-- nerozhodný uživatel může použít náhodnou knihu
+- prohlížet profily ostatních uživatelů
+- zaregistrovat se a vytvořit profil
+
+#### Registrovaný uživatel navíc může:
+- hodnotit a komentovat knihu
+- vymazat a aktualizovat svůj profil
+- přidat si knihy do watchlistu, oblíbených a přečtených
+- přidat se mezi partnery využitím formuláře
+
+#### Partner navíc může:
+- přidávat a aktualizovat data
+- využívat boty
+
+#### Admin navíc může:
+- přidávat, upravovat a vymazávat data přes admin rozhraní
+- přidávat, upravovat a vymazávat data přes UI
+- schvalovat partnery
 
 
-Použité technologie.
+### Použité technologie
 - Python, Django (backend)
 - HTML, CSS, JavaScript (frontend)
 - SQLite3 (databáze)

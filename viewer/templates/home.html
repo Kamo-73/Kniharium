@@ -49,10 +49,10 @@
     {% if book.image and book.image.name %}
         {% if "http" in book.image.name %}
             <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
-                 style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                 style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
         {% else %}
             <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
-                 style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                 style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
         {% endif %}
     {% else %}
         <div style="height: 350px; width: 225px; background-color: #ccc;

@@ -147,6 +147,9 @@ class Comment(Model):
 class RecommendedBooks(Model):
     books = ManyToManyField(Book, related_name='recommended_books')
 
+    class Meta:
+        verbose_name_plural = "Recommended books"
+
     def __repr__(self):
         book_titles = ", ".join([book.title_cz for book in self.books.all()])
         return f"RecommendedBooks(books=[{book_titles}])"
