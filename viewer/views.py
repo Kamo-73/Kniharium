@@ -24,7 +24,7 @@ from bots import bot_author_add, bot_book_add
 from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm
 from viewer.models import Book, Author, Publisher, Comment
 from django.core.paginator import Paginator
-from django.db.models import Q, Avg
+from django.db.models import Q, Avg, Count
 
 import math
 
@@ -522,6 +522,16 @@ class PublisherDetailView(DetailView):
     model = Publisher
     context_object_name = 'publisher'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['najnovsie_vydavatelstva'] = Publisher.objects.order_by('-id')[:3]
+
+        context['najvacsie_vydavatelstva'] = Publisher.objects.annotate(
+            num_books=Count('books')
+        ).order_by('-num_books')[:3]
+
+        return context
 
 class PublisherCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'

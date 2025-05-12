@@ -150,17 +150,42 @@
 
 {% if type == 'publishers' %}
     {% if publishers %}
-        <div style="max-width: 800px; margin: 0 auto;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
             {% for publisher in publishers %}
-                <div style="margin-bottom: 20px;">
-                    <h3 style="margin-bottom: 5px;">
-                        <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
-                            {{ publisher.name }}
-                        </a>
-                    </h3>
-                    {% if publisher.year_of_establishment %}
-                        <p style="margin: 0; color: #666;">Založeno: {{ publisher.year_of_establishment }}</p>
-                    {% endif %}
+                <div style="display: flex; margin: 30px 0; max-width: 800px;">
+                    <a href="{% url 'publisher' publisher.id %}">
+                        <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 30px; overflow: hidden;">
+                            {% if publisher.image and publisher.image.name %}
+                                {% if "http" in publisher.image.name %}
+                                    <img src="{{ publisher.image.name }}" alt="{{ publisher.name }}"
+                                         style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                                {% else %}
+                                    <img src="/media/{{ publisher.image.name }}" alt="{{ publisher.name }}"
+                                         style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                                {% endif %}
+                            {% else %}
+                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                            {% endif %}
+                        </div>
+                    </a>
+
+                    <div>
+                        <h3 style="margin: 0;">
+                            <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
+                                {{ publisher.name }}
+                            </a>
+                        </h3>
+
+                        {% if publisher.year_of_establishment %}
+                            <p style="margin: 0; color: #666;">Založeno: {{ publisher.year_of_establishment }}</p>
+                        {% endif %}
+                        {% if publisher.year_of_dissolution %}
+                            <p style="margin: 0; color: #666;">Ukončeno: {{ publisher.year_of_dissolution }}</p>
+                        {% endif %}
+                        {% if publisher.information %}
+                            <p style="max-width: 580px;">{{ publisher.information|truncatewords:55 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         </div>

@@ -10,8 +10,9 @@
         {{ form_title|default:"Formulář" }}
     </h2>
 
-    <form method="post">
-        {% csrf_token %}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
 
         {% if form.non_field_errors %}
             <div style="color: red; margin-bottom: 15px;">
