@@ -103,7 +103,7 @@
         <p style="font-size: 25px;" ><strong>Národnost:</strong> {{ author.nationality.name }}</p>
         <p style="font-size: 25px;"><strong>Počet knih v databázi:</strong> {{ author.books.count }}</p>
         <p style="font-size: 25px;"><strong>Průměrný počet stran v dílech:</strong> {{ average_pages }}</p>
-        <p style="font-size: 25px;"><strong>Nečastěji psaný žánr:</strong> Detektivní zatím</p>
+        <p style="font-size: 25px;"><strong>Nečastěji psaný žánr:</strong> {{ author.primary_genre }}</p>
     </div>
 </div>
 
@@ -116,11 +116,11 @@
 
 
 <p style="text-align: center; font-style: italic; font-size: 40px; color: #444; max-width: 700px; margin: 20px auto 0 auto; line-height: 1.6;">
-    "Books are a uniquely portable magic."
+    "{{ author.quote }}"
 </p>
 
 <p style="text-align: center; font-weight: bold; margin-top: 10px; color: #666;">
-    – Stephen King
+    – {{ author.name }} {{ author.surname }}
 </p><br>
 <hr style="width: 80%">
 
