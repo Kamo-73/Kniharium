@@ -506,6 +506,12 @@ class PublishersListView(ListView):
         paginator = Paginator(publishers, self.paginate_by)
         page_obj = paginator.get_page(page_number)
 
+        # Nové: najnovšie a najväčšie vydavateľstvá
+        najnovsie_vydavatelstva = Publisher.objects.order_by('-id')[:3]
+        najvacsie_vydavatelstva = Publisher.objects.annotate(
+            num_books=Count('books')
+        ).order_by('-num_books')[:3]
+
         context.update({
             'current_page': page_number,
             'page_obj': page_obj,
@@ -513,6 +519,8 @@ class PublishersListView(ListView):
             'has_next': page_obj.has_next(),
             'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
             'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
+            'najnovsie_vydavatelstva': najnovsie_vydavatelstva,
+            'najvacsie_vydavatelstva': najvacsie_vydavatelstva,
         })
 
         return context
