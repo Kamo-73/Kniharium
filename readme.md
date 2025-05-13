@@ -67,8 +67,9 @@ Naším cílem bylo vytvořit platformu, která propojí milovníky knih a posky
 - SQLite3 (databáze)
 
 
-ER diagram.
+### ER diagram
+![ER diagram Kniharium](files/Kniharium_ER_diagram.png)
 
-Screenshot.
+### Screenshots
 
 Licence.

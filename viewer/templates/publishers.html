@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block left_sidebar %}
-<h3 style="text-align:center;">Nejnovější přidaná vydavatelství</h3>
+<h3 style="text-align:center;">Nejnovější přidaná nakladatelství</h3>
 
 {% for p in najnovsie_vydavatelstva %}
     <div style="text-align:center; margin-bottom: 25px;">
@@ -33,7 +33,7 @@
         </p>
     </div>
 {% empty %}
-    <p style="text-align:center;">Zatím žádná vydavatelství.</p>
+    <p style="text-align:center;">Zatím žádná nakladatelství.</p>
 {% endfor %}
 {% endblock %}
 
@@ -107,7 +107,7 @@
 {% endblock %}
 
 {% block right_sidebar %}
-<h3 style="text-align:center;">Největší vydavatelství</h3>
+<h3 style="text-align:center;">Největší nakladatelství</h3>
 
 {% for p in najvacsie_vydavatelstva %}
     <div style="text-align:center; margin-bottom: 25px;">
@@ -136,7 +136,7 @@
         <p style="margin: 0; font-size: 0.9em; color: #666;">{{ p.num_books }} knih</p>
     </div>
 {% empty %}
-    <p style="text-align:center;">Zatím žádná vydavatelství.</p>
+    <p style="text-align:center;">Zatím žádná nakladatelství.</p>
 {% endfor %}
 {% endblock %}
 
