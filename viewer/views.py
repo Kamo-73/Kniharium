@@ -56,7 +56,7 @@ class RecommendedBooksUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Upraviť odporúčané knihy'
+        context['title'] = 'Upravit doporučené knihy'
         return context
 
 class BooksListView(ListView):
@@ -349,8 +349,8 @@ class BookCreateView(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_title'] = 'Vytvoriť knihu'
-        context['submit_button_text'] = 'Vytvoriť'
+        context['form_title'] = 'Vytvořit knihu'
+        context['submit_button_text'] = 'Vytvořit'
         return context
 
 
@@ -367,8 +367,8 @@ class BookUpdateView(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_title'] = 'Upraviť knihu'
-        context['submit_button_text'] = 'Aktualizovať'
+        context['form_title'] = 'Upravit knihu'
+        context['submit_button_text'] = 'Aktualizovat'
         return context
 
 

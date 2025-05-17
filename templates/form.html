@@ -11,8 +11,20 @@
     </h2>
 
     <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+        {% csrf_token %}
 
+        {% if user_form %}
+            {% if user_form.non_field_errors %}
+                <div style="color: red; margin-bottom: 15px;">
+                    {{ user_form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for field in user_form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br>
+                {{ field }}<br><br>
+            {% endfor %}
+        {% endif %}
 
         {% if form.non_field_errors %}
             <div style="color: red; margin-bottom: 15px;">
