@@ -727,14 +727,14 @@ class DataEntryView(View):
             if name and surname and gender:
                 try:
                     if Author.objects.filter(name__iexact=name.strip(), surname__iexact=surname.strip()).exists():
-                        chyba = "❗ Autor s týmto menom už existuje."
+                        chyba = "❗ Autor s tímto jménem už existuje."
                     else:
                         bot_author_add.run(name=name, surname=surname, gender=gender)
                         novy_autor = Author.objects.latest('id')
                 except Exception as e:
                     chyba = f"❌ Chyba: {e}"
             else:
-                chyba = "❗ Všetky polia sú povinné."
+                chyba = "❗ Všechny pole jsou povinné."
 
         # Pridávanie knihy
         elif 'add_book' in request.POST:
@@ -760,12 +760,12 @@ class DataEntryView(View):
                         "format": format_selected,
                     }
                     bot_book_add.run(book_data)
-                    pridana_kniha = f"Kniha „{title_cz}“ bola úspešne pridaná."
+                    pridana_kniha = f"Kniha „{title_cz}“ byla úspěšně přidána."
                     nova_kniha = Book.objects.latest('id')
                 except Exception as e:
-                    pridana_kniha = f"❌ Chyba pri pridávaní knihy: {e}"
+                    pridana_kniha = f"❌ Chyba při přidávání knihy: {e}"
             else:
-                pridana_kniha = "❗ Všetky polia sú povinné."
+                pridana_kniha = "❗ Všechny pole jsou povinné."
 
         # Pridávanie komentárov
         elif 'add_comment' in request.POST:
@@ -777,41 +777,41 @@ class DataEntryView(View):
                 if typ == "good":
                     from bots import bot_comment_good
                     bot_comment_good.run(num_users, comments_per_user)
-                    vysledok_komentare = "✅ Dobré komentáre boli pridané."
+                    vysledok_komentare = "✅ Dobré komentáře byli přidané."
                 elif typ == "neutral":
                     from bots import bot_comment_neutral
                     bot_comment_neutral.run(num_users, comments_per_user)
-                    vysledok_komentare = "✅ Neutrálne komentáre boli pridané."
+                    vysledok_komentare = "✅ Neutrální komentáře byli přidané."
                 elif typ == "bad":
                     from bots import bot_comment_bad
                     bot_comment_bad.run(num_users, comments_per_user)
-                    vysledok_komentare = "✅ Zlé komentáre boli pridané."
+                    vysledok_komentare = "✅ Špatné komentáře byli přidané."
                 else:
-                    vysledok_komentare = "❗ Neznámy typ komentára."
+                    vysledok_komentare = "❗ Neznámý typ komentáře."
 
                 # Zavoláme funkciu na získanie posledných 10 komentárov
                 comment_info = self.get_last_comments(10)
 
             except Exception as e:
-                vysledok_komentare = f"❌ Chyba pri pridávaní komentárov: {e}"
+                vysledok_komentare = f"❌ Chyba při přidávání komentáře: {e}"
 
         # Aktualizácia autorov
         elif 'update_authors' in request.POST:
             try:
                 from bots import bot_fill_author
                 bot_fill_author.run()  # Zavolanie botu na vyplnenie autorov
-                update_info = "✅ Autori boli aktualizovaní."
+                update_info = "✅ Autoři byli aktualizováni."
             except Exception as e:
-                update_info = f"❌ Chyba pri aktualizácii autorov: {e}"
+                update_info = f"❌ Chyba při aktualizaci autorů: {e}"
 
         # Aktualizácia kníh
         elif 'update_books' in request.POST:
             try:
                 from bots import bot_fill_book
                 bot_fill_book.run()  # Zavolanie botu na vyplnenie kníh
-                update_info = "✅ Knihy boli aktualizované."
+                update_info = "✅ Knihy byli aktualizovány."
             except Exception as e:
-                update_info = f"❌ Chyba pri aktualizácii kníh: {e}"
+                update_info = f"❌ Chyba při aktualizaci knih: {e}"
 
         # Vrátime odpoveď s potrebnými informáciami
         return render(request, 'data_entry.html', {

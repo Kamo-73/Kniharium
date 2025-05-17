@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 
-from viewer.forms import AuthorModelForm, BookModelForm, PublisherModelForm
+from viewer.forms import AuthorModelForm, BookModelForm, PublisherModelForm, CommentModelForm
 from viewer.models import Nationality, Genre, Author, Publisher, Format
 
 
@@ -366,6 +366,7 @@ class BookFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
 
+
 class PublisherFormTest(TestCase):
     def test_publisher_form_is_valid(self):
         form = PublisherModelForm(
@@ -419,4 +420,37 @@ class PublisherFormTest(TestCase):
             }
         )
         self.assertFalse(form.is_valid())
+
+
+class CommentFormTest(TestCase):
+    def test_comment_form_is_valid(self):
+        form = CommentModelForm(
+            data={
+                'rating': 4,
+                'user_comment': 'Skvělé.'
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_comment_form_rating_high_is_invalid(self):
+        form = CommentModelForm(
+            data={
+                'rating': 6,
+                'user_comment': 'Přehnané hodnocení.'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_comment_form_rating_low_is_invalid(self):
+        form = CommentModelForm(
+            data={
+                'rating': 0,
+                'user_comment': 'Nízké hodnocení.'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+
+
+
 

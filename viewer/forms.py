@@ -89,7 +89,7 @@ class BookModelForm(ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        year_of_publishing = cleaned_data['year_of_publishing']
+        year_of_publishing = cleaned_data.get('year_of_publishing')
         if year_of_publishing is None:
             return cleaned_data
         if year_of_publishing > date.today().year:
@@ -271,7 +271,7 @@ class RecommendedBooksForm(ModelForm):
     def clean_books(self):
         books = self.cleaned_data['books']
         if books.count() > 10:
-            raise ValidationError("Môžeš vybrať maximálne 10 kníh.")
+            raise ValidationError("Můžeš vybrat maximálně 10 kníh.")
         return books
 
 

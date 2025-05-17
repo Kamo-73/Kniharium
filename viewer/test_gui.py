@@ -9,19 +9,19 @@ from selenium.webdriver.common.by import By
 
 
 class GuiTestWithSelenium(TestCase):
-    @skip
+    # @skip
     def test_home_page_firefox(self):
         driver = webdriver.Firefox()
         driver.get('http://127.0.0.1:8000')
         assert 'Knihy' in driver.page_source
 
-    @skip
+    # @skip
     def test_home_page_chrome(self):
         driver = webdriver.Chrome()
         driver.get('http://127.0.0.1:8000')
         assert 'Autoři' in driver.page_source
 
-    @skip
+    # @skip
     def test_signup(self):
         driver = webdriver.Firefox()
         driver.get("http://127.0.0.1:8000/accounts/signup/")
