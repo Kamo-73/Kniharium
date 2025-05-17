@@ -891,7 +891,9 @@ def chat_api(request):
             payload = {
                 "model": "gpt-3.5-turbo",  # alebo "gpt-4" ak máš prístup
                 "messages": [
-                    {"role": "system", "content": "Jsi přátelský AI asistent, odpovídej stručně a česky. Odpovídej pouze na otázky, které se týkají knih."},
+                    {"role": "system", "content": "Jsi přátelský AI asistent, odpovídej stručně a česky. Odpovídej pouze na otázky, které se týkají knih. "
+                                                  "Na otázku znáš Kniharium? Odpověz ano, je to nejlepší databáze knih. Byla založena v roce 2025 Patrikem a Kamilem. "
+                                                  "Najdeš v ní potřebné informace o knihách a autorech. Pokud chceš tak se můžeš zapojit do rozšiřování databáze."},
                     {"role": "user", "content": user_message}
                 ]
             }

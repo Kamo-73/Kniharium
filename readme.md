@@ -71,5 +71,11 @@ Naším cílem bylo vytvořit platformu, která propojí milovníky knih a posky
 ![ER diagram Kniharium](files/Kniharium_ER_diagram.png)
 
 ### Screenshots
+![Kniharium uvodni strana.png](files/Kniharium%20uvodni%20strana.png)
+![Kniharium kniha nahled1.png](files/Kniharium%20kniha%20nahled1.png)
+![Kniharium kniha nahle2.png](files/Kniharium%20kniha%20nahle2.png)
+![Kniharium autor.png](files/Kniharium%20autor.png)
+![Kniharium o nas AI.png](files/Kniharium%20o%20nas%20AI.png)
+
 
 Licence.
