@@ -78,4 +78,5 @@ Naším cílem bylo vytvořit platformu, která propojí milovníky knih a posky
 ![Kniharium o nas AI.png](files/Kniharium%20o%20nas%20AI.png)
 
 
-Licence.
+### Licence.
+Tento projekt je licencovaný pod MIT licencí. Více informací najdete v souboru `LICENSE`.

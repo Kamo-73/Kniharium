@@ -4,8 +4,8 @@
 
 {% block content %}
 
-{% if perms.viewer.change_recommendedbooks %}
-    <a href="{% url 'recommended_books_update' 1 %}" style="
+    {% if perms.viewer.change_recommendedbooks %}
+        <a href="{% url 'recommended_books_update' 1 %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #000;
@@ -17,23 +17,22 @@
         margin-right: 10px;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
-        Aktualizovat doporučené knihy
-    </a>
-{% endif %}
+            Aktualizovat doporučené knihy
+        </a>
+    {% endif %}
 
 
-<!-- Nadpis sekcie -->
-<h2 style="padding: 10px; text-align: center;">
-    Naše doporučení na měsíc {{ current_month_name }}
-</h2>
-<!-- Centrovanie a max-width -->
-<div style="
+    <h2 style="padding: 10px; text-align: center;">
+        Naše doporučení na měsíc {{ current_month_name }}
+    </h2>
+
+    <div style="
     width: 100%;
     display: flex;
     justify-content: center;
     overflow-x: auto;
 ">
-    <div style="
+        <div style="
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 30px;
@@ -42,41 +41,41 @@
         max-width: 1500px;
     ">
 
-        {% for book in recommended_books %}
-            <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #FDFDFD;">
-<a href="{% url 'book' book.id %}">
+            {% for book in recommended_books %}
+                <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #FDFDFD;">
+                    <a href="{% url 'book' book.id %}">
 
-    {% if book.image and book.image.name %}
-        {% if "http" in book.image.name %}
-            <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
-                 style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
-        {% else %}
-            <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
-                 style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
-        {% endif %}
-    {% else %}
-        <div style="height: 350px; width: 225px; background-color: #ccc;
+                        {% if book.image and book.image.name %}
+                            {% if "http" in book.image.name %}
+                                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                     style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
+                            {% else %}
+                                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                     style="height: 300px; width: 185px; object-fit: cover; border-radius: 6px;">
+                            {% endif %}
+                        {% else %}
+                            <div style="height: 350px; width: 225px; background-color: #ccc;
                     display: flex; align-items: center; justify-content: center; border-radius: 6px;">
-            Chybí obrázek
-        </div>
-    {% endif %}
-</a>
-                <p style="margin: 10px 0 0 0; font-weight: bold;">
-                    {% for author in book.author.all %}
-                        <a href="{% url 'author' author.id %}" style="text-decoration: none; color: inherit;">
-                            {{ author.name }} {{ author.surname }}
-                        </a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-                <p>
-                    <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
-                        {{ book.title_cz }}
+                                Chybí obrázek
+                            </div>
+                        {% endif %}
                     </a>
-                </p>
-            </div>
-        {% endfor %}
+                    <p style="margin: 10px 0 0 0; font-weight: bold;">
+                        {% for author in book.author.all %}
+                            <a href="{% url 'author' author.id %}" style="text-decoration: none; color: inherit;">
+                                {{ author.name }} {{ author.surname }}
+                            </a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p>
+                        <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
+                            {{ book.title_cz }}
+                        </a>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% include "footer.html" %}

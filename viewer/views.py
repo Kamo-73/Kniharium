@@ -130,11 +130,11 @@ class BooksListView(ListView):
 
         if self.sort == 'author':
             all_authors = self.get_queryset()
-            paginator = Paginator(all_authors, 40)
+            paginator = Paginator(all_authors, 20)
             page_obj = paginator.get_page(page_number)
 
-            left_authors = page_obj.object_list[:20]
-            right_authors = page_obj.object_list[20:]
+            left_authors = page_obj.object_list[:10]
+            right_authors = page_obj.object_list[10:]
 
             context.update({
                 'sort': self.sort,
@@ -151,7 +151,7 @@ class BooksListView(ListView):
             })
         else:
             all_books = self.get_queryset()
-            paginator = Paginator(all_books, 40)
+            paginator = Paginator(all_books, 20)
             page_obj = paginator.get_page(page_number)
 
             context.update({
@@ -160,8 +160,8 @@ class BooksListView(ListView):
                 'current_letter': self.letter,
                 'current_page': page_number,
                 'page_obj': page_obj,
-                'left_books': page_obj.object_list[:20],
-                'right_books': page_obj.object_list[20:],
+                'left_books': page_obj.object_list[:10],
+                'right_books': page_obj.object_list[10:],
                 'has_previous': page_obj.has_previous(),
                 'has_next': page_obj.has_next(),
                 'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
@@ -382,7 +382,7 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
 class AuthorsListView(ListView):
     template_name = 'authors.html'
     context_object_name = 'authors'
-    paginate_by = 40  # Počet autorov na stránku
+    paginate_by = 20  # Počet autorov na stránku
 
     def get_queryset(self):
         # Získame parameter pre triedenie podľa písmena
@@ -408,8 +408,8 @@ class AuthorsListView(ListView):
         page_obj = paginator.get_page(page_number)
 
         # Rozdelenie autorov do dvoch stĺpcov
-        left_authors = page_obj.object_list[:20]
-        right_authors = page_obj.object_list[20:]
+        left_authors = page_obj.object_list[:10]
+        right_authors = page_obj.object_list[10:]
 
         all_authors = list(Author.objects.all())
 

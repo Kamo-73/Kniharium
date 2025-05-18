@@ -5,46 +5,46 @@
 {% endblock %}
 
 {% block left_sidebar %}
-<h3 style="text-align:center;">Podobní autoři</h3>
+    <h3 style="text-align:center;">Podobní autoři</h3>
 
-{% for similar in similar_authors %}
-    <div style="text-align:center; margin-bottom: 25px;">
+    {% for similar in similar_authors %}
+        <div style="text-align:center; margin-bottom: 25px;">
 
-        <a href="{% url 'author' similar.pk %}">
-            {% if similar.image and similar.image.name %}
-                {% if "http" in similar.image.name %}
-                    <img src="{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
-                         style="height: 280px; width: 180px; object-fit: cover;">
+            <a href="{% url 'author' similar.pk %}">
+                {% if similar.image and similar.image.name %}
+                    {% if "http" in similar.image.name %}
+                        <img src="{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% else %}
+                        <img src="/media/{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% endif %}
                 {% else %}
-                    <img src="/media/{{ similar.image.name }}" alt="{{ similar.name }} {{ similar.surname }}"
-                         style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
-            {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </a>
-
-        <p style="margin: 5px 0 0 0;">
-            {{ forloop.counter }}.
-            <a href="{% url 'author' similar.pk %}" style="text-decoration: none; color: inherit;">
-                {{ similar.name }} {{ similar.surname }}
+                {% endif %}
             </a>
-        </p>
 
-    </div>
-{% empty %}
-    <p style="text-align:center;">Žádní podobní autoři</p>
-{% endfor %}
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'author' similar.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ similar.name }} {{ similar.surname }}
+                </a>
+            </p>
+
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Žádní podobní autoři</p>
+    {% endfor %}
 {% endblock %}
 
 
 {% block content %}
-{% if perms.viewer.change_author %}
-    <a href="{% url 'author_update' author.id %}" style="
+    {% if perms.viewer.change_author %}
+        <a href="{% url 'author_update' author.id %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #000;
@@ -56,11 +56,11 @@
         margin-right: 10px;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
-        Aktualizovat autora
-    </a>
-{% endif %}
-{% if perms.viewer.delete_author %}
-    <a href="{% url 'author_delete' author.id %}" style="
+            Aktualizovat autora
+        </a>
+    {% endif %}
+    {% if perms.viewer.delete_author %}
+        <a href="{% url 'author_delete' author.id %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #c0392b;
@@ -71,42 +71,42 @@
         font-weight: 500;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#a93226';" onmouseout="this.style.backgroundColor='#c0392b';">
-        Smazat autora
-    </a>
-{% endif %}
+            Smazat autora
+        </a>
+    {% endif %}
 
     <h1 style="text-align: center;"><strong>{{ author.name }} {{ author.surname }}</strong></h1>
     <h3 style="text-align: center;">{% if author.date_of_death %}
         ( {{ author.date_of_birth|date:"d. m. Y" }}-✟{{ author.date_of_death|date:"d. m. Y" }} )
-        {% else %}
+    {% else %}
         ( {{ author.date_of_birth|date:"d. m. Y" }} )
     {% endif %}
     </h3>
 
     <div style="display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 30px;">
 
-    {% if author.image and author.image.name %}
-        {% if "http" in author.image.name %}
-            <img src="{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}"
-                style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25); margin-left: 20px;">
+        {% if author.image and author.image.name %}
+            {% if "http" in author.image.name %}
+                <img src="{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}"
+                     style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25); margin-left: 20px;">
+            {% else %}
+                <img src="/media/{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}"
+                     style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25); margin-left: 20px;">
+            {% endif %}
         {% else %}
-            <img src="/media/{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}"
-                style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25); margin-left: 20px;">
+            <div style="height: 450px; width: 290px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-left: 20px;">
+                Chybí obrázek
+            </div>
         {% endif %}
-    {% else %}
-        <div style="height: 450px; width: 290px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-left: 20px;">
-            Chybí obrázek
+
+        <div style="max-width: 500px;">
+
+            <p style="font-size: 25px;"><strong>Národnost:</strong> {{ author.nationality.name }}</p>
+            <p style="font-size: 25px;"><strong>Počet knih v databázi:</strong> {{ author.books.count }}</p>
+            <p style="font-size: 25px;"><strong>Průměrný počet stran v dílech:</strong> {{ average_pages }}</p>
+            <p style="font-size: 25px;"><strong>Nečastěji psaný žánr:</strong> {{ author.primary_genre }}</p>
         </div>
-    {% endif %}
-
-    <div style="max-width: 500px;">
-
-        <p style="font-size: 25px;" ><strong>Národnost:</strong> {{ author.nationality.name }}</p>
-        <p style="font-size: 25px;"><strong>Počet knih v databázi:</strong> {{ author.books.count }}</p>
-        <p style="font-size: 25px;"><strong>Průměrný počet stran v dílech:</strong> {{ average_pages }}</p>
-        <p style="font-size: 25px;"><strong>Nečastěji psaný žánr:</strong> {{ author.primary_genre }}</p>
     </div>
-</div>
 
     <div style="width: 80%; margin: 0 auto;">
         <a style="display: block; text-align: right; font-size: 14px; color: gray; margin-bottom: 5px;">
@@ -116,107 +116,111 @@
     </div>
 
 
-<p style="text-align: center; font-style: italic; font-size: 40px; color: #444; max-width: 700px; margin: 20px auto 0 auto; line-height: 1.6;">
-    "{{ author.quote }}"
-</p>
+    <p style="text-align: center; font-style: italic; font-size: 40px; color: #444; max-width: 700px; margin: 20px auto 0 auto; line-height: 1.6;">
+        "{{ author.quote }}"
+    </p>
 
-<p style="text-align: center; font-weight: bold; margin-top: 10px; color: #666;">
-    – {{ author.name }} {{ author.surname }}
-</p><br>
-<hr style="width: 80%">
+    <p style="text-align: center; font-weight: bold; margin-top: 10px; color: #666;">
+        – {{ author.name }} {{ author.surname }}
+    </p><br>
+    <hr style="width: 80%">
 
-<h2 style="text-align: center;"><strong>Popis</strong></h2>
+    <h2 style="text-align: center;"><strong>Popis</strong></h2>
     <p>{{ author.biography }}</p>
 
     <hr style="width: 80%">
 
-<h2 onclick="toggleBooks()" id="toggle-header"
-    style="padding: 10px; text-align: center; cursor: pointer; background-color: #f0f0f0; border-radius: 8px; max-width: 400px; margin: 30px auto; font-size: 20px;">
-    Všechny knihy autora<span id="arrow">▼</span>
-</h2>
+    <h2 onclick="toggleBooks()" id="toggle-header"
+        style="padding: 10px; text-align: center; cursor: pointer; background-color: #f0f0f0; border-radius: 8px; max-width: 400px; margin: 30px auto; font-size: 20px;">
+        Všechny knihy autora<span id="arrow">▼</span>
+    </h2>
 
-<div id="author-books" style="display: none;">
-    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; padding: 30px; max-width: 1400px; margin: auto;">
-        {% for book in author.books.all %}
-            <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #fdfdfd;">
+    <div id="author-books" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; padding: 30px; max-width: 1400px; margin: auto;">
+            {% for book in author.books.all %}
+                <div style="text-align: center; border: 1px solid #ddd; padding: 15px; border-radius: 10px; background-color: #fdfdfd;">
 
-                <a href="{% url 'book' book.id %}">
-                    {% if book.image and book.image.name %}
-                        {% if "http" in book.image.name %}
-                            <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                    <a href="{% url 'book' book.id %}">
+                        {% if book.image and book.image.name %}
+                            {% if "http" in book.image.name %}
+                                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                     style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                            {% else %}
+                                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                     style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                            {% endif %}
                         {% else %}
-                            <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 350px; width: 225px; object-fit: cover; border-radius: 6px;">
+                            <div style="height: 350px; width: 225px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                Chybí obrázek
+                            </div>
                         {% endif %}
-                    {% else %}
-                        <div style="height: 350px; width: 225px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 6px;">
-                            Chybí obrázek
-                        </div>
-                    {% endif %}
-                </a>
-
-                <p style="margin-top: 10px;">
-                    <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
-                        {{ book.title_cz }}
                     </a>
-                </p>
-            </div>
-        {% empty %}
-            <p style="text-align: center;">Autor zatím nemá další knihy</p>
-        {% endfor %}
+
+                    <p style="margin-top: 10px;">
+                        <a href="{% url 'book' book.id %}" style="text-decoration: none; color: inherit;">
+                            {{ book.title_cz }}
+                        </a>
+                    </p>
+                </div>
+            {% empty %}
+                <p style="text-align: center;">Autor zatím nemá další knihy</p>
+            {% endfor %}
+        </div>
     </div>
-</div>
 
 
-<script>
-    function toggleBooks() {
-        const section = document.getElementById('author-books');
-        const header = document.getElementById('toggle-header');
-        const arrow = document.getElementById('arrow');
+    <script>
+        function toggleBooks() {
+            const section = document.getElementById('author-books');
+            const header = document.getElementById('toggle-header');
+            const arrow = document.getElementById('arrow');
 
-        if (section.style.display === 'none') {
-            section.style.display = 'block';
-            arrow.textContent = '▲';
-        } else {
-            section.style.display = 'none';
-            arrow.textContent = '▼';
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                arrow.textContent = '▲';
+            } else {
+                section.style.display = 'none';
+                arrow.textContent = '▼';
+            }
         }
-    }
-</script>
+    </script>
 {% endblock %}
 
 {% block right_sidebar %}
-<h3 style="text-align:center;">Nejnovější autoři</h3>
+    <h3 style="text-align:center;">Nejnovější autoři</h3>
 
-{% for a in latest_authors %}
-    <div style="text-align:center; margin-bottom: 25px;">
+    {% for a in latest_authors %}
+        <div style="text-align:center; margin-bottom: 25px;">
 
-        <a href="{% url 'author' a.pk %}">
-            {% if a.image and a.image.name %}
-                {% if "http" in a.image.name %}
-                    <img src="{{ a.image.name }}" alt="{{ a.name }} {{ a.surname }}" style="height: 280px; width: 180px; object-fit: cover;">
+            <a href="{% url 'author' a.pk %}">
+                {% if a.image and a.image.name %}
+                    {% if "http" in a.image.name %}
+                        <img src="{{ a.image.name }}" alt="{{ a.name }} {{ a.surname }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% else %}
+                        <img src="/media/{{ a.image.name }}" alt="{{ a.name }} {{ a.surname }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% endif %}
                 {% else %}
-                    <img src="/media/{{ a.image.name }}" alt="{{ a.name }} {{ a.surname }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
-            {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </a>
-
-        <p style="margin: 5px 0 0 0;">
-            {{ forloop.counter }}.
-            <a href="{% url 'author' a.pk %}" style="text-decoration: none; color: inherit;">
-                {{ a.name }} {{ a.surname }}
+                {% endif %}
             </a>
-        </p>
 
-    </div>
-{% empty %}
-    <p style="text-align:center;">Žádní autoři na zobrazení</p>
-{% endfor %}
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'author' a.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ a.name }} {{ a.surname }}
+                </a>
+            </p>
+
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Žádní autoři na zobrazení</p>
+    {% endfor %}
 
 {% endblock %}
 

@@ -5,42 +5,43 @@
 {% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 40px auto; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); background-color: white;">
-    <h2 style="text-align: center; margin-bottom: 25px;">
-        {{ form_title|default:"Formulář" }}
-    </h2>
+    <div style="max-width: 600px; margin: 40px auto; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); background-color: white;">
+        <h2 style="text-align: center; margin-bottom: 25px;">
+            {{ form_title|default:"Formulář" }}
+        </h2>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        {% if user_form %}
-            {% if user_form.non_field_errors %}
+            {% if user_form %}
+                {% if user_form.non_field_errors %}
+                    <div style="color: red; margin-bottom: 15px;">
+                        {{ user_form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in user_form %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br>
+                    {{ field }}<br><br>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
                 <div style="color: red; margin-bottom: 15px;">
-                    {{ user_form.non_field_errors }}
+                    {{ form.non_field_errors }}
                 </div>
             {% endif %}
 
-            {% for field in user_form %}
+            {% for field in form %}
                 <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br>
                 {{ field }}<br><br>
             {% endfor %}
-        {% endif %}
 
-        {% if form.non_field_errors %}
-            <div style="color: red; margin-bottom: 15px;">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-
-        {% for field in form %}
-            <label for="{{ field.id_for_label }}">{{ field.label }}:</label><br>
-            {{ field }}<br><br>
-        {% endfor %}
-
-        <button type="submit" style="width: 100%; padding: 10px; background-color: black; color: white; border: none; border-radius: 5px;">
-            {{ submit_button_text|default:"Uložit" }}
-        </button>
-    </form>
-</div>
+            <button type="submit"
+                    style="width: 100%; padding: 10px; background-color: black; color: white; border: none; border-radius: 5px;">
+                {{ submit_button_text|default:"Uložit" }}
+            </button>
+        </form>
+    </div>
 
 {% endblock %}

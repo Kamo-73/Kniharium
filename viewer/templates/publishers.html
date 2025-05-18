@@ -5,42 +5,42 @@
 {% endblock %}
 
 {% block left_sidebar %}
-<h3 style="text-align:center;">Nejnovější přidaná nakladatelství</h3>
+    <h3 style="text-align:center;">Nejnovější přidaná nakladatelství</h3>
 
-{% for p in najnovsie_vydavatelstva %}
-    <div style="text-align:center; margin-bottom: 25px;">
-        <a href="{% url 'publisher' p.pk %}">
-            <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; overflow: hidden;">
-                {% if p.image and p.image.name %}
-                    {% if "http" in p.image.name %}
-                        <img src="{{ p.image.name }}" alt="{{ p.name }}"
-                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+    {% for p in najnovsie_vydavatelstva %}
+        <div style="text-align:center; margin-bottom: 25px;">
+            <a href="{% url 'publisher' p.pk %}">
+                <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; overflow: hidden;">
+                    {% if p.image and p.image.name %}
+                        {% if "http" in p.image.name %}
+                            <img src="{{ p.image.name }}" alt="{{ p.name }}"
+                                 style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        {% else %}
+                            <img src="/media/{{ p.image.name }}" alt="{{ p.name }}"
+                                 style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        {% endif %}
                     {% else %}
-                        <img src="/media/{{ p.image.name }}" alt="{{ p.name }}"
-                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
                     {% endif %}
-                {% else %}
-                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                {% endif %}
-            </div>
-        </a>
-
-        <p style="margin: 5px 0 0 0;">
-            {{ forloop.counter }}.
-            <a href="{% url 'publisher' p.pk %}" style="text-decoration: none; color: inherit;">
-                {{ p.name }}
+                </div>
             </a>
-        </p>
-    </div>
-{% empty %}
-    <p style="text-align:center;">Zatím žádná nakladatelství.</p>
-{% endfor %}
+
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'publisher' p.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ p.name }}
+                </a>
+            </p>
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Zatím žádná nakladatelství.</p>
+    {% endfor %}
 {% endblock %}
 
 {% block content %}
-<h2 style="text-align: center; padding: 10px;">Seznam nakladatelství</h2>
+    <h2 style="text-align: center; padding: 10px;">Seznam nakladatelství</h2>
     {% if perms.viewer.add_publisher %}
-    <a href="{% url 'publisher_create' %}" style="
+        <a href="{% url 'publisher_create' %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #000;
@@ -51,93 +51,98 @@
         font-weight: 500;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
-        Přidat nakladatelství
-    </a>
-{% endif %}
-
-
-<!-- Navigácia -->
-<div style="text-align: center; margin: 20px 0; font-size: 16px;">
-    Strana {{ current_page }}
-    {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px; color: inherit; text-decoration: none;">
-            &#x3C; Předcházející
+            Přidat nakladatelství
         </a>
     {% endif %}
-    {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px; color: inherit; text-decoration: none;">
-            Další &#x3E;
-        </a>
-    {% endif %}
-</div>
 
-<!-- Výpis vydavateľstiev -->
-<div style="display: block; padding: 20px 100px;">
-    {% for publisher in publishers %}
-        <p style="text-align: center;">
-            <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
-                {{ publisher.name }}
+
+    <!-- Navigation -->
+    <div style="text-align: center; margin: 20px 0; font-size: 16px;">
+        Strana {{ current_page }}
+        {% if has_previous %}
+            <a href="?page={{ previous_page_number }}&sort={{ sort }}"
+               style="margin-left: 20px; color: inherit; text-decoration: none;">
+                &#x3C; Předcházející
             </a>
-        {% if perms.viewer.change_publisher %}
-        <a href="{% url 'publisher_update' publisher.id %}" style="text-decoration: none; color: inherit;">✎️</a>
         {% endif %}
-        {% if perms.viewer.delete_publisher %}
-        <a href="{% url 'publisher_delete' publisher.id %}" style="text-decoration: none; color: inherit;">⊘</a>
+        {% if has_next %}
+            <a href="?page={{ next_page_number }}&sort={{ sort }}"
+               style="margin-left: 10px; color: inherit; text-decoration: none;">
+                Další &#x3E;
+            </a>
         {% endif %}
-        </p>
-    {% empty %}
-        <p>Žádné nakladatelství.</p>
-    {% endfor %}
-</div>
+    </div>
 
-<!-- Navigácia dole -->
-<div style="text-align: center; margin: 20px 0; font-size: 16px;">
-    Strana {{ current_page }}
-    {% if has_previous %}
-        <a href="?page={{ previous_page_number }}&sort={{ sort }}" style="margin-left: 20px; color: inherit; text-decoration: none;">
-            &#x3C; Předcházející
-        </a>
-    {% endif %}
-    {% if has_next %}
-        <a href="?page={{ next_page_number }}&sort={{ sort }}" style="margin-left: 10px; color: inherit; text-decoration: none;">
-            Další &#x3E;
-        </a>
-    {% endif %}
-</div>
+
+    <div style="display: block; padding: 20px 100px;">
+        {% for publisher in publishers %}
+            <p style="text-align: center;">
+                <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
+                    {{ publisher.name }}
+                </a>
+                {% if perms.viewer.change_publisher %}
+                    <a href="{% url 'publisher_update' publisher.id %}" style="text-decoration: none; color: inherit;">✎️</a>
+                {% endif %}
+                {% if perms.viewer.delete_publisher %}
+                    <a href="{% url 'publisher_delete' publisher.id %}"
+                       style="text-decoration: none; color: inherit;">⊘</a>
+                {% endif %}
+            </p>
+        {% empty %}
+            <p>Žádné nakladatelství.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Navigation down -->
+    <div style="text-align: center; margin: 20px 0; font-size: 16px;">
+        Strana {{ current_page }}
+        {% if has_previous %}
+            <a href="?page={{ previous_page_number }}&sort={{ sort }}"
+               style="margin-left: 20px; color: inherit; text-decoration: none;">
+                &#x3C; Předcházející
+            </a>
+        {% endif %}
+        {% if has_next %}
+            <a href="?page={{ next_page_number }}&sort={{ sort }}"
+               style="margin-left: 10px; color: inherit; text-decoration: none;">
+                Další &#x3E;
+            </a>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block right_sidebar %}
-<h3 style="text-align:center;">Největší nakladatelství</h3>
+    <h3 style="text-align:center;">Největší nakladatelství</h3>
 
-{% for p in najvacsie_vydavatelstva %}
-    <div style="text-align:center; margin-bottom: 25px;">
-        <a href="{% url 'publisher' p.pk %}">
-            <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; overflow: hidden;">
-                {% if p.image and p.image.name %}
-                    {% if "http" in p.image.name %}
-                        <img src="{{ p.image.name }}" alt="{{ p.name }}"
-                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+    {% for p in najvacsie_vydavatelstva %}
+        <div style="text-align:center; margin-bottom: 25px;">
+            <a href="{% url 'publisher' p.pk %}">
+                <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; overflow: hidden;">
+                    {% if p.image and p.image.name %}
+                        {% if "http" in p.image.name %}
+                            <img src="{{ p.image.name }}" alt="{{ p.name }}"
+                                 style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        {% else %}
+                            <img src="/media/{{ p.image.name }}" alt="{{ p.name }}"
+                                 style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        {% endif %}
                     {% else %}
-                        <img src="/media/{{ p.image.name }}" alt="{{ p.name }}"
-                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
                     {% endif %}
-                {% else %}
-                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                {% endif %}
-            </div>
-        </a>
-
-        <p style="margin: 5px 0 0 0;">
-            {{ forloop.counter }}.
-            <a href="{% url 'publisher' p.pk %}" style="text-decoration: none; color: inherit;">
-                {{ p.name }}
+                </div>
             </a>
-        </p>
-        <p style="margin: 0; font-size: 0.9em; color: #666;">{{ p.num_books }} knih</p>
-    </div>
-{% empty %}
-    <p style="text-align:center;">Zatím žádná nakladatelství.</p>
-{% endfor %}
+
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'publisher' p.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ p.name }}
+                </a>
+            </p>
+            <p style="margin: 0; font-size: 0.9em; color: #666;">{{ p.num_books }} knih</p>
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Zatím žádná nakladatelství.</p>
+    {% endfor %}
 {% endblock %}
 
 {% include "footer.html" %}

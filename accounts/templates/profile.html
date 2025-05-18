@@ -10,8 +10,7 @@
 
 {% block content %}
 
-
-<div style="
+    <div style="
     background-color: white;
     border-radius: 10px;
     padding: 30px;
@@ -20,25 +19,24 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 ">
 
+        <!-- buttons -->
+        {% if request.user == profile.user %}
+            <div style="text-align: right;">
+                <a href="{% url 'profile_update' profile.user.id %}">
+                    <button style="padding: 8px 16px; border-radius: 5px; background-color: black; color: white; border: none;">
+                        Upravit profil
+                    </button>
+                </a>
 
-  <!-- tlacidla -->
-{% if request.user == profile.user %}
-<div style="text-align: right;">
-    <a href="{% url 'profile_update' profile.user.id %}">
-        <button style="padding: 8px 16px; border-radius: 5px; background-color: black; color: white; border: none;">
-            Upravit profil
-        </button>
-    </a>
+                <a href="{% url 'profile_delete' profile.user.id %}">
+                    <button style="padding: 8px 16px; background-color: red; color: white; border: none; border-radius: 5px;">
+                        Odstranit profil
+                    </button>
+                </a>
+            </div>
+        {% endif %}
 
-    <a href="{% url 'profile_delete' profile.user.id %}">
-        <button style="padding: 8px 16px; background-color: red; color: white; border: none; border-radius: 5px;">
-            Odstranit profil
-        </button>
-    </a>
-</div>
-{% endif %}
-
-<div style="background-color: #fcfcfc;
+        <div style="background-color: #fcfcfc;
             font-family: 'Segoe UI', sans-serif;
             max-width: 500px;
             margin: 30px auto;
@@ -47,16 +45,16 @@
             overflow: hidden;
  border: 1px solid #ccc;">
 
-  <!-- Hlavička -->
-<div style="background: linear-gradient(to right, #4a4a4a, #1c1c1c);
+            <!-- Head -->
+            <div style="background: linear-gradient(to right, #4a4a4a, #1c1c1c);
             color: white;
             padding: 20px;
             text-align: center;
             position: relative;">
 
-  <!-- Badge v ľavom hornom rohu -->
-{% if is_partner %}
-  <div style="
+                <!-- Badge in left upper corner -->
+                {% if is_partner %}
+                    <div style="
       position: absolute;
       top: 20px;
       left: 20px;
@@ -68,41 +66,40 @@
       font-family: 'Segoe UI', sans-serif;
       font-weight: 500;
   ">
-    🏅 Partner
-  </div>
-{% endif %}
+                        🏅 Partner
+                    </div>
+                {% endif %}
 
-  <!-- Ikona + meno + username zarovnané na stred -->
-  <div style="font-size: 40px;">👤</div>
-  <h2 style="margin: 10px 0 0 0;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
-  <p style="margin: 5px 0 0 0; font-size: 14px;">@{{ profile.user.username }}</p>
-</div>
+                <!-- Icon + name + username -->
+                <div style="font-size: 40px;">👤</div>
+                <h2 style="margin: 10px 0 0 0;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                <p style="margin: 5px 0 0 0; font-size: 14px;">@{{ profile.user.username }}</p>
+            </div>
 
-  <!-- Telo profilu -->
-  <div style="padding: 25px 30px; font-size: 17px; color: #333;">
+            <!-- Profile body -->
+            <div style="padding: 25px 30px; font-size: 17px; color: #333;">
 
-    <div style="margin-bottom: 15px;">
-      <strong>📧 E-mail:</strong><br>{{ profile.user.email }}
-    </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>📧 E-mail:</strong><br>{{ profile.user.email }}
+                </div>
 
-    <div style="margin-bottom: 15px;">
-      <strong>🕒 Naposledy online:</strong><br>{{ profile.user.last_login|date:"d.m.Y H:i" }}
-    </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>🕒 Naposledy online:</strong><br>{{ profile.user.last_login|date:"d.m.Y H:i" }}
+                </div>
 
-    <div>
-      <strong>📝 Biografie:</strong><br>
-      <div style="margin-top: 5px; color: #555;">
-        {{ profile.biography|default:"(Žádná biografie.)" }}
-      </div>
-    </div>
+                <div>
+                    <strong>📝 Biografie:</strong><br>
+                    <div style="margin-top: 5px; color: #555;">
+                        {{ profile.biography|default:"(Žádná biografie.)" }}
+                    </div>
+                </div>
 
-  </div>
-</div>
+            </div>
+        </div>
 
 
-      <!-- watchlist -->
-
-<div style="
+        <!-- Watchlist -->
+        <div style="
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -112,82 +109,82 @@
     border: 1px solid #e0e0e0;
 ">
 
-  <!-- Nadpis -->
-  <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
-    👀 Knihy ve watchlistu
-  </div>
+            <!-- Heading -->
+            <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
+                👀 Knihy ve watchlistu
+            </div>
 
-  <div style="display: flex; justify-content: center;">
-    <div style="display: flex; align-items: center;">
+            <div style="display: flex; justify-content: center;">
+                <div style="display: flex; align-items: center;">
 
-      <!-- Šípka doľava -->
-      {% if profile.watchlist.count > 5 %}
-      <div onclick="scrollWatchlist(-1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
-        ➤
-      </div>
-      {% endif %}
+                    <!-- Left arrow -->
+                    {% if profile.watchlist.count > 5 %}
+                        <div onclick="scrollWatchlist(-1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
 
-      <!-- Viditeľný box na knihy -->
-      <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
-        <div id="watchlist-slider"
-             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
-                    -ms-overflow-style: none; scrollbar-width: none;
-                    {% if profile.watchlist.count <= 5 %} justify-content: center; {% endif %}">
+                    <!-- Visible box for books -->
+                    <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
+                        <div id="watchlist-slider"
+                             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
+                                     -ms-overflow-style: none; scrollbar-width: none;
+                                     {% if profile.watchlist.count <= 5 %} justify-content: center; {% endif %}">
 
-          <style>
-            #watchlist-slider::-webkit-scrollbar {
-              display: none;
-            }
-          </style>
+                            <style>
+                                #watchlist-slider::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
 
-          {% for b in profile.watchlist.all %}
-          <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
+                            {% for b in profile.watchlist.all %}
+                                <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
                       box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center; border: 1px solid #ddd;">
-            <a href="{% url 'book' b.pk %}">
-              {% if b.image and b.image.name %}
-                {% if "http" in b.image.name %}
-                  <img src="{{ b.image.name }}" alt="{{ b.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% else %}
-                  <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% endif %}
-              {% else %}
-                <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
+                                    <a href="{% url 'book' b.pk %}">
+                                        {% if b.image and b.image.name %}
+                                            {% if "http" in b.image.name %}
+                                                <img src="{{ b.image.name }}" alt="{{ b.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% else %}
+                                                <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% endif %}
+                                        {% else %}
+                                            <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
                             display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                            </div>
+                                        {% endif %}
+                                    </a>
+
+                                    <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+                                        <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
+                                            {{ b.title_cz }}
+                                        </a>
+                                    </p>
+                                </div>
+                            {% empty %}
+                                <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Right arrow -->
+                    {% if profile.watchlist.count > 5 %}
+                        <div onclick="scrollWatchlist(1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
                 </div>
-              {% endif %}
-            </a>
-
-            <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
-              <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
-                {{ b.title_cz }}
-              </a>
-            </p>
-          </div>
-          {% empty %}
-            <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu.</div>
-          {% endfor %}
+            </div>
         </div>
-      </div>
-
-      <!-- Šípka doprava -->
-      {% if profile.watchlist.count > 5 %}
-      <div onclick="scrollWatchlist(1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
-        ➤
-      </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
 
 
-<!-- prečítané knihy -->
+        <!-- Read books -->
 
-<div style="
+        <div style="
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -197,82 +194,82 @@
     border: 1px solid #e0e0e0;
 ">
 
-  <!-- Nadpis -->
-  <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
-    📖 Přečtené knihy
-  </div>
+            <!-- Heading -->
+            <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
+                📖 Přečtené knihy
+            </div>
 
-  <div style="display: flex; justify-content: center;">
-    <div style="display: flex; align-items: center;">
+            <div style="display: flex; justify-content: center;">
+                <div style="display: flex; align-items: center;">
 
-      <!-- Šípka doľava -->
-      {% if profile.readlist.count > 5 %}
-      <div onclick="scrollReadlist(-1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
-        ➤
-      </div>
-      {% endif %}
+                    <!-- Left arrow -->
+                    {% if profile.readlist.count > 5 %}
+                        <div onclick="scrollReadlist(-1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
 
-      <!-- Viditeľný box na knihy -->
-      <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
-        <div id="readlist-slider"
-             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
-                    -ms-overflow-style: none; scrollbar-width: none;
-                    {% if profile.readlist.count <= 5 %} justify-content: center; {% endif %}">
+                    <!-- Visible box for books -->
+                    <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
+                        <div id="readlist-slider"
+                             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
+                                     -ms-overflow-style: none; scrollbar-width: none;
+                                     {% if profile.readlist.count <= 5 %} justify-content: center; {% endif %}">
 
-          <style>
-            #readlist-slider::-webkit-scrollbar {
-              display: none;
-            }
-          </style>
+                            <style>
+                                #readlist-slider::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
 
-          {% for book in profile.readlist.all %}
-          <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
+                            {% for book in profile.readlist.all %}
+                                <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
                       box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center; border: 1px solid #ddd;">
-            <a href="{% url 'book' book.pk %}">
-              {% if book.image and book.image.name %}
-                {% if "http" in book.image.name %}
-                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% else %}
-                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% endif %}
-              {% else %}
-                <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
+                                    <a href="{% url 'book' book.pk %}">
+                                        {% if book.image and book.image.name %}
+                                            {% if "http" in book.image.name %}
+                                                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% else %}
+                                                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% endif %}
+                                        {% else %}
+                                            <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
                             display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                            </div>
+                                        {% endif %}
+                                    </a>
+
+                                    <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+                                        <a href="{% url 'book' book.pk %}"
+                                           style="text-decoration: none; color: inherit;">
+                                            {{ book.title_cz }}
+                                        </a>
+                                    </p>
+                                </div>
+                            {% empty %}
+                                <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Right arrow -->
+                    {% if profile.readlist.count > 5 %}
+                        <div onclick="scrollReadlist(1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
                 </div>
-              {% endif %}
-            </a>
-
-            <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
-              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
-                {{ book.title_cz }}
-              </a>
-            </p>
-          </div>
-          {% empty %}
-            <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu</div>
-          {% endfor %}
+            </div>
         </div>
-      </div>
-
-      <!-- Šípka doprava -->
-      {% if profile.readlist.count > 5 %}
-      <div onclick="scrollReadlist(1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
-        ➤
-      </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
 
 
- <!-- obľúbené knihy -->
-
-<div style="
+        <!-- Favourite books -->
+        <div style="
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -282,112 +279,113 @@
     border: 1px solid #e0e0e0;
 ">
 
-  <!-- Nadpis -->
-  <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
-    ❤️ Oblíbené knihy
-  </div>
+            <!-- Heading -->
+            <div style="text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 30px; color: #1a1a1a;">
+                ❤️ Oblíbené knihy
+            </div>
 
-  <div style="display: flex; justify-content: center;">
-    <div style="display: flex; align-items: center;">
+            <div style="display: flex; justify-content: center;">
+                <div style="display: flex; align-items: center;">
 
-      <!-- Šípka doľava -->
-      {% if profile.favouritelist.count > 5 %}
-      <div onclick="scrollFavourites(-1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
-        ➤
-      </div>
-      {% endif %}
+                    <!-- Left arrow -->
+                    {% if profile.favouritelist.count > 5 %}
+                        <div onclick="scrollFavourites(-1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; transform: rotate(180deg); color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
 
-      <!-- Viditeľný box na knihy -->
-      <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
-        <div id="favouritelist-slider"
-             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
-                    -ms-overflow-style: none; scrollbar-width: none;
-                    {% if profile.favouritelist.count <= 5 %} justify-content: center; {% endif %}">
+                    <!-- Visible box for books -->
+                    <div style="width: 1000px; overflow: hidden; margin: 0 20px;">
+                        <div id="favouritelist-slider"
+                             style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth;
+                                     -ms-overflow-style: none; scrollbar-width: none;
+                                     {% if profile.favouritelist.count <= 5 %} justify-content: center; {% endif %}">
 
-          <style>
-            #favouritelist-slider::-webkit-scrollbar {
-              display: none;
-            }
-          </style>
+                            <style>
+                                #favouritelist-slider::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
 
-          {% for book in profile.favouritelist.all %}
-          <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
+                            {% for book in profile.favouritelist.all %}
+                                <div style="flex: 0 0 auto; background-color: #f9f9f9; padding: 12px; border-radius: 10px;
                       box-shadow: 0 2px 6px rgba(0,0,0,0.05); width: 180px; text-align: center; border: 1px solid #ddd;">
-            <a href="{% url 'book' book.pk %}">
-              {% if book.image and book.image.name %}
-                {% if "http" in book.image.name %}
-                  <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% else %}
-                  <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
-                       style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
-                {% endif %}
-              {% else %}
-                <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
+                                    <a href="{% url 'book' book.pk %}">
+                                        {% if book.image and book.image.name %}
+                                            {% if "http" in book.image.name %}
+                                                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% else %}
+                                                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                                     style="height: 260px; width: 100%; object-fit: cover; border-radius: 6px;">
+                                            {% endif %}
+                                        {% else %}
+                                            <div style="width: 100%; height: 260px; background-color: #ccc; border-radius: 6px;
                             display: flex; align-items: center; justify-content: center;">
-                  <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                            </div>
+                                        {% endif %}
+                                    </a>
+
+                                    <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
+                                        <a href="{% url 'book' book.pk %}"
+                                           style="text-decoration: none; color: inherit;">
+                                            {{ book.title_cz }}
+                                        </a>
+                                    </p>
+                                </div>
+                            {% empty %}
+                                <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Right arrow -->
+                    {% if profile.favouritelist.count > 5 %}
+                        <div onclick="scrollFavourites(1)"
+                             style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
+                            ➤
+                        </div>
+                    {% endif %}
+
                 </div>
-              {% endif %}
-            </a>
-
-            <p style="margin: 8px 0 0 0; font-size: 16px; font-weight: 500; color: #222;">
-              <a href="{% url 'book' book.pk %}" style="text-decoration: none; color: inherit;">
-                {{ book.title_cz }}
-              </a>
-            </p>
-          </div>
-          {% empty %}
-            <div style="font-size: 18px; color: #666;">Žádná kniha v seznamu</div>
-          {% endfor %}
+            </div>
         </div>
-      </div>
-
-      <!-- Šípka doprava -->
-      {% if profile.favouritelist.count > 5 %}
-      <div onclick="scrollFavourites(1)"
-           style="font-size: 32px; user-select: none; cursor: pointer; color: #666;">
-        ➤
-      </div>
-      {% endif %}
-
     </div>
-  </div>
-</div>
-</div>
-<!-- JavaScript -->
-<script>
-  function scrollWatchlist(direction) {
-    const slider = document.getElementById('watchlist-slider');
-    const scrollAmount = 1000; // 5 kníh * 200px
-    slider.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
-  }
-</script>
+    <!-- JavaScript -->
+    <script>
+        function scrollWatchlist(direction) {
+            const slider = document.getElementById('watchlist-slider');
+            const scrollAmount = 1000; // 5 kníh * 200px
+            slider.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 
-<script>
-  function scrollReadlist(direction) {
-    const slider = document.getElementById('readlist-slider');
-    const scrollAmount = 1000;
-    slider.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
-  }
-</script>
+    <script>
+        function scrollReadlist(direction) {
+            const slider = document.getElementById('readlist-slider');
+            const scrollAmount = 1000;
+            slider.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 
-<script>
-  function scrollFavourites(direction) {
-    const slider = document.getElementById('favouritelist-slider');
-    const scrollAmount = 1000;
-    slider.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
-  }
-</script>
+    <script>
+        function scrollFavourites(direction) {
+            const slider = document.getElementById('favouritelist-slider');
+            const scrollAmount = 1000;
+            slider.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 
 {% endblock %}
 

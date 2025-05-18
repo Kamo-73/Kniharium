@@ -8,259 +8,269 @@
 {% endblock %}
 
 {% block content %}
-<h3 align="center">Výsledky pro dotaz: "{{ query }}"</h3>
+    <h3 align="center">Výsledky pro dotaz: "{{ query }}"</h3>
 
-<!-- Záložky -->
-<div style="margin: 30px 0; text-align: center; font-size: 22px;">
-    <a href="?q={{ query }}&type=books"
-       style="margin: 0 20px; color: black; text-decoration: none;
-              font-weight: {% if type == 'books' %}bold{% else %}normal{% endif %};
-              border-bottom: {% if type == 'books' %}2px solid black{% else %}none{% endif %};">
-        Knihy
-    </a>
-    <a href="?q={{ query }}&type=books_from_authors"
-   style="margin: 0 20px; color: black; text-decoration: none;
-          font-weight: {% if type == 'books_from_authors' %}bold{% else %}normal{% endif %};
-          border-bottom: {% if type == 'books_from_authors' %}2px solid black{% else %}none{% endif %};">
-    Od autorů
-    </a>
-    <a href="?q={{ query }}&type=authors"
-       style="margin: 0 20px; color: black; text-decoration: none;
-              font-weight: {% if type == 'authors' %}bold{% else %}normal{% endif %};
-              border-bottom: {% if type == 'authors' %}2px solid black{% else %}none{% endif %};">
-        Autoři
-    </a>
-    <a href="?q={{ query }}&type=publishers"
-       style="margin: 0 20px; color: black; text-decoration: none;
-              font-weight: {% if type == 'publishers' %}bold{% else %}normal{% endif %};
-              border-bottom: {% if type == 'publishers' %}2px solid black{% else %}none{% endif %};">
-        Nakladatelství
-    </a>
-
-
-</div>
+    <!-- Tabs -->
+    <div style="margin: 30px 0; text-align: center; font-size: 22px;">
+        <a href="?q={{ query }}&type=books"
+           style="margin: 0 20px; color: black; text-decoration: none;
+                   font-weight: {% if type == 'books' %}bold{% else %}normal{% endif %};
+                   border-bottom: {% if type == 'books' %}2px solid black{% else %}none{% endif %};">
+            Knihy
+        </a>
+        <a href="?q={{ query }}&type=books_from_authors"
+           style="margin: 0 20px; color: black; text-decoration: none;
+                   font-weight: {% if type == 'books_from_authors' %}bold{% else %}normal{% endif %};
+                   border-bottom: {% if type == 'books_from_authors' %}2px solid black{% else %}none{% endif %};">
+            Od autorů
+        </a>
+        <a href="?q={{ query }}&type=authors"
+           style="margin: 0 20px; color: black; text-decoration: none;
+                   font-weight: {% if type == 'authors' %}bold{% else %}normal{% endif %};
+                   border-bottom: {% if type == 'authors' %}2px solid black{% else %}none{% endif %};">
+            Autoři
+        </a>
+        <a href="?q={{ query }}&type=publishers"
+           style="margin: 0 20px; color: black; text-decoration: none;
+                   font-weight: {% if type == 'publishers' %}bold{% else %}normal{% endif %};
+                   border-bottom: {% if type == 'publishers' %}2px solid black{% else %}none{% endif %};">
+            Nakladatelství
+        </a>
 
 
-<!-- paginator hore -->
-{% if books.has_other_pages %}
-    <div style="text-align: center; margin-top: 20px;">
-        {% if books.has_previous %}
-            <a href="?q={{ query }}&type={{ type }}&page={{ books.previous_page_number }}"
-               style="color: black; text-decoration: none; margin-right: 20px;">
-                &#x3C; Předchozí
-            </a>
-        {% endif %}
+    </div>
 
-        <span style="margin: 0 15px;">
+
+    <!-- Navigation up -->
+    {% if books.has_other_pages %}
+        <div style="text-align: center; margin-top: 20px;">
+            {% if books.has_previous %}
+                <a href="?q={{ query }}&type={{ type }}&page={{ books.previous_page_number }}"
+                   style="color: black; text-decoration: none; margin-right: 20px;">
+                    &#x3C; Předchozí
+                </a>
+            {% endif %}
+
+            <span style="margin: 0 15px;">
             Strana {{ books.number }} z {{ books.paginator.num_pages }}
         </span>
 
-        {% if books.has_next %}
-            <a href="?q={{ query }}&type={{ type }}&page={{ books.next_page_number }}"
-               style="color: black; text-decoration: none; margin-left: 20px;">
-                Další &#x3E;
-            </a>
-        {% endif %}
-    </div>
-{% endif %}
-
-
-
-<!-- Výpis kníh -->
-{% if type == 'books' %}
-    {% if books %}
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        {% for book in books %}
-            <div style="display: flex; margin: 30px 0; max-width: 800px;">
-    <a href="{% url 'book' book.id %}">
-    {% if book.image and book.image.name %}
-        {% if "http" in book.image.name %}
-            <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-        {% else %}
-            <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-        {% endif %}
-    {% else %}
-        <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
-            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-            </div>
+            {% if books.has_next %}
+                <a href="?q={{ query }}&type={{ type }}&page={{ books.next_page_number }}"
+                   style="color: black; text-decoration: none; margin-left: 20px;">
+                    Další &#x3E;
+                </a>
+            {% endif %}
         </div>
     {% endif %}
-</a>
-    <div>
-        <h3 style="margin: 0;">
-            <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                {{ book.title_cz }}
-            </a>
-        </h3>
-        <p style="margin: 0; color: #666;">{{ book.title_orig }}</p>
-        <p><strong>
-            {% for a in book.author.all %}
-                <a href="{% url 'author' a.id %}" style="text-decoration: none; color: black;">
-                    {{ a.name }} {{ a.surname }}
-                </a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </strong></p>
-        <p style="max-width: 580px;">{{ book.description|truncatewords:55 }}</p>
-    </div>
-</div>
-        {% endfor %}
-    </div>
-{% else %}
-    <p style="text-align: center; font-style: italic;">Žádné knihy pro výraz „{{ query }}“ nebyly nalezeny.</p>
-{% endif %}
-{% endif %}
-
-{% if type == 'authors' %}
-    {% if authors %}
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        {% for author in authors %}
-            <div style="display: flex; margin: 30px 0; max-width: 800px;">
-                <a href="{% url 'author' author.id %}">
-                    {% if author.image and author.image.name %}
-                        {% if "http" in author.image.name %}
-                            <img src="{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-                        {% else %}
-                            <img src="/media/{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-                        {% endif %}
-                    {% else %}
-                        <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
-                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                            </div>
-                        </div>
-                    {% endif %}
-                </a>
-                <div>
-                    <h3 style="margin: 0;">
-                        <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
-                            {{ author.name }} {{ author.surname }}
-                        </a>
-                    </h3> <br>
-                    <p style="max-width: 580px;">{{ author.biography|truncatewords:55 }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-    {% else %}
-        <p style="text-align: center; font-style: italic;">Žádní autoři pro výraz „{{ query }}“ nebyli nalezeni.</p>
-    {% endif %}
-{% endif %}
 
 
-{% if type == 'publishers' %}
-    {% if publishers %}
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            {% for publisher in publishers %}
-                <div style="display: flex; margin: 30px 0; max-width: 800px;">
-                    <a href="{% url 'publisher' publisher.id %}">
-                        <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 30px; overflow: hidden;">
-                            {% if publisher.image and publisher.image.name %}
-                                {% if "http" in publisher.image.name %}
-                                    <img src="{{ publisher.image.name }}" alt="{{ publisher.name }}"
-                                         style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+
+
+    {% if type == 'books' %}
+        {% if books %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                {% for book in books %}
+                    <div style="display: flex; margin: 30px 0; max-width: 800px;">
+                        <a href="{% url 'book' book.id %}">
+                            {% if book.image and book.image.name %}
+                                {% if "http" in book.image.name %}
+                                    <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
                                 {% else %}
-                                    <img src="/media/{{ publisher.image.name }}" alt="{{ publisher.name }}"
-                                         style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                                    <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
                                 {% endif %}
                             {% else %}
-                                <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div>
+                            <h3 style="margin: 0;">
+                                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                                    {{ book.title_cz }}
+                                </a>
+                            </h3>
+                            <p style="margin: 0; color: #666;">{{ book.title_orig }}</p>
+                            <p><strong>
+                                {% for a in book.author.all %}
+                                    <a href="{% url 'author' a.id %}" style="text-decoration: none; color: black;">
+                                        {{ a.name }} {{ a.surname }}
+                                    </a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </strong></p>
+                            <p style="max-width: 580px;">{{ book.description|truncatewords:55 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-style: italic;">Žádné knihy pro výraz „{{ query }}“ nebyly nalezeny.</p>
+        {% endif %}
+    {% endif %}
+
+    {% if type == 'authors' %}
+        {% if authors %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                {% for author in authors %}
+                    <div style="display: flex; margin: 30px 0; max-width: 800px;">
+                        <a href="{% url 'author' author.id %}">
+                            {% if author.image and author.image.name %}
+                                {% if "http" in author.image.name %}
+                                    <img src="{{ author.image.name }}" alt="{{ author.name }} {{ author.surname }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
+                                {% else %}
+                                    <img src="/media/{{ author.image.name }}"
+                                         alt="{{ author.name }} {{ author.surname }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
+                                {% endif %}
+                            {% else %}
+                                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div>
+                            <h3 style="margin: 0;">
+                                <a href="{% url 'author' author.id %}" style="text-decoration: none; color: black;">
+                                    {{ author.name }} {{ author.surname }}
+                                </a>
+                            </h3> <br>
+                            <p style="max-width: 580px;">{{ author.biography|truncatewords:55 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-style: italic;">Žádní autoři pro výraz „{{ query }}“ nebyli nalezeni.</p>
+        {% endif %}
+    {% endif %}
+
+
+    {% if type == 'publishers' %}
+        {% if publishers %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                {% for publisher in publishers %}
+                    <div style="display: flex; margin: 30px 0; max-width: 800px;">
+                        <a href="{% url 'publisher' publisher.id %}">
+                            <div style="max-height: 280px; max-width: 180px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 30px; overflow: hidden;">
+                                {% if publisher.image and publisher.image.name %}
+                                    {% if "http" in publisher.image.name %}
+                                        <img src="{{ publisher.image.name }}" alt="{{ publisher.name }}"
+                                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                                    {% else %}
+                                        <img src="/media/{{ publisher.image.name }}" alt="{{ publisher.name }}"
+                                             style="max-height: 100%; max-width: 100%; border-radius: 4px;">
+                                    {% endif %}
+                                {% else %}
+                                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div>
+                            <h3 style="margin: 0;">
+                                <a href="{% url 'publisher' publisher.id %}"
+                                   style="text-decoration: none; color: black;">
+                                    {{ publisher.name }}
+                                </a>
+                            </h3>
+
+                            {% if publisher.year_of_establishment %}
+                                <p style="margin: 0; color: #666;">Založeno: {{ publisher.year_of_establishment }}</p>
+                            {% endif %}
+                            {% if publisher.year_of_dissolution %}
+                                <p style="margin: 0; color: #666;">Ukončeno: {{ publisher.year_of_dissolution }}</p>
+                            {% endif %}
+                            {% if publisher.information %}
+                                <p style="max-width: 580px;">{{ publisher.information|truncatewords:55 }}</p>
                             {% endif %}
                         </div>
-                    </a>
-
-                    <div>
-                        <h3 style="margin: 0;">
-                            <a href="{% url 'publisher' publisher.id %}" style="text-decoration: none; color: black;">
-                                {{ publisher.name }}
-                            </a>
-                        </h3>
-
-                        {% if publisher.year_of_establishment %}
-                            <p style="margin: 0; color: #666;">Založeno: {{ publisher.year_of_establishment }}</p>
-                        {% endif %}
-                        {% if publisher.year_of_dissolution %}
-                            <p style="margin: 0; color: #666;">Ukončeno: {{ publisher.year_of_dissolution }}</p>
-                        {% endif %}
-                        {% if publisher.information %}
-                            <p style="max-width: 580px;">{{ publisher.information|truncatewords:55 }}</p>
-                        {% endif %}
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p style="text-align: center; font-style: italic;">Žádná nakladatelství pro výraz „{{ query }}“ nebyla nalezena.</p>
-    {% endif %}
-{% endif %}
-
-{% if type == 'books_from_authors' %}
-    {% if books %}
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            {% for book in books %}
-                <div style="display: flex; margin: 30px 0; max-width: 800px;">
-                    <a href="{% url 'book' book.id %}">
-                        {% if book.image and book.image.name %}
-                            {% if "http" in book.image.name %}
-                                <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-                            {% else %}
-                                <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
-                            {% endif %}
-                        {% else %}
-                            <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
-                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                    <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </a>
-                    <div>
-                        <h3 style="margin: 0;">
-                            <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
-                                {{ book.title_cz }}
-                            </a>
-                        </h3>
-                        <p style="margin: 0; color: #666;">{{ book.title_orig }}</p>
-                        <p><strong>
-                            {% for a in book.author.all %}
-                                <a href="{% url 'author' a.id %}" style="text-decoration: none; color: black;">
-                                    {{ a.name }} {{ a.surname }}
-                                </a>{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </strong></p>
-                        <p style="max-width: 580px;">{{ book.description|truncatewords:55 }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p style="text-align: center; font-style: italic;">Žádné knihy autorů se jménem „{{ query }}“ nebyly nalezeny.</p>
-    {% endif %}
-{% endif %}
-
-
-<!-- paginator dole -->
-{% if books.has_other_pages %}
-    <div style="text-align: center; margin-top: 20px;">
-        {% if books.has_previous %}
-            <a href="?q={{ query }}&type={{ type }}&page={{ books.previous_page_number }}"
-               style="color: black; text-decoration: none; margin-right: 20px;">
-                &#x3C; Předchozí
-            </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-style: italic;">Žádná nakladatelství pro výraz „{{ query }}“ nebyla
+                nalezena.</p>
         {% endif %}
+    {% endif %}
 
-        <span style="margin: 0 15px;">
+    {% if type == 'books_from_authors' %}
+        {% if books %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                {% for book in books %}
+                    <div style="display: flex; margin: 30px 0; max-width: 800px;">
+                        <a href="{% url 'book' book.id %}">
+                            {% if book.image and book.image.name %}
+                                {% if "http" in book.image.name %}
+                                    <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
+                                {% else %}
+                                    <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                                         style="height: 280px; width: 180px; object-fit: cover; margin-right: 30px;">
+                                {% endif %}
+                            {% else %}
+                                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin-right: 30px;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div>
+                            <h3 style="margin: 0;">
+                                <a href="{% url 'book' book.id %}" style="text-decoration: none; color: black;">
+                                    {{ book.title_cz }}
+                                </a>
+                            </h3>
+                            <p style="margin: 0; color: #666;">{{ book.title_orig }}</p>
+                            <p><strong>
+                                {% for a in book.author.all %}
+                                    <a href="{% url 'author' a.id %}" style="text-decoration: none; color: black;">
+                                        {{ a.name }} {{ a.surname }}
+                                    </a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </strong></p>
+                            <p style="max-width: 580px;">{{ book.description|truncatewords:55 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-style: italic;">Žádné knihy autorů se jménem „{{ query }}“ nebyly
+                nalezeny.</p>
+        {% endif %}
+    {% endif %}
+
+
+    <!-- Navigation down -->
+    {% if books.has_other_pages %}
+        <div style="text-align: center; margin-top: 20px;">
+            {% if books.has_previous %}
+                <a href="?q={{ query }}&type={{ type }}&page={{ books.previous_page_number }}"
+                   style="color: black; text-decoration: none; margin-right: 20px;">
+                    &#x3C; Předchozí
+                </a>
+            {% endif %}
+
+            <span style="margin: 0 15px;">
             Strana {{ books.number }} z {{ books.paginator.num_pages }}
         </span>
 
-        {% if books.has_next %}
-            <a href="?q={{ query }}&type={{ type }}&page={{ books.next_page_number }}"
-               style="color: black; text-decoration: none; margin-left: 20px;">
-                Další &#x3E;
-            </a>
-        {% endif %}
-    </div>
-{% endif %}
+            {% if books.has_next %}
+                <a href="?q={{ query }}&type={{ type }}&page={{ books.next_page_number }}"
+                   style="color: black; text-decoration: none; margin-left: 20px;">
+                    Další &#x3E;
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 
 {% endblock %}
 

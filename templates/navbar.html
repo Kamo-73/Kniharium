@@ -1,5 +1,5 @@
 {% load static %}
-<!-- Horný navigačný pás -->
+<!-- Upper navbar -->
 <div class="bg-white py-2">
     <div class="container d-flex justify-content-center" style="font-size: 20px; gap: 60px;">
         <a class="text-dark text-decoration-none" href="{% url 'books' %}">Knihy</a>
@@ -8,27 +8,25 @@
         <a class="text-dark text-decoration-none" href="#" onclick="openLoginModal()">Přihlášení</a>
         <a class="text-dark text-decoration-none" href="{% url 'about' %}">O nás</a>
 
-       {% if request.user.is_authenticated %}
-        {% for group in request.user.groups.all %}
-        {% if group.name == "Partners" %}
-            <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
+        {% if request.user.is_authenticated %}
+            {% for group in request.user.groups.all %}
+                {% if group.name == "Partners" %}
+                    <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
+                {% endif %}
+            {% endfor %}
+            {% if request.user.is_staff %}
+                <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
+            {% endif %}
         {% endif %}
-    {% endfor %}
-    {% if request.user.is_staff %}
-        <a class="text-dark text-decoration-none" href="{% url 'data_entry' %}">Přidávání údajů</a>
-    {% endif %}
-{% endif %}
     </div>
 </div>
 
 
-
-
-<!-- Stredný pás: logo + info -->
+<!-- Middle bar : logo + info -->
 <div class="bg-white py-3">
     <div class="container d-flex justify-content-between align-items-center">
 
-        <!-- Ľavá časť -->
+        <!-- Left side -->
         <div class="text-start">
             {% if user.is_authenticated %}
                 Jsi přihlášen jako <strong>{{ user.username }}</strong><br>
@@ -39,14 +37,14 @@
             {% endif %}
         </div>
 
-        <!-- Stredná časť (logo + názov) -->
+        <!-- Middle (logo + name) -->
         <div class="text-center">
             <a href="{% url 'home' %}">
                 <img src="{% static 'images/Logo.png' %}" alt="Logo" style="height: 150px;">
             </a>
         </div>
 
-        <!-- Pravá časť -->
+        <!-- Right side -->
         <div class="text-end">
             Dnes je {{ today }}<br>
             Svátek má {{ name_day }}
@@ -55,17 +53,18 @@
     </div>
 </div>
 
-<!-- Spodný pás: vyhľadávací panel -->
+<!-- Down bar: search panel -->
 <div class="bg-white py-3">
     <div class="container d-flex justify-content-center align-items-center flex-wrap gap-2">
 
-        <!-- Vyhľadávanie -->
+        <!-- Search -->
         <form method="get" action="{% url 'search' %}" class="d-flex w-50">
-            <input type="text" name="q" class="form-control" placeholder="Vyhledat" value="{{ request.GET.q }}" required>
+            <input type="text" name="q" class="form-control" placeholder="Vyhledat" value="{{ request.GET.q }}"
+                   required>
             <button type="submit" class="btn btn-outline-secondary mx-2">Vyhledat</button>
         </form>
 
-        <!-- Náhodná kniha -->
+        <!-- Random book -->
         <a href="{% url 'random_book' %}" class="btn btn-outline-secondary mx-2">Náhodná kniha</a>
 
     </div>

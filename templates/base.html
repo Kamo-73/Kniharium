@@ -5,78 +5,79 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Kniharium{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">   <!--  zabezpečí, že stránka sa bude správne zobrazovať na mobiloch, tabletoch, počítačoch… -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS dava nam mriezku, styli a responzivnost -->
     <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-        crossorigin="anonymous"
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+            integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+            crossorigin="anonymous"
     >
 
-    <!-- Vlastné štýly -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
 
-    <!-- Navbar -->
-    {% include "navbar.html" %}
+{% include "navbar.html" %}
 
-    <!-- Hlavný layout stránky -->
-    <div class="container-fluid mt-4">
-        <div class="row">
+<div class="container-fluid mt-4">
+    <div class="row">
 
-            <!-- Ľavý sidebar -->
-            <div class="col-md-2">
-                {% block left_sidebar %}{% endblock %}
-            </div>
-
-            <!-- Obsah stránky -->
-            <div class="col-md-8 mx-auto">
-                {% block content %}{% endblock %}
-            </div>
-
-            <!-- Pravý sidebar -->
-            <div class="col-md-2">
-                {% block right_sidebar %}{% endblock %}
-            </div>
-
+        <div class="col-md-2">
+            {% block left_sidebar %}{% endblock %}
         </div>
-    </div>
 
-    <!-- Bootstrap JS aby niektoré komponenty Bootstrapu fungovali interaktívne (napr. rozbaľovacie menu, modálne okná, karusely…). -->
-    <script
+        <div class="col-md-8 mx-auto">
+            {% block content %}{% endblock %}
+        </div>
+
+        <div class="col-md-2">
+            {% block right_sidebar %}{% endblock %}
+        </div>
+
+    </div>
+</div>
+
+<script
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"
-    ></script>
-    <script
+></script>
+<script
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
         integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
         crossorigin="anonymous"
-    ></script>
-    <script
+></script>
+<script
         src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"
-    ></script>
+></script>
 
 
-<!-- Prihlasovací modal -->
-<div id="login-modal" style="display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5);">
+<!-- Login modal -->
+<div id="login-modal"
+     style="display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5);">
     <div style="background-color: white; max-width: 400px; margin: 100px auto; padding: 20px; border-radius: 10px; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.3);">
 
-        <!-- Zavrieť -->
-        <button onclick="closeLoginModal()" style="position: absolute; top: 10px; right: 15px; font-size: 18px; background: none; border: none; cursor: pointer;">×</button>
+        <!-- Close -->
+        <button onclick="closeLoginModal()"
+                style="position: absolute; top: 10px; right: 15px; font-size: 18px; background: none; border: none; cursor: pointer;">
+            ×
+        </button>
 
         <h3 style="text-align: center; margin-bottom: 20px;">Přihlášení</h3>
 
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Uživatelské jméno" required style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-            <input type="password" name="password" placeholder="Heslo" required style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-            <button type="submit" style="width: 100%; padding: 10px; background-color: black; color: white; border: none; border-radius: 5px;">Přihlásit se</button>
+            <input type="text" name="username" placeholder="Uživatelské jméno" required
+                   style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <input type="password" name="password" placeholder="Heslo" required
+                   style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <button type="submit"
+                    style="width: 100%; padding: 10px; background-color: black; color: white; border: none; border-radius: 5px;">
+                Přihlásit se
+            </button>
         </form>
 
         <p style="text-align: center; margin-top: 15px;">
@@ -85,7 +86,7 @@
         </p>
     </div>
 </div>
-<!-- Tlačidlo AI asistenta -->
+<!-- AI assistant button -->
 <div id="chat-toggle" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
     <button style="
         padding: 12px 24px;
@@ -103,7 +104,7 @@
     </button>
 </div>
 
-<!-- Okno chatu -->
+<!-- Chat window -->
 <div id="chat-box" style="
     display: none;  /* <-- musí byť iba toto */
     position: fixed;
@@ -120,16 +121,18 @@
     flex-direction: column;
     font-family: 'Segoe UI', sans-serif;
 ">
-    <!-- Hlavička -->
+    <!-- Head -->
     <div style="background-color: #000; color: #fff; padding: 14px 16px; font-weight: bold; font-size: 16px;">
         AI Asistent
-        <span style="float: right; cursor: pointer;" onclick="document.getElementById('chat-box').style.display='none';">✖</span>
+        <span style="float: right; cursor: pointer;"
+              onclick="document.getElementById('chat-box').style.display='none';">✖</span>
     </div>
 
-    <!-- Správy -->
-    <div id="chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; font-size: 14px; background-color: #f9f9f9;"></div>
+    <!-- Messages -->
+    <div id="chat-messages"
+         style="flex: 1; padding: 12px; overflow-y: auto; font-size: 14px; background-color: #f9f9f9;"></div>
 
-    <!-- Vstup -->
+    <!-- Input -->
     <div style="padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 8px;">
         <input type="text" id="chat-input" placeholder="Zeptej se mě..." style="
             flex: 1;
@@ -154,7 +157,6 @@
 </div>
 
 
-
 <script>
     function openLoginModal() {
         document.getElementById('login-modal').style.display = 'block';
@@ -164,7 +166,6 @@
         document.getElementById('login-modal').style.display = 'none';
     }
 
-    // Zatváranie ESC alebo klik mimo
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             closeLoginModal();
@@ -180,65 +181,61 @@
     });
 </script>
 
-<!-- chatbot -->
+<!-- Chatbot -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const toggle = document.getElementById("chat-toggle");
-    const chatBox = document.getElementById("chat-box");
-    const sendButton = document.getElementById("send-button");
-    const chatInput = document.getElementById("chat-input");
-    const chatMessages = document.getElementById("chat-messages");
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("chat-toggle");
+        const chatBox = document.getElementById("chat-box");
+        const sendButton = document.getElementById("send-button");
+        const chatInput = document.getElementById("chat-input");
+        const chatMessages = document.getElementById("chat-messages");
 
-    // Zobraziť/skryť chat pri kliknutí na tlačidlo
-    toggle.addEventListener("click", function () {
-        chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "flex" : "none";
-    });
+        toggle.addEventListener("click", function () {
+            chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "flex" : "none";
+        });
 
-    // Zatváracie tlačidlo v pravom hornom rohu chatu
-    const closeBtn = chatBox.querySelector("span");
-    closeBtn.addEventListener("click", function () {
-        chatBox.style.display = "none";
-    });
+        const closeBtn = chatBox.querySelector("span");
+        closeBtn.addEventListener("click", function () {
+            chatBox.style.display = "none";
+        });
 
-    // Odoslanie správy tlačidlom
-    sendButton.addEventListener("click", async function () {
-        const message = chatInput.value.trim();
-        if (!message) return;
+        sendButton.addEventListener("click", async function () {
+            const message = chatInput.value.trim();
+            if (!message) return;
 
-        chatMessages.innerHTML += `<div><strong>Ty:</strong> ${message}</div>`;
-        chatInput.value = "";
+            chatMessages.innerHTML += `<div><strong>Ty:</strong> ${message}</div>`;
+            chatInput.value = "";
 
-        try {
-            const response = await fetch("/chat/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: message })
-            });
+            try {
+                const response = await fetch("/chat/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({message: message})
+                });
 
-            const data = await response.json();
+                const data = await response.json();
 
-            if (data.reply) {
-                chatMessages.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
-            } else {
-                chatMessages.innerHTML += `<div><strong>Chyba:</strong> ${data.error}</div>`;
+                if (data.reply) {
+                    chatMessages.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
+                } else {
+                    chatMessages.innerHTML += `<div><strong>Chyba:</strong> ${data.error}</div>`;
+                }
+            } catch (error) {
+                chatMessages.innerHTML += `<div><strong>Chyba:</strong> Server neodpovedá.</div>`;
             }
-        } catch (error) {
-            chatMessages.innerHTML += `<div><strong>Chyba:</strong> Server neodpovedá.</div>`;
-        }
 
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
 
-    // Odoslanie správy klávesom Enter
-    chatInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            sendButton.click();
-        }
+        chatInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
     });
-});
 </script>
 {% include "footer.html" %}
 

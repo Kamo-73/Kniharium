@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ book.title_cz}}
+    {{ book.title_cz }}
 {% endblock %}
 
 {% block left_sidebar %}
 
- <h3 style="text-align:center;">Podobné knihy</h3>
+    <h3 style="text-align:center;">Podobné knihy</h3>
 
     {% for b in podobne_knihy %}
         <div style="text-align:center; margin-bottom: 25px;">
@@ -14,16 +14,18 @@
             <a href="{% url 'book' b.pk %}">
                 {% if b.image and b.image.name %}
                     {% if "http" in b.image.name %}
-                        <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                        <img src="{{ b.image.name }}" alt="{{ b.title_cz }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
                     {% else %}
-                        <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+                        <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
                     {% endif %}
                 {% else %}
-            <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                     <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
-                </div>
-            </div>
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
+                    </div>
                 {% endif %}
             </a>
 
@@ -43,8 +45,8 @@
 
 {% block content %}
 
-{% if perms.viewer.change_book %}
-    <a href="{% url 'book_update' book.id %}" style="
+    {% if perms.viewer.change_book %}
+        <a href="{% url 'book_update' book.id %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #000;
@@ -56,11 +58,11 @@
         margin-right: 10px;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#333';" onmouseout="this.style.backgroundColor='#000';">
-        Aktualizovat knihu
-    </a>
-{% endif %}
-{% if perms.viewer.delete_book %}
-    <a href="{% url 'book_delete' book.id %}" style="
+            Aktualizovat knihu
+        </a>
+    {% endif %}
+    {% if perms.viewer.delete_book %}
+        <a href="{% url 'book_delete' book.id %}" style="
         display: inline-block;
         padding: 10px 20px;
         background-color: #c0392b;
@@ -71,71 +73,73 @@
         font-weight: 500;
         transition: background-color 0.2s ease;
     " onmouseover="this.style.backgroundColor='#a93226';" onmouseout="this.style.backgroundColor='#c0392b';">
-        Smazat knihu
-    </a>
-{% endif %}
+            Smazat knihu
+        </a>
+    {% endif %}
 
-<div style="display: flex; gap: 30px; margin: 40px 0;">
+    <div style="display: flex; gap: 30px; margin: 40px 0;">
 
-    <!-- Ľavý blok = rámček obsahujúci obrázok + text vedľa neho -->
-    <div style="flex: 1; padding: 20px; margin-left: 200px;">
+        <!-- Left block = frame with picture + text -->
+        <div style="flex: 1; padding: 20px; margin-left: 200px;">
 
-        <!-- Flexbox: obrázok vľavo, text vpravo -->
-        <div style="display: flex; gap: 30px; align-items: flex-start;">
+            <!-- Flexbox: picture on left, text on right -->
+            <div style="display: flex; gap: 30px; align-items: flex-start;">
 
-            <!-- Obrázok knihy -->
-            {% if book.image and book.image.name %}
-                {% if "http" in book.image.name %}
-                    <img src="{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+                <!-- Picture of book -->
+                {% if book.image and book.image.name %}
+                    {% if "http" in book.image.name %}
+                        <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                             style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+                    {% else %}
+                        <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                             style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+                    {% endif %}
                 {% else %}
-                    <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}" style="height: 450px; width: 290px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+                    <div style="height: 450px; width: 290px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                        Chybí obrázek
+                    </div>
                 {% endif %}
-            {% else %}
-                <div style="height: 450px; width: 290px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    Chybí obrázek
-                </div>
-            {% endif %}
 
-            <!-- Text vedľa obrázka -->
-            <div>
+                <!-- Text next to picture -->
+                <div>
 
-                <a style="font-size: 55px; font-weight: bold; margin: 0;">
-                    {{ book.title_cz }}
-                </a> <br>
-                <a style="font-size: 35px; color: gray; margin: 5px 0 15px 0;">
-                   {{ book.title_orig }}
-                </a> <br>
-                <a style="font-size: 55px; font-weight: bold; margin: 0; text-decoration: none; color: inherit;">
-                    {% for author in book.author.all %}
-                         <span onclick="window.location.href='{% url 'author' author.pk %}'" style="cursor: pointer;">
+                    <a style="font-size: 55px; font-weight: bold; margin: 0;">
+                        {{ book.title_cz }}
+                    </a> <br>
+                    <a style="font-size: 35px; color: gray; margin: 5px 0 15px 0;">
+                        {{ book.title_orig }}
+                    </a> <br>
+                    <a style="font-size: 55px; font-weight: bold; margin: 0; text-decoration: none; color: inherit;">
+                        {% for author in book.author.all %}
+                            <span onclick="window.location.href='{% url 'author' author.pk %}'"
+                                  style="cursor: pointer;">
                             {{ author.name }} {{ author.surname }}
                         </span>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </a><br> <br>
-                {% for genre in book.genre.all|slice:":4" %}
-                    <span style="padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-right: 14px;">
+                        {% endfor %}
+                    </a><br> <br>
+                    {% for genre in book.genre.all|slice:":4" %}
+                        <span style="padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-right: 14px;">
                         {{ genre.name }}
                     </span>
-                {% endfor %}<br> <br>
-                <a style="font-size: 25px;"><strong>Nakladatelství:</strong> {{ book.publisher }}</a> <br>
-                <a style="font-size: 25px;"><strong>Rok vydání:</strong> {{ book.year_of_publishing }}</a><br>
-                <a style="font-size: 25px;"><strong>Počet stran:</strong> {{ book.num_of_pages }}</a><br>
-                <a style="font-size: 25px;"><strong>Délka čtení:</strong> {{ reading_time }}</a><br>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
+                    {% endfor %}<br> <br>
+                    <a style="font-size: 25px;"><strong>Nakladatelství:</strong> {{ book.publisher }}</a> <br>
+                    <a style="font-size: 25px;"><strong>Rok vydání:</strong> {{ book.year_of_publishing }}</a><br>
+                    <a style="font-size: 25px;"><strong>Počet stran:</strong> {{ book.num_of_pages }}</a><br>
+                    <a style="font-size: 25px;"><strong>Délka čtení:</strong> {{ reading_time }}</a><br>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        </div>
-    </div>
-
-    <!-- Pravý blok -->
-    <div style="flex: 1; padding: 20px;">
+        <!-- Right block -->
+        <div style="flex: 1; padding: 20px;">
 
 
-
-     <a style="font-size: 35px; font-weight: bold; margin: 0;">
-        Naše hodnocení:
-        <span style="font-size: 50px;">
+            <a style="font-size: 35px; font-weight: bold; margin: 0;">
+                Naše hodnocení:
+                <span style="font-size: 50px;">
             {% for i in "12345" %}
                 {% if forloop.counter <= book.rating_ours %}
                     ★
@@ -144,11 +148,11 @@
                 {% endif %}
             {% endfor %}
         </span>
-     </a><br>
+            </a><br>
 
-    <a style="font-size: 35px; font-weight: bold; margin-top: 30px;">
-        Hodnocení čtenářů:
-        <span style="font-size: 50px;">
+            <a style="font-size: 35px; font-weight: bold; margin-top: 30px;">
+                Hodnocení čtenářů:
+                <span style="font-size: 50px;">
             {% for i in "12345" %}
                 {% if forloop.counter <= user_rating_avg %}
                     ★
@@ -157,86 +161,89 @@
                 {% endif %}
             {% endfor %}
         </span>
-        <span style="font-size: 16px; color: gray;">({{ rating_count }} hodnocení)</span>
-    </a><br>
+                <span style="font-size: 16px; color: gray;">({{ rating_count }} hodnocení)</span>
+            </a><br>
 
-    <a style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline;">
-        Recenze:
-    </a>  <br><br>
+            <a style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline;">
+                Recenze:
+            </a> <br><br>
 
-<div style="text-align: center;">
-    {% with '' as zobrazeny %}
+            <div style="text-align: center;">
+                {% with '' as zobrazeny %}
 
-        {% if 'Vázaná kniha' in format_vazana and not 'vaz' in zobrazeny %}
-            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-                <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">Vázaná kniha</a>
+                    {% if 'Vázaná kniha' in format_vazana and not 'vaz' in zobrazeny %}
+                        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://knihy.heureka.cz/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}"
+                   style="text-decoration: none; color: inherit;">Vázaná kniha</a>
             </span>
-            {% with zobrazeny|add:'vaz' as zobrazeny %}{% endwith %}
-        {% endif %}
+                        {% with zobrazeny|add:'vaz' as zobrazeny %}{% endwith %}
+                    {% endif %}
 
-        {% if 'E-kniha' in format_e and not 'e' in zobrazeny %}
-            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-                <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">E-kniha</a>
+                    {% if 'E-kniha' in format_e and not 'e' in zobrazeny %}
+                        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://e-book-elektronicke-knihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}"
+                   style="text-decoration: none; color: inherit;">E-kniha</a>
             </span>
-            {% with zobrazeny|add:'e' as zobrazeny %}{% endwith %}
-        {% endif %}
+                        {% with zobrazeny|add:'e' as zobrazeny %}{% endwith %}
+                    {% endif %}
 
-        {% if 'Audiokniha' in format_audio and not 'audio' in zobrazeny %}
-            <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
-                <a href="https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}" style="text-decoration: none; color: inherit;">Audiokniha</a>
+                    {% if 'Audiokniha' in format_audio and not 'audio' in zobrazeny %}
+                        <span style="display: inline-block; padding: 6px 12px; background-color: #f0f0f0; border-radius: 20px; font-size: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 7px;">
+                <a href="https://audioknihy.heureka.sk/f:q:{{ book.title_cz|urlencode }}%20{{ author_string|urlencode }}"
+                   style="text-decoration: none; color: inherit;">Audiokniha</a>
             </span>
-            {% with zobrazeny|add:'audio' as zobrazeny %}{% endwith %}
-        {% endif %}
+                        {% with zobrazeny|add:'audio' as zobrazeny %}{% endwith %}
+                    {% endif %}
 
-    {% endwith %}
-</div>
+                {% endwith %}
+            </div>
 
 
-{% if request.user.is_authenticated %}
-    <div style="text-align: center;">
+            {% if request.user.is_authenticated %}
+                <div style="text-align: center;">
 
-    <div style="display: inline-block; margin: 20px;">
+                    <div style="display: inline-block; margin: 20px;">
 
-            {% if book in profile.watchlist.all %}
-            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">👀</a><br>
-            <span style="font-size: 18px;">Odebrat</span>
-            {% else %}
-            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">😌</a><br>
-            <span style="font-size: 18px;">Přidat</span>
+                        {% if book in profile.watchlist.all %}
+                            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">👀</a><br>
+                            <span style="font-size: 18px;">Odebrat</span>
+                        {% else %}
+                            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">😌</a><br>
+                            <span style="font-size: 18px;">Přidat</span>
+                        {% endif %}
+
+
+                    </div>
+                    <div style="display: inline-block; margin: 20px;">
+                        {% if book in profile.readlist.all %}
+                            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📖</a><br>
+                            <span style="font-size: 18px;">Odebrat</span>
+                        {% else %}
+                            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📘</a><br>
+                            <span style="font-size: 18px;">Přidat</span>
+                        {% endif %}
+                    </div>
+                    <div style="display: inline-block; margin: 20px;">
+                        {% if book in profile.favouritelist.all %}
+                            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">❤️</a><br>
+                            <span style="font-size: 18px;">V oblíbených</span>
+                        {% else %}
+                            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">🤍</a><br>
+                            <span style="font-size: 18px;">Přidat</span>
+                        {% endif %}
+                    </div>
+                </div>
             {% endif %}
-
+        </div>
 
     </div>
-    <div style="display: inline-block; margin: 20px;">
-        {% if book in profile.readlist.all %}
-            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📖</a><br>
-            <span style="font-size: 18px;">Odebrat</span>
-            {% else %}
-            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📘</a><br>
-            <span style="font-size: 18px;">Přidat</span>
-            {% endif %}
-    </div>
-    <div style="display: inline-block; margin: 20px;">
-        {% if book in profile.favouritelist.all %}
-            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">❤️</a><br>
-            <span style="font-size: 18px;">V oblíbených</span>
-            {% else %}
-            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">🤍</a><br>
-            <span style="font-size: 18px;">Přidat</span>
-            {% endif %}
-    </div>
-</div>
-{% endif %}
-    </div>
-
-</div>
 
 
-   <div style="width: 80%; margin: 0 auto;">
-    <a style="display: block; text-align: right; font-size: 14px; color: gray; margin-bottom: 5px;">
-        Vytvořeno: {{ book.created }} &nbsp;&nbsp; Aktualizováno: {{ book.updated }}
-    </a>
-    <hr style="margin-bottom: 30px;">
+    <div style="width: 80%; margin: 0 auto;">
+        <a style="display: block; text-align: right; font-size: 14px; color: gray; margin-bottom: 5px;">
+            Vytvořeno: {{ book.created }} &nbsp;&nbsp; Aktualizováno: {{ book.updated }}
+        </a>
+        <hr style="margin-bottom: 30px;">
     </div>
 
     <h1 align="center">Popis</h1>
@@ -244,15 +251,15 @@
     <a>{{ book.description }}</a>
     <br>
     <br>
-    <hr  style="width: 80%;">
+    <hr style="width: 80%;">
 
-   <h1 align="center">Komentáře</h1>
+    <h1 align="center">Komentáře</h1>
     <br>
 
 
 
-  {% for comment in comments %}
-    <div style="
+    {% for comment in comments %}
+        <div style="
         width: 80%;
         margin: 20px auto;
         padding: 20px 25px;
@@ -264,79 +271,82 @@
         border: 1px solid #e6e6e6;
     ">
 
-        <!-- Horný riadok: meno, badge a hodnotenie spolu vľavo -->
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <!-- Upper row: name, badge and rating on left -->
+            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
 
-            <!-- Meno + badge -->
-            <div style="display: flex; align-items: center; gap: 10px; font-weight: 600;">
-                <a href="{% url 'profile' comment.commenter.user.id %}" style="color: #000; text-decoration: none;">
-                    {{ comment.commenter }}
-                </a>
+                <!-- Name + badge -->
+                <div style="display: flex; align-items: center; gap: 10px; font-weight: 600;">
+                    <a href="{% url 'profile' comment.commenter.user.id %}" style="color: #000; text-decoration: none;">
+                        {{ comment.commenter }}
+                    </a>
 
-                {% if comment.is_partner %}
-                    <span style="background-color: #000; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">
+                    {% if comment.is_partner %}
+                        <span style="background-color: #000; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">
                         🏅 Partner
                     </span>
-                {% endif %}
-            </div>
-
-            <!-- Hodnotenie -->
-            <div style="font-size: 0.95rem; color: #333; display: flex; align-items: center; gap: 4px;">
-                Hodnocení:
-                {% for i in "12345" %}
-                    {% if comment.rating|floatformat:"0" >= i %}
-                        ★
-                    {% else %}
-                        ☆
                     {% endif %}
-                {% endfor %}
-            </div>
-
-            {% if request.user == comment.commenter.user %}
-                <div style="margin-left: auto; font-size: 0.85rem;">
-                    <a href="{% url 'comment_delete' comment.id %}" style="color: #888;"><strong>Smazat</strong></a>
                 </div>
-            {% endif %}
-        </div>
 
-        <!-- Text komentára -->
-        <div style="font-size: 1rem; line-height: 1.6; margin-bottom: 10px;">
-            {{ comment.user_comment }}
-        </div>
+                <!-- Rating -->
+                <div style="font-size: 0.95rem; color: #333; display: flex; align-items: center; gap: 4px;">
+                    Hodnocení:
+                    {% for i in "12345" %}
+                        {% if comment.rating|floatformat:"0" >= i %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </div>
 
-        <!-- Čas -->
-        <div style="text-align: right; font-size: 0.8rem; color: #999;">
-            {{ comment.created|date:"d. m. Y H:i" }}
-        </div>
-    </div>
-{% empty %}
-    <p style="text-align: center; font-style: italic; color: #666;">Tuto knihu zatím nikdo nehodnotil.</p>
-{% endfor %}
-
-{% if request.user.is_authenticated %}
-    <div style="max-width: 600px; margin: 40px auto 20px auto; text-align: center;">
-        <h3 style="font-size: 22px; margin-bottom: 20px; font-weight: 600;">Přidat komentář</h3>
-
-        <form action="" method="post" style="padding: 20px; border: 1px solid #ddd; border-radius: 12px; background-color: #fafafa;">
-            {% csrf_token %}
-
-            <div style="margin-bottom: 20px; text-align: left;">
-                <label for="{{ comment_form.rating.id_for_label }}" style="display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px;">{{ comment_form.rating.label }}</label>
-                {{ comment_form.rating }}
-                {% if comment_form.rating.errors %}
-                    <div style="color: red; font-size: 13px;">{{ comment_form.rating.errors }}</div>
+                {% if request.user == comment.commenter.user %}
+                    <div style="margin-left: auto; font-size: 0.85rem;">
+                        <a href="{% url 'comment_delete' comment.id %}" style="color: #888;"><strong>Smazat</strong></a>
+                    </div>
                 {% endif %}
             </div>
 
-            <div style="margin-bottom: 20px; text-align: left;">
-                <label for="{{ comment_form.user_comment.id_for_label }}" style="display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px;">{{ comment_form.user_comment.label }}</label>
-                {{ comment_form.user_comment }}
-                {% if comment_form.user_comment.errors %}
-                    <div style="color: red; font-size: 13px;">{{ comment_form.user_comment.errors }}</div>
-                {% endif %}
+            <!-- Text of comment -->
+            <div style="font-size: 1rem; line-height: 1.6; margin-bottom: 10px;">
+                {{ comment.user_comment }}
             </div>
 
-            <button type="submit" style="
+            <!-- Time -->
+            <div style="text-align: right; font-size: 0.8rem; color: #999;">
+                {{ comment.created|date:"d. m. Y H:i" }}
+            </div>
+        </div>
+    {% empty %}
+        <p style="text-align: center; font-style: italic; color: #666;">Tuto knihu zatím nikdo nehodnotil.</p>
+    {% endfor %}
+
+    {% if request.user.is_authenticated %}
+        <div style="max-width: 600px; margin: 40px auto 20px auto; text-align: center;">
+            <h3 style="font-size: 22px; margin-bottom: 20px; font-weight: 600;">Přidat komentář</h3>
+
+            <form action="" method="post"
+                  style="padding: 20px; border: 1px solid #ddd; border-radius: 12px; background-color: #fafafa;">
+                {% csrf_token %}
+
+                <div style="margin-bottom: 20px; text-align: left;">
+                    <label for="{{ comment_form.rating.id_for_label }}"
+                           style="display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px;">{{ comment_form.rating.label }}</label>
+                    {{ comment_form.rating }}
+                    {% if comment_form.rating.errors %}
+                        <div style="color: red; font-size: 13px;">{{ comment_form.rating.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-bottom: 20px; text-align: left;">
+                    <label for="{{ comment_form.user_comment.id_for_label }}"
+                           style="display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px;">{{ comment_form.user_comment.label }}</label>
+                    {{ comment_form.user_comment }}
+                    {% if comment_form.user_comment.errors %}
+                        <div style="color: red; font-size: 13px;">{{ comment_form.user_comment.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" style="
                 background-color: black;
                 color: white;
                 padding: 10px 22px;
@@ -345,48 +355,51 @@
                 font-size: 14px;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
-            " onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='black'">Odeslat</button>
-        </form>
-    </div>
-{% endif %}
+            " onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='black'">Odeslat
+                </button>
+            </form>
+        </div>
+    {% endif %}
 
 
 {% endblock %}
 
 {% block right_sidebar %}
 
-   <h3 style="text-align:center;">Další knihy autora</h3>
+    <h3 style="text-align:center;">Další knihy autora</h3>
 
-{% for b in knihy_od_toho_isteho_autora %}
-    <div style="text-align:center; margin-bottom: 25px;">
+    {% for b in knihy_od_toho_isteho_autora %}
+        <div style="text-align:center; margin-bottom: 25px;">
 
-        <a href="{% url 'book' b.pk %}">
-            {% if b.image and b.image.name %}
-                {% if "http" in b.image.name %}
-                    <img src="{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
+            <a href="{% url 'book' b.pk %}">
+                {% if b.image and b.image.name %}
+                    {% if "http" in b.image.name %}
+                        <img src="{{ b.image.name }}" alt="{{ b.title_cz }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% else %}
+                        <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}"
+                             style="height: 280px; width: 180px; object-fit: cover;">
+                    {% endif %}
                 {% else %}
-                    <img src="/media/{{ b.image.name }}" alt="{{ b.title_cz }}" style="height: 280px; width: 180px; object-fit: cover;">
-                {% endif %}
-            {% else %}
-                <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                    <div style="display: inline-block; width: 180px; height: 280px; background-color: #ccc; margin: 0 auto;">
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 0.9em; color: #444;">Chybí obrázek</span>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </a>
-
-        <p style="margin: 5px 0 0 0;">
-            {{ forloop.counter }}.
-            <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
-                {{ b.title_cz }}
+                {% endif %}
             </a>
-        </p>
 
-    </div>
-{% empty %}
-    <p style="text-align:center;">Žádné další knihy</p>
-{% endfor %}
+            <p style="margin: 5px 0 0 0;">
+                {{ forloop.counter }}.
+                <a href="{% url 'book' b.pk %}" style="text-decoration: none; color: inherit;">
+                    {{ b.title_cz }}
+                </a>
+            </p>
+
+        </div>
+    {% empty %}
+        <p style="text-align:center;">Žádné další knihy</p>
+    {% endfor %}
 
 {% endblock %}
 
