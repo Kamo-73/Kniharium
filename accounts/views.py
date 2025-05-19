@@ -45,11 +45,12 @@ class ProfileDetailView(DetailView):
         context['is_partner'] = profile.user.groups.filter(name='Partners').exists()
         return context
 
+
 class ProfileUpdateView(View):
     def dispatch(self, request, *args, **kwargs):
         profile = get_object_or_404(Profile, user__id=kwargs.get("pk"))
         if profile.user != request.user:
-            return redirect('home')  # alebo vyhodenie 403 podľa potreby
+            return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, pk):
@@ -79,6 +80,8 @@ class ProfileUpdateView(View):
             'user_form': user_form,
             'form': profile_form,
         })
+
+
 class ProfileDeleteView(DeleteView):
     model = Profile
     template_name = 'confirm_delete.html'
@@ -91,7 +94,7 @@ class ProfileDeleteView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if obj.user != request.user:
-            return redirect('home')  # alebo vyhodenie 403
+            return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):

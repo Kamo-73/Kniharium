@@ -32,7 +32,6 @@ class SignUpForm(UserCreationForm):
         label='Heslo znovu'
     )
 
-
     date_of_birth = DateField(
         widget=NumberInput(attrs={'type': 'date'}),
         label='Datum narození',
@@ -53,9 +52,8 @@ class SignUpForm(UserCreationForm):
     @atomic
     def save(self, commit=True):
         self.instance.is_active = True
-        user = super().save(commit)  # vytvoříme uživatele
+        user = super().save(commit)
 
-        # ještě potřebujeme vytvořit Profile
         date_of_birth = self.cleaned_data.get('date_of_birth')
         biography = self.cleaned_data.get('biography')
         phone = self.cleaned_data.get('phone')
@@ -80,6 +78,7 @@ class SignUpForm(UserCreationForm):
         if date_of_birth and date_of_birth > datetime.date.today():
             raise ValidationError("Datum narození nesmí být v budoucnosti.")
         return cleaned_data
+
 
 class UserForm(ModelForm):
     class Meta:
