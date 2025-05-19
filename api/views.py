@@ -5,7 +5,7 @@ from viewer.models import Book, Author, Publisher
 
 
 class Books(mixins.ListModelMixin, mixins.CreateModelMixin,
-             generics.GenericAPIView):
+            generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
@@ -17,7 +17,7 @@ class Books(mixins.ListModelMixin, mixins.CreateModelMixin,
 
 
 class BookDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin, generics.GenericAPIView):
+                 mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
@@ -32,7 +32,7 @@ class BookDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
 
 
 class Authors(mixins.ListModelMixin, mixins.CreateModelMixin,
-               generics.GenericAPIView):
+              generics.GenericAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
@@ -44,7 +44,7 @@ class Authors(mixins.ListModelMixin, mixins.CreateModelMixin,
 
 
 class AuthorDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin, generics.GenericAPIView):
+                   mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
@@ -59,7 +59,7 @@ class AuthorDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
 
 
 class Publishers(mixins.ListModelMixin, mixins.CreateModelMixin,
-               generics.GenericAPIView):
+                 generics.GenericAPIView):
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
 
