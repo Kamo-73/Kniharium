@@ -5,14 +5,12 @@ from viewer.models import *
 
 
 class AuthorAdmin(ModelAdmin):
-
     ordering = ['surname']
     list_display = ['id', 'surname', 'name', 'date_of_birth', 'date_of_death']
     list_display_links = ['surname']
     list_per_page = 10
     list_filter = ['nationality']
     search_fields = ['surname']
-
 
 
 class BookAdmin(ModelAdmin):
@@ -28,7 +26,6 @@ class BookAdmin(ModelAdmin):
     list_filter = ['genre']
     search_fields = ['title_cz', 'title_orig']
     actions = ['cleanup_description']
-
 
     fieldsets = [
         ('Titles',
@@ -80,6 +77,7 @@ class BookAdmin(ModelAdmin):
     ]
     readonly_fields = ['created', 'updated']
 
+
 admin.site.register(Genre)
 admin.site.register(Nationality)
 admin.site.register(Author, AuthorAdmin)
@@ -87,6 +85,3 @@ admin.site.register(Format)
 admin.site.register(Publisher)
 admin.site.register(Book, BookAdmin)
 admin.site.register(RecommendedBooks)
-
-
-

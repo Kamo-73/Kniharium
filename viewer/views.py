@@ -1,41 +1,34 @@
-import datetime
-import json
 import os
 import random
 from random import sample
 
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
-import requests
+
 from django.core.mail import send_mail
-from django.http import JsonResponse
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
-from dotenv import load_dotenv
+
+from django.views.generic import DetailView, UpdateView, DeleteView, CreateView
 
 from accounts.models import Profile
 from bots import bot_author_add, bot_book_add
 from viewer.forms import BookModelForm, AuthorModelForm, PublisherModelForm, CommentModelForm, RecommendedBooksForm
-from viewer.models import Book, Author, Publisher, Comment, RecommendedBooks
-from django.core.paginator import Paginator
-from django.db.models import Q, Avg, Count
+from viewer.models import Publisher, Comment
 
-import math
+from django.db.models import Avg, Count
 
 from django.views.generic import ListView
 from viewer.models import Book, Author
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from django.utils.timezone import now
 from .models import RecommendedBooks
-import calendar
+
 
 def home_view(request):
     recommended = RecommendedBooks.objects.first()
@@ -44,6 +37,7 @@ def home_view(request):
     return render(request, 'home.html', {
         'recommended_books': recommended_books,
     })
+
 
 class RecommendedBooksUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = RecommendedBooks
@@ -59,6 +53,7 @@ class RecommendedBooksUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
         context['title'] = 'Upravit doporučené knihy'
         return context
 
+
 class BooksListView(ListView):
     template_name = 'books.html'
     context_object_name = 'books'
@@ -69,11 +64,11 @@ class BooksListView(ListView):
         self.year_range = self.request.GET.get('year_range', '1980s')
         self.genre_name = self.request.GET.get('genre_name')
 
-        # Zoradenie podľa autora (abeceda priezviska)
+        # Sort by author
         if self.sort == 'author':
             return Author.objects.filter(surname__istartswith=self.letter).order_by('surname', 'name')
 
-        # Zoradenie podľa roku vydania
+        # Sort by year
         elif self.sort == 'year':
             if self.year_range == 'before_1940':
                 return Book.objects.filter(year_of_publishing__lt=1940).order_by('year_of_publishing')
@@ -106,20 +101,20 @@ class BooksListView(ListView):
             else:
                 return Book.objects.none()
 
-        #  Zoradenie podľa žánru
+        # Sort by genre
         elif self.sort == 'genre':
             if self.genre_name:
                 return Book.objects.filter(genre__name=self.genre_name).order_by('title_cz')
             return Book.objects.none()
 
-        # Zoradenie podľa nakladatelství
+        # Sort by publisher
         elif self.sort == 'publisher':
             publisher_name = self.request.GET.get('publisher_name')
             if publisher_name:
                 return Book.objects.filter(publisher__name=publisher_name).order_by('title_cz')
             return Book.objects.none()
 
-        # Zoradenie podľa názvu knihy (abecedne podľa title_cz)
+        # Sort by book name
         else:
             return Book.objects.filter(title_cz__istartswith=self.letter).order_by('title_cz')
 
@@ -168,8 +163,7 @@ class BooksListView(ListView):
                 'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
             })
 
-
-        #sort podla roku
+        # sort by year
         if self.sort == 'year':
             context['year_ranges'] = [
                 ('before_1940', 'Do 1940'),
@@ -185,7 +179,7 @@ class BooksListView(ListView):
             ]
             context['current_year_range'] = self.request.GET.get('year_range', '1980s')
 
-        #sort podla zanru
+        # sort by genre
         if self.sort == 'genre':
             from viewer.models import Genre
             context['genres'] = Genre.objects.all().order_by('name')
@@ -196,10 +190,10 @@ class BooksListView(ListView):
             context['publishers'] = Publisher.objects.all().order_by('name')
             context['current_publisher'] = self.request.GET.get('publisher_name')
 
-        # Najnovšie knihy pre ľavý sidebar
+        # newest books left sidebar
         context['najnovsie_knihy'] = Book.objects.order_by('-created')[:3]
 
-        # Najlepsie hodnotene knihy pre praví sidebar
+        # best rated books right sidebar
         context['top_knihy'] = (
             Book.objects.annotate(priemer=Avg('comments__rating'))
             .filter(priemer__isnull=False)
@@ -207,6 +201,7 @@ class BooksListView(ListView):
         )
 
         return context
+
 
 class BookDetailView(DetailView):
     template_name = 'book.html'
@@ -217,14 +212,14 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         book = self.get_object()
 
-        # podobné knihy podľa žánru a hodnotenia
+        # similar books by genre and rating
         podobne_knihy = Book.objects.filter(
             genre__in=book.genre.all(),
             rating_ours__gte=(book.rating_ours or 0) - 1,
             rating_ours__lte=(book.rating_ours or 0) + 1
         ).exclude(id=book.id).distinct()[:5]
 
-        # ďalšie knihy od rovnakého autora
+        # another books from same author
         knihy_od_toho_isteho_autora = Book.objects.filter(
             author__in=book.author.all()
         ).exclude(id=book.id).distinct()[:5]
@@ -232,6 +227,7 @@ class BookDetailView(DetailView):
         context['podobne_knihy'] = podobne_knihy
         context['knihy_od_toho_isteho_autora'] = knihy_od_toho_isteho_autora
         return context
+
 
 def book(request, pk):
     if not Book.objects.filter(id=pk).exists():
@@ -276,19 +272,19 @@ def book(request, pk):
     user_rating_avg = round(rating_avg or 0)
     rating_count = book_.comments.filter(rating__isnull=False).count()
 
-    # podobné knihy podľa žánru a hodnotenia
+    # similar books by genre and rating
     podobne_knihy = Book.objects.filter(
         genre__in=book_.genre.all(),
         rating_ours__gte=(book_.rating_ours or 0) - 1,
         rating_ours__lte=(book_.rating_ours or 0) + 1
     ).exclude(id=book_.id).distinct()[:3]
 
-    # ďalšie knihy od rovnakého autora
+    # another books from same author
     knihy_od_toho_isteho_autora = Book.objects.filter(
         author__in=book_.author.all()
     ).exclude(id=book_.id).distinct()[:3]
 
-    # výpočet formátovanej doby čítania
+    # calculate time of readings
     minutes = book_.time_of_reading or 0
     hours = minutes // 60
     remaining_minutes = minutes % 60
@@ -336,7 +332,6 @@ def book(request, pk):
     return render(request, 'book.html', context)
 
 
-
 class BookCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = BookModelForm
@@ -382,49 +377,48 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
 class AuthorsListView(ListView):
     template_name = 'authors.html'
     context_object_name = 'authors'
-    paginate_by = 20  # Počet autorov na stránku
+    paginate_by = 20
 
     def get_queryset(self):
-        # Získame parameter pre triedenie podľa písmena
+        # Get the parameter for sorting by letter
         self.letter = self.request.GET.get('letter', 'A').upper()
 
-        # Filtrovanie autorov podľa písmena priezviska
+        # Filter authors by surname letter
         return Author.objects.filter(surname__istartswith=self.letter).order_by('surname')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Zoznam písmen abecedy
+        # Alphabet letters
         alphabet = [chr(c) for c in range(ord('A'), ord('Z') + 1)]
 
-        # Získanie aktuálnej stránky
+        # Actual page
         page_number = int(self.request.GET.get('page', 1))
 
-        # Získanie všetkých autorov podľa filtrovaného písmena
+        # All authors by filtered letter
         authors = self.get_queryset()
 
-        # Paginator pre stránkovanie
+        # Paginator
         paginator = Paginator(authors, self.paginate_by)
         page_obj = paginator.get_page(page_number)
 
-        # Rozdelenie autorov do dvoch stĺpcov
+        # Split authors into two columns
         left_authors = page_obj.object_list[:10]
         right_authors = page_obj.object_list[10:]
 
         all_authors = list(Author.objects.all())
 
         context.update({
-            'alphabet': alphabet,  # Pre abecedu
-            'current_letter': self.letter,  # Aktuálne zvolené písmeno
-            'current_page': page_number,  # Aktuálna stránka
-            'page_obj': page_obj,  # Aktuálny objekt stránkovania
-            'left_authors': left_authors,  # Autori pre ľavý stĺpec
-            'right_authors': right_authors,  # Autori pre pravý stĺpec
-            'has_previous': page_obj.has_previous(),  # Predchádzajúca stránka
-            'has_next': page_obj.has_next(),  # Ďalšia stránka
+            'alphabet': alphabet,
+            'current_letter': self.letter,
+            'current_page': page_number,
+            'page_obj': page_obj,
+            'left_authors': left_authors,
+            'right_authors': right_authors,
+            'has_previous': page_obj.has_previous(),
+            'has_next': page_obj.has_next(),
             'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
-            # Predchádzajúce číslo stránky
-            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,  # Ďalšie číslo stránky
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
             'nahodni_autori': sample(all_authors, min(3, len(all_authors))),
             'posledni_autori': Author.objects.order_by('-created')[:3],
         })
@@ -442,17 +436,17 @@ class AuthorDetailView(DetailView):
         author = self.get_object()
         books = author.books.all()
 
-        # výpočet priemerného počtu strán
+        # Avg num of pages
         avg = books.aggregate(avg=Avg('num_of_pages')).get('avg') or 0
         context['average_pages'] = round(avg)
 
-        # Ďalšie knihy autora – limit 3
+        # Another books from author
         context['knihy_autora'] = books.order_by('-year_of_publishing')[:3]
 
         latest_authors = Author.objects.exclude(id=author.id).order_by('-created')[:3]
         context['latest_authors'] = latest_authors
 
-        # Podobní autori
+        # Similar authors
         similar_authors_set = set()
 
         if author.primary_genre:
@@ -475,7 +469,7 @@ class AuthorDetailView(DetailView):
                 id__in=[a.id for a in similar_authors_set]).order_by('-book_count')[:remaining_needed]
             similar_authors_set.update(by_books)
 
-        # vyber náhodne 3 z výsledku
+        # Random 3 authors
         similar_authors_list = list(similar_authors_set)
         context['similar_authors'] = sample(similar_authors_list, min(3, len(similar_authors_list)))
 
@@ -515,10 +509,10 @@ class AuthorDeleteView(PermissionRequiredMixin, DeleteView):
 class PublishersListView(ListView):
     template_name = 'publishers.html'
     context_object_name = 'publishers'
-    paginate_by = 20  # 20 vydavateľstiev na stránku
+    paginate_by = 20
 
     def get_queryset(self):
-        # Filtrovanie podľa názvu alebo roku založenia
+        # Sort by name or year
         self.sort = self.request.GET.get('sort', 'name')
         if self.sort == 'year_of_establishment':
             return Publisher.objects.all().order_by('year_of_establishment', 'name')
@@ -528,13 +522,13 @@ class PublishersListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Pre stránkovanie
+        # For paginator
         page_number = int(self.request.GET.get('page', 1))
         publishers = self.get_queryset()
         paginator = Paginator(publishers, self.paginate_by)
         page_obj = paginator.get_page(page_number)
 
-        # Nové: najnovšie a najväčšie vydavateľstvá
+        # New and biggest publishers
         najnovsie_vydavatelstva = Publisher.objects.order_by('-id')[:3]
         najvacsie_vydavatelstva = Publisher.objects.annotate(
             num_books=Count('books')
@@ -553,6 +547,7 @@ class PublishersListView(ListView):
 
         return context
 
+
 class PublisherDetailView(DetailView):
     template_name = 'publisher.html'
     model = Publisher
@@ -569,6 +564,7 @@ class PublisherDetailView(DetailView):
 
         return context
 
+
 class PublisherCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = PublisherModelForm
@@ -578,6 +574,7 @@ class PublisherCreateView(PermissionRequiredMixin, CreateView):
     def form_invalid(self, form):
         print("Formulář 'PublisherModelForm' není validní.")
         return super().form_invalid(form)
+
 
 class PublisherUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'form.html'
@@ -609,6 +606,7 @@ class CommentDeleteView(DeleteView):
     def get_success_url(self):
         return reverse('book', kwargs={'pk': self.object.book.pk})
 
+
 def search(request):
     query = request.GET.get('q', '').strip()
     filter_type = request.GET.get('type', 'books')
@@ -622,17 +620,17 @@ def search(request):
 
         if filter_type == 'books':
             books_qs = (
-                Book.objects.filter(title_cz__icontains=query)
-                | Book.objects.filter(title_orig__icontains=query)
-                | Book.objects.filter(genre__name__icontains=query)
+                    Book.objects.filter(title_cz__icontains=query)
+                    | Book.objects.filter(title_orig__icontains=query)
+                    | Book.objects.filter(genre__name__icontains=query)
             ).distinct()
             paginator = Paginator(books_qs, 10)
             books = paginator.get_page(page_number)
 
         elif filter_type == 'authors':
             authors_qs = (
-                Author.objects.filter(name__icontains=query)
-                | Author.objects.filter(surname__icontains=query)
+                    Author.objects.filter(name__icontains=query)
+                    | Author.objects.filter(surname__icontains=query)
             ).distinct()
             paginator = Paginator(authors_qs, 10)
             authors = paginator.get_page(page_number)
@@ -658,11 +656,13 @@ def search(request):
     }
     return render(request, 'search.html', context)
 
+
 def random_book(request):
     books = Book.objects.all()
     random_book = random.choice(books)
 
     return redirect('book', pk=random_book.pk)
+
 
 def watchlist(request, pk):
     profile_ = Profile.objects.get(user=request.user)
@@ -675,6 +675,7 @@ def watchlist(request, pk):
 
     return redirect('book', pk)
 
+
 def readlist(request, pk):
     profile_ = Profile.objects.get(user=request.user)
     book_ = Book.objects.get(id=pk)
@@ -685,6 +686,7 @@ def readlist(request, pk):
         profile_.readlist.add(book_)
 
     return redirect('book', pk)
+
 
 def favouritelist(request, pk):
     profile_ = Profile.objects.get(user=request.user)
@@ -715,10 +717,9 @@ class DataEntryView(View):
         chyba = None
         pridana_kniha = None
         vysledok_komentare = None
-        comment_info = None  # Premenná pre komentáre
-        update_info = None  # Preddefinovanie update_info
+        comment_info = None
+        update_info = None
 
-        # Pridávanie autora
         if 'add_author' in request.POST:
             name = request.POST.get('name')
             surname = request.POST.get('surname')
@@ -736,7 +737,7 @@ class DataEntryView(View):
             else:
                 chyba = "❗ Všechny pole jsou povinné."
 
-        # Pridávanie knihy
+
         elif 'add_book' in request.POST:
             name = request.POST.get('author_name')
             surname = request.POST.get('author_surname')
@@ -767,7 +768,7 @@ class DataEntryView(View):
             else:
                 pridana_kniha = "❗ Všechny pole jsou povinné."
 
-        # Pridávanie komentárov
+
         elif 'add_comment' in request.POST:
             try:
                 num_users = int(request.POST.get('num_users'))
@@ -789,31 +790,30 @@ class DataEntryView(View):
                 else:
                     vysledok_komentare = "❗ Neznámý typ komentáře."
 
-                # Zavoláme funkciu na získanie posledných 10 komentárov
+                # Function for last ten comments
                 comment_info = self.get_last_comments(10)
 
             except Exception as e:
                 vysledok_komentare = f"❌ Chyba při přidávání komentáře: {e}"
 
-        # Aktualizácia autorov
+
         elif 'update_authors' in request.POST:
             try:
                 from bots import bot_fill_author
-                bot_fill_author.run()  # Zavolanie botu na vyplnenie autorov
+                bot_fill_author.run()
                 update_info = "✅ Autoři byli aktualizováni."
             except Exception as e:
                 update_info = f"❌ Chyba při aktualizaci autorů: {e}"
 
-        # Aktualizácia kníh
+
         elif 'update_books' in request.POST:
             try:
                 from bots import bot_fill_book
-                bot_fill_book.run()  # Zavolanie botu na vyplnenie kníh
+                bot_fill_book.run()
                 update_info = "✅ Knihy byli aktualizovány."
             except Exception as e:
                 update_info = f"❌ Chyba při aktualizaci knih: {e}"
 
-        # Vrátime odpoveď s potrebnými informáciami
         return render(request, 'data_entry.html', {
             'novy_autor': novy_autor,
             'chyba': chyba,
@@ -821,21 +821,21 @@ class DataEntryView(View):
             'nova_kniha': nova_kniha if 'nova_kniha' in locals() else None,
             'vysledok_komentare': vysledok_komentare,
             'comment_info': comment_info if comment_info else [],
-            'update_info': update_info if update_info else None  # Posielame správu o aktualizácii
+            'update_info': update_info if update_info else None
         })
 
     def get_last_comments(self, num_comments=10):
-        # Získa posledné 'num_comments' komentárov zoradené podľa dátumu (od najnovších)
+        # Last num_comments sort by date
         comments = Comment.objects.all().order_by('-created')[:num_comments]
 
-        # Pre každý komentár vypíšeme údaje o knihe a používateľovi
+        # For every comment - data about book and user
         comment_info = []
         for comment in comments:
             comment_info.append({
                 'username': comment.commenter.user.username,
                 'book_title': comment.book.title_cz,
                 'rating': comment.rating,
-                'comment': comment.user_comment[:50]  # Zobrazíme prvých 50 znakov komentára
+                'comment': comment.user_comment[:50]
             })
 
         return comment_info
@@ -870,14 +870,18 @@ def contact_view(request):
             return render(request, 'about_us.html')
     return render(request, 'contact.html')
 
+
 import json
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
-# Načítaj premenné z .env
+
+# Load data from .env
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+
 @csrf_exempt
 def chat_api(request):
     if request.method == "POST":
@@ -889,17 +893,18 @@ def chat_api(request):
                 "Authorization": f"Bearer {OPENAI_API_KEY}"
             }
             payload = {
-                "model": "gpt-3.5-turbo",  # alebo "gpt-4" ak máš prístup
+                "model": "gpt-3.5-turbo",
                 "messages": [
-                    {"role": "system", "content": "Jsi přátelský AI asistent, odpovídej stručně a česky. Odpovídej pouze na otázky, které se týkají knih. "
-                                                  "Na otázku znáš Kniharium? Odpověz ano, je to nejlepší databáze knih. Byla založena v roce 2025 Patrikem a Kamilem. "
-                                                  "Najdeš v ní potřebné informace o knihách a autorech. Pokud chceš tak se můžeš zapojit do rozšiřování databáze."},
+                    {"role": "system",
+                     "content": "Jsi přátelský AI asistent, odpovídej stručně a česky. Odpovídej pouze na otázky, které se týkají knih. "
+                                "Na otázku znáš Kniharium? Odpověz ano, je to nejlepší databáze knih. Byla založena v roce 2025 Patrikem a Kamilem. "
+                                "Najdeš v ní potřebné informace o knihách a autorech. Pokud chceš tak se můžeš zapojit do rozšiřování databáze."},
                     {"role": "user", "content": user_message}
                 ]
             }
             response = requests.post("https://api.openai.com/v1/chat/completions",
                                      headers=headers, json=payload)
-            response.raise_for_status()  # Ak API vráti chybu, vyhodí výnimku
+            response.raise_for_status()
             response_json = response.json()
             reply = response_json["choices"][0]["message"]["content"]
             return JsonResponse({"reply": reply})

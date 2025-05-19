@@ -11,9 +11,6 @@ from viewer.models import Book, Author, Publisher, Comment, RecommendedBooks
 class BookModelForm(ModelForm):
     class Meta:
         model = Book
-        #fields = '__all__'
-        #fields = ['title_orig', 'title_cz']
-        #exclude = ['title_cz']
         exclude = ['in_watchlist']
 
         labels = {
@@ -46,7 +43,6 @@ class BookModelForm(ModelForm):
                            required=True,
                            widget=TextInput(attrs={'class': 'bg-info'}),
                            label="Originální název")
-
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -150,7 +146,7 @@ class AuthorModelForm(ModelForm):
 
     def clean_biography(self):
         initial = self.cleaned_data['biography']
-        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')  # TODO: Věta může končit i ! ?
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
         return '. '.join(sentence.capitalize() for sentence in sentences)
 
     def clean(self):
@@ -160,13 +156,11 @@ class AuthorModelForm(ModelForm):
         error_message = ''
         if not initial_name and not initial_surname:
             error_message += "Je nutné zadat jméno nebo příjmení (nebo oboje)."
-            #raise ValidationError("Je nutné zadat jméno nebo příjmení (nebo oboje).")
 
         initial_date_of_birth = cleaned_data.get('date_of_birth')
         initial_date_of_death = cleaned_data.get('date_of_death')
         if initial_date_of_birth and initial_date_of_death and initial_date_of_death <= initial_date_of_birth:
             error_message += " Datum úmrtí nesmí být dřív, než datum narození."
-            #raise ValidationError("Datum úmrtí nesmí být dřív, než datum narození.")
 
         if error_message:
             raise ValidationError(error_message)
@@ -185,8 +179,7 @@ class PublisherModelForm(ModelForm):
             'link': 'Link',
             'year_of_establishment': 'Rok založení',
             'year_of_dissolution': 'Rok ukončení činnosti',
-            }
-
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -244,6 +237,7 @@ class CommentModelForm(ModelForm):
             'rating': 'Hodnocení',
             'user_comment': 'Komentář'
         }
+
     rating = IntegerField(min_value=1, max_value=5, required=False)
 
     def clean_rating(self):
@@ -260,6 +254,7 @@ class CommentModelForm(ModelForm):
                 'style': 'width: 100%;'
             })
 
+
 class RecommendedBooksForm(ModelForm):
     class Meta:
         model = RecommendedBooks
@@ -273,5 +268,3 @@ class RecommendedBooksForm(ModelForm):
         if books.count() > 10:
             raise ValidationError("Můžeš vybrat maximálně 10 kníh.")
         return books
-
-

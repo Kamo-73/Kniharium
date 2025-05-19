@@ -118,13 +118,3 @@ class GuiTestWithSelenium(TestCase):
 
         assert ("Hesla se neshodují."
                 in driver.page_source)
-
-
-
-
-
-
-
-
-
-

@@ -143,7 +143,6 @@ class Comment(Model):
         return f"{self.commenter}: {self.book} ({self.rating})"
 
 
-
 class RecommendedBooks(Model):
     books = ManyToManyField(Book, related_name='recommended_books')
 

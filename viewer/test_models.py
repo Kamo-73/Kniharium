@@ -9,13 +9,12 @@ from viewer.models import *
 class BookModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         publisher = Publisher.objects.create(
             name="Albatros",
             information="Vydává knihy.",
             year_of_establishment=1955,
             year_of_dissolution=2010
-            )
+        )
 
         book = Book.objects.create(
             title_orig="Originální název knihy",
@@ -27,7 +26,7 @@ class BookModelTest(TestCase):
             review="Skvělá kniha.",
             year_of_publishing=2005,
             time_of_reading=10,
-            )
+        )
 
         genre_fantasy = Genre.objects.create(name="fantasy")
         genre_horror = Genre.objects.create(name="horor")
@@ -39,21 +38,20 @@ class BookModelTest(TestCase):
         book.format.add(format_ebook)
         book.format.add(format_book)
 
-        nationality_czech = Nationality.objects.create(name="česká")
         nationality_british = Nationality.objects.create(name="britská")
 
         author = Author.objects.create(
             name="Petr",
             surname="Pan",
-            date_of_birth=datetime.date(1965,1,1),
-            date_of_death=datetime.date(2010,10,5),
+            date_of_birth=datetime.date(1965, 1, 1),
+            date_of_death=datetime.date(2010, 10, 5),
             biography="Napsal několik knih.",
             nationality=nationality_british,
-            )
+        )
         book.author.add(author)
 
     def setUp(self):
-        print('-'*80)
+        print('-' * 80)
 
     def test_title_orig(self):
         book = Book.objects.get(id=1)
@@ -93,6 +91,3 @@ class BookModelTest(TestCase):
         number_of_formats = book.format.count()
         print(f"test_formats_count: {number_of_formats}")
         self.assertEqual(number_of_formats, 2)
-
-
-

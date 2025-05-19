@@ -31,7 +31,6 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('recommended-books/update/<int:pk>/', RecommendedBooksUpdateView.as_view(), name='recommended_books_update'),
     path('books/', BooksListView.as_view(), name='books'),
-    #path('book/<int:pk>/', BookDetailView.as_view(), name='book'),
     path('book/<int:pk>/', book, name='book'),
     path('book/create/', BookCreateView.as_view(), name='book_create'),
     path('book/update/<int:pk>/', BookUpdateView.as_view(), name='book_update'),

@@ -1,6 +1,7 @@
 import datetime
 import requests
 
+
 def nameday(request):
     today = datetime.date.today()
     day = f"{today.day:02}"
@@ -19,6 +20,7 @@ def nameday(request):
         'name_day': name,
         'today': formatted_date
     }
+
 
 def month(request):
     today = datetime.date.today().month

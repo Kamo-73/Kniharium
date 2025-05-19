@@ -77,6 +77,7 @@ class AuthorFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
 
+
 class BookFormTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -85,7 +86,6 @@ class BookFormTest(TestCase):
 
         Nationality.objects.create(name="česká")
         Nationality.objects.create(name="americká")
-
 
         Author.objects.create(
             name="Petr",
@@ -126,98 +126,98 @@ class BookFormTest(TestCase):
         )
 
     def test_book_form_is_valid(self):
-            form = BookModelForm(
-                data={
-                    'author': ['1'],
-                    'title_orig': 'Originální název',
-                    'title_cz': 'Český název',
-                    'num_of_pages': '310',
-                    'description': 'Popis.',
-                    'publisher': '2',
-                    'genre': ['1', '2'],
-                    'rating_ours': '5',
-                    'review': 'Recenze',
-                    'year_of_publishing': '2021',
-                    'time_of_reading': '650',
-                    'format': ['1', '2', '3']
-                }
-            )
-            self.assertTrue(form.is_valid())
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '5',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertTrue(form.is_valid())
 
     def test_book_title_orig_is_invalid(self):
-            form = BookModelForm(
-                data={
-                    'author': ['1'],
-                    'title_orig': '',
-                    'title_cz': 'Český název',
-                    'num_of_pages': '310',
-                    'description': 'Popis.',
-                    'publisher': '2',
-                    'genre': ['1', '2'],
-                    'rating_ours': '5',
-                    'review': 'Recenze',
-                    'year_of_publishing': '2021',
-                    'time_of_reading': '650',
-                    'format': ['1', '2', '3']
-                }
-            )
-            self.assertFalse(form.is_valid())
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': '',
+                'title_cz': 'Český název',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '5',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
 
     def test_book_title_cz_is_invalid(self):
-            form = BookModelForm(
-                data={
-                    'author': ['1'],
-                    'title_orig': 'Originální název',
-                    'title_cz': '',
-                    'num_of_pages': '310',
-                    'description': 'Popis.',
-                    'publisher': '2',
-                    'genre': ['1', '2'],
-                    'rating_ours': '5',
-                    'review': 'Recenze',
-                    'year_of_publishing': '2021',
-                    'time_of_reading': '650',
-                    'format': ['1', '2', '3']
-                }
-            )
-            self.assertFalse(form.is_valid())
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': '',
+                'num_of_pages': '310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '5',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
 
     def test_book_num_of_pages_is_invalid(self):
-            form = BookModelForm(
-                data={
-                    'author': ['1'],
-                    'title_orig': 'Originální název',
-                    'title_cz': 'Český název',
-                    'num_of_pages': '-310',
-                    'description': 'Popis.',
-                    'publisher': '2',
-                    'genre': ['1', '2'],
-                    'rating_ours': '5',
-                    'review': 'Recenze',
-                    'year_of_publishing': '2021',
-                    'time_of_reading': '650',
-                    'format': ['1', '2', '3']
-                }
-            )
-            self.assertFalse(form.is_valid())
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '-310',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '5',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
 
-            form = BookModelForm(
-                data={
-                    'author': ['1'],
-                    'title_orig': 'Originální název',
-                    'title_cz': 'Český název',
-                    'num_of_pages': '0',
-                    'description': 'Popis.',
-                    'publisher': '2',
-                    'genre': ['1', '2'],
-                    'rating_ours': '5',
-                    'review': 'Recenze',
-                    'year_of_publishing': '2021',
-                    'time_of_reading': '650',
-                    'format': ['1', '2', '3']
-                }
-            )
-            self.assertFalse(form.is_valid())
+        form = BookModelForm(
+            data={
+                'author': ['1'],
+                'title_orig': 'Originální název',
+                'title_cz': 'Český název',
+                'num_of_pages': '0',
+                'description': 'Popis.',
+                'publisher': '2',
+                'genre': ['1', '2'],
+                'rating_ours': '5',
+                'review': 'Recenze',
+                'year_of_publishing': '2021',
+                'time_of_reading': '650',
+                'format': ['1', '2', '3']
+            }
+        )
+        self.assertFalse(form.is_valid())
 
     def test_book_rating_ours_is_invalid(self):
         form = BookModelForm(
@@ -449,8 +449,3 @@ class CommentFormTest(TestCase):
             }
         )
         self.assertFalse(form.is_valid())
-
-
-
-
-
