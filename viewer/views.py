@@ -268,6 +268,8 @@ def book(request, pk):
                 user_comment=user_comment
             )
 
+        return redirect('book', pk=book_.pk)
+
     rating_avg = book_.comments.aggregate(Avg('rating'))['rating__avg']
     user_rating_avg = round(rating_avg or 0)
     rating_count = book_.comments.filter(rating__isnull=False).count()
