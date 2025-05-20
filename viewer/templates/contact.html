@@ -9,69 +9,75 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post"
-          style="max-width: 600px; margin: 0 auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); font-family: 'Segoe UI', sans-serif;">
-        {% csrf_token %}
+  <form method="post"
+      style="max-width: 600px; margin: 0 auto; padding: 2rem; background: #fff; border-radius: 16px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); font-family: 'Segoe UI', sans-serif;">
+    {% csrf_token %}
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="name"
-                   style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Jméno</label>
-            <input type="text" name="name" id="name" placeholder="Zadejte jméno"
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="name" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Jméno</label>
+        <input type="text" name="name" id="name" placeholder="Zadejte jméno" required
+               oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+               oninput="this.setCustomValidity('')"
+               style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="surname"
-                   style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Příjmení</label>
-            <input type="text" name="surname" id="surname" placeholder="Zadejte příjmení"
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="surname" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Příjmení</label>
+        <input type="text" name="surname" id="surname" placeholder="Zadejte příjmení" required
+               oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+               oninput="this.setCustomValidity('')"
+               style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="username" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Uživatelské
-                jméno</label>
-            <input type="text" name="username" id="username" placeholder="Zadejte uživatelské jméno"
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="username" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Uživatelské jméno</label>
+        <input type="text" name="username" id="username" placeholder="Zadejte uživatelské jméno" required
+               oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+               oninput="this.setCustomValidity('')"
+               style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="email"
-                   style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">E-mail</label>
-            <input type="text" name="email" id="email" placeholder="Zadejte e-mail"
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="email" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">E-mail</label>
+        <input type="email" name="email" id="email" placeholder="Zadejte e-mail" required
+               oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+               oninput="this.setCustomValidity('')"
+               style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="phone" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Telefonní
-                číslo</label>
-            <input type="text" name="phone" id="phone" placeholder="Zadejte telefonní číslo"
-                   style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="phone" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Telefonní číslo</label>
+        <input type="text" name="phone" id="phone" placeholder="Zadejte telefonní číslo" required
+               oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+               oninput="this.setCustomValidity('')"
+               style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="gender"
-                   style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Pohlaví</label>
-            <select name="gender" id="gender"
-                    style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
-                <option value="">Vyberte pohlaví</option>
-                <option value="muž">Muž</option>
-                <option value="žena">Žena</option>
-            </select>
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="gender" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Pohlaví</label>
+        <select name="gender" id="gender" required
+                oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+                oninput="this.setCustomValidity('')"
+                style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9;">
+            <option value="">Vyberte pohlaví</option>
+            <option value="muž">Muž</option>
+            <option value="žena">Žena</option>
+        </select>
+    </div>
 
-        <div style="margin-bottom: 1.5rem;">
-            <label for="bio" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">
-                Proč se chcete stát našimi partnery
-            </label>
-            <textarea name="bio" id="bio" placeholder="Napište důvod"
-                      style="width: 100%; height: 120px; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9; resize: vertical;"></textarea>
-        </div>
+    <div style="margin-bottom: 1.5rem;">
+        <label for="bio" style="display: block; margin-bottom: 0.5rem; color: #111; font-weight: 600;">Proč se chcete stát našimi partnery</label>
+        <textarea name="bio" id="bio" placeholder="Napište důvod" required
+                  oninvalid="this.setCustomValidity('Všechna pole musí být vyplněna.')"
+                  oninput="this.setCustomValidity('')"
+                  style="width: 100%; height: 120px; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; background: #f9f9f9; resize: vertical;"></textarea>
+    </div>
 
-        <button type="submit" name="odeslat"
-                style="display: inline-block; padding: 0.75rem 2rem; background-color: #000; color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
-            Odeslat
-        </button>
-    </form>
+    <button type="submit" name="odeslat"
+            style="display: inline-block; padding: 0.75rem 2rem; background-color: #000; color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+        Odeslat
+    </button>
+</form>
 {% endblock %}
 
 {% block right_sidebar %}
