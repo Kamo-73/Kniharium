@@ -2,7 +2,7 @@ import requests
 import random
 from urllib.parse import quote
 
-# 🔁 Fallback popisy – použijú sa, ak sa nenašiel alebo bol slabý originálny popis
+#  Fallback descriptions – used if the original description was missing or weak
 FALLBACK_DESCRIPTIONS = [
     "Tato kniha je jako tiché posezení v zapadlém knihkupectví, kde voní starý papír a čas plyne pomaleji. Nabízí nenápadný, ale hluboký příběh, který se pomalu rozvíjí jako květina v prvním jarním slunci. Ideální pro chvíle, kdy potřebujete na chvíli vypnout a znovu se zamilovat do světa slov.",
     "Tahle kniha si na nic nehraje – prostě si vás získá. Možná nenápadně, ale o to vytrvaleji. Každá stránka dýchá atmosférou, která vás obejme jako starý známý.",

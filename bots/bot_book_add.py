@@ -4,19 +4,19 @@ import django
 from math import ceil
 from django.db import transaction
 
-# Inicializácia Django
+# Django initialization
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kniharium.settings")
 django.setup()
 
-# Import modelov a botov
+# Import of models and bots
 from viewer.models import Book, Author, Publisher, Genre, Format
 from bots.bot_book_description import get_and_translate_description
 from bots.bot_book_year import get_year_of_release
 from bots.bot_book_picture import get_cover_url
 from bots.bot_book_genres import save_genres_to_database
 
-# Zoznam kníh na pridanie
+# List of books to add
 BOOK_LIST = [
     {
         "name": "Umberto",

@@ -3,14 +3,14 @@ import os
 import django
 from django.conf import settings
 
-# Nastavíme správny cestu k súboru settings.py
+# Set the correct path to the settings.py file
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kniharium.settings')
 django.setup()
 
 import random
 from viewer.models import Author, Nationality, Genre
 
-# Zo zoznamov pre autorov a priezviská
+# From the lists for author names and surnames
 names = [
     "Alex", "Taylor", "Jordan", "Casey", "Morgan", "Riley", "Avery", "Skyler", "Cameron", "Bailey",
     "Sydney", "Quinn", "Rowan", "Dakota", "Emerson", "Parker", "Harper", "Spencer", "Finley", "Rowan"
@@ -87,11 +87,11 @@ quotes = [
 
 
 def fill_author_data():
-    # Prejde všetkých autorov
+    # Iterate through all authors
     for author in Author.objects.all():
         print(f"🔄 Spracúvam autora: {author.name} {author.surname}")
 
-        # Dopĺňa meno a priezvisko, ak chýbajú
+        # Fills in the first name and surname if missing
         if not author.name:
             author.name = random.choice(names)
             print(f"👤 Meno pridané: {author.name}")
@@ -99,42 +99,42 @@ def fill_author_data():
             author.surname = random.choice(surnames)
             print(f"👤 Priezvisko pridané: {author.surname}")
 
-        # Dopĺňa dátum narodenia, ak chýba
+        # Fills in the date of birth if missing
         if not author.date_of_birth:
             year = random.randint(1950, 2000)
             author.date_of_birth = datetime.date(year, 1, 1)
             print(f"🎂 Dátum narodenia pridaný: {author.date_of_birth}")
 
-        # Dopĺňa biografiu, ak chýba
+        # Fills in the biography if missing
         if not author.biography:
             author.biography = random.choice(author_descriptions_czech)
             print(f"📖 Biografia pridaná.")
 
-        # Dopĺňa národnosť, ak chýba
+        # Fills in the nationality if missing
         if not author.nationality:
             nationality_name = random.choice(nationalities)
             nationality_obj, created = Nationality.objects.get_or_create(name=nationality_name)
             author.nationality = nationality_obj
             print(f"🌍 Národnosť pridaná: {nationality_name}")
 
-        # Dopĺňa primarny zaner, ak chýba
+        # Fills in the primary genre if missing
         if not author.primary_genre:
             all_genres = Genre.objects.all()
             if all_genres.exists():
                 author.primary_genre = random.choice(list(all_genres))
                 print(f"Hlavny zaner pridany.")
 
-        # Dopĺňa citat, ak chýba
+        # Fills in the quote if missing
         if not author.quote:
             author.quote = random.choice(quotes)
             print(f"Citat pridany.")
 
-        # Nastaví obrázok, ak chýba
+        # Sets the image if missing
         if not author.image:
             author.image = "images/author_fallback_neutral.png"
             print(f"🖼️ Obrázok pridaný: author_fallback_neutral.png")
 
-        # Uložíme aktualizovaného autora
+        # Save the updated author
         author.save()
         print(f"✅ Autor {author.name} {author.surname} bol úspešne aktualizovaný.")
 

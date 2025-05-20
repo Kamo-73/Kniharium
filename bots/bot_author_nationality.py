@@ -2,7 +2,7 @@ import requests
 import random
 from urllib.parse import quote
 
-# ✅ Česká národnosť – zoznam
+# Czech nationality – list
 CZECH_NATIONALITIES = [
     "Americká", "Anglická", "Argentinská", "Australská", "Belgická", "Brazilská", "Britská",
     "Dánská", "Egyptská", "Finská", "Francouzská", "Indická", "Irská", "Italská", "Izraelská",
@@ -12,7 +12,7 @@ CZECH_NATIONALITIES = [
     "Rakouská"
 ]
 
-# 🔤 Preklad anglických národností na české
+# Translation of English nationalities to Czech
 NATIONALITY_MAP = {
     "United States of America": "Americká", "United States": "Americká", "USA": "Americká", "US": "Americká", "American": "Americká",
     "England": "Anglická", "English": "Anglická", "United Kingdom": "Britská", "Great Britain": "Britská", "British": "Britská",

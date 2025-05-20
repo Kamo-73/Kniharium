@@ -5,16 +5,16 @@ import random
 from urllib.parse import quote
 from math import ceil
 
-# Nastavíme správny cestu k súboru settings.py
+# Set the correct path to the settings.py file
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kniharium.settings")
 django.setup()
 
-# Import modelov
+# Import modelos
 from viewer.models import Book, Author, Publisher, Genre, Format
 from django.db import transaction
 
-# Zo zoznamov pre názvy kníh a popisy
+# From the lists for book titles and descriptions
 book_titles = {
     "The Cat Who Filed Taxes": "Kočka, která podávala daňové přiznání",
     "How to Survive a Zombie Job Interview": "Jak přežít pohovor se zombie",
@@ -59,45 +59,45 @@ book_descriptions = [
 
     """Čtení této knihy je jako být pozván na cizí půdu a přesto cítit, že jste doma. Je to melancholické putování krajinou vnitřního světa, kde je každý detail důležitý – prasklina na hrnku, zatažená obloha, vůně pečeného chleba. Je napsaná s takovou něhou, že se jí nechcete dotknout prstem – jen ji držet na klíně a dýchat spolu s ní."""
 ]
-# Funkcia pre výber náhodného počtu strán
+# Function for selecting a random page count
 def get_random_pages():
     return random.randint(100, 1100)
 
-# Funkcia pre výber náhodného popisu
+# Function for selecting a random description
 def get_random_description():
     return random.choice(book_descriptions)
 
-# Funkcia pre výber náhodného vydavateľa z databázy
+# Function for selecting a random publisher from the database
 def get_random_publisher():
     return Publisher.objects.order_by('?').first()
 
-# Funkcia pre výber náhodne 3 žánre z databázy
+# Function for selecting 3 random genres from the database
 def get_random_genres():
     genres = Genre.objects.order_by('?')[:3]
     return [genre.name for genre in genres]
 
-# Funkcia pre výber náhodného obrázka
+# Function for selecting a random image
 def get_random_image():
     image_files = ["book_fallback_1.png", "book_fallback_2.png", "book_fallback_3.png", "book_fallback_4.png", "book_fallback_5.png"]
     return f"images/{random.choice(image_files)}"
 
-# Funkcia pre výber náhodného autora z databázy
+# Function for selecting a random author from the database
 def get_random_author():
     return Author.objects.order_by('?').first()
 
-# Funkcia pre výber náhodného hodnotenia
+# Function for selecting a random rating
 def get_random_rating():
     return random.randint(1, 5)
 
-# Funkcia pre výber náhodného roku vydania
+# Function for selecting a random year of publication
 def get_random_year():
     return random.randint(1969, 2025)
 
-# Funkcia pre výber formátu (vždy "Vázaná kniha")
+# Function for selecting the format (always "Hardcover")
 def get_format():
     return ["Vázaná kniha"]
 
-# Funkcia pre výpočet času čítania na základe počtu strán
+# Function for calculating reading time based on page count
 def calculate_reading_time(pages):
     words_per_page = 275
     reading_speed = 225  # words per minute
@@ -108,35 +108,35 @@ def check_and_fill_books():
     for book in Book.objects.all():
         print(f"\n🔄 Zpracovávám knihu: {book.title_orig}")
 
-        # Ak kniha nemá title_orig, priradí náhodný názov z book_titles
+        # If the book has no title_orig, assign a random title from book_titles
         if not book.title_orig:
             random_title = random.choice(list(book_titles.keys()))
             book.title_orig = random_title
             book.title_cz = book_titles[random_title]
             print(f"📚 Názov knihy doplněn: '{book.title_orig}' a český překlad: '{book.title_cz}'")
 
-        # Ak kniha nemá title_cz, vyberieme český preklad z book_titles podľa title_orig
+        # If the book has no title_cz, select the Czech translation from book_titles based on title_orig
         if not book.title_cz:
             if book.title_orig in book_titles:
                 book.title_cz = book_titles[book.title_orig]
                 print(f"📚 Český překlad doplněn: '{book.title_cz}'")
 
-        # Ak kniha nemá description, vyberieme náhodný popis
+        # If the book has no description, select a random one
         if not book.description:
             book.description = get_random_description()
             print(f"📖 Popis knihy doplněn.")
 
-        # Ak kniha nemá num_of_pages, vyberieme náhodný počet strán
+        # If the book has no num_of_pages, select a random page count
         if not book.num_of_pages:
             book.num_of_pages = get_random_pages()
             print(f"📄 Počet stran doplněn: {book.num_of_pages}")
 
-        # Ak kniha nemá publisher, vyberieme náhodného vydavateľa
+        # If the book has no publisher, select a random one
         if not book.publisher:
             book.publisher = get_random_publisher()
             print(f"🏢 Vydavatel doplněn: {book.publisher.name}")
 
-        # Ak kniha nemá genre, vyberieme náhodné 3 žánre z databázy
+        # If the book has no genre, select 3 random genres from the database
         if not book.genre.exists():
             genres = get_random_genres()
             for genre_name in genres:
@@ -144,29 +144,29 @@ def check_and_fill_books():
                 book.genre.add(genre_obj)
             print(f"🎬 Žánry doplněny: {', '.join(genres)}")
 
-        # Ak kniha nemá rating_ours, vyberieme náhodné číslo medzi 1 a 5
+        # If the book has no rating_ours, select a random number between 1 and 5
         if not book.rating_ours:
             book.rating_ours = get_random_rating()
             print(f"⭐ Hodnocení doplněno: {book.rating_ours}")
 
-        # Ak kniha nemá year_of_publishing, vyberieme náhodný rok
+        # If the book has no year_of_publishing, select a random year
         if not book.year_of_publishing:
             book.year_of_publishing = get_random_year()
             print(f"📅 Rok vydání doplněn: {book.year_of_publishing}")
 
-        # Ak kniha nemá time_of_reading, vypočítame ho
+        # If the book has no time_of_reading, calculate it
         if not book.time_of_reading:
             book.time_of_reading = calculate_reading_time(book.num_of_pages)
             print(f"⏳ Čas čtení doplněn: {book.time_of_reading} minut")
 
-        # Ak kniha nemá format, vložíme "Vázaná kniha"
+        # If the book has no format, assign "Hardcover"
         if not book.format.exists():
             for format_name in get_format():
                 format_obj, _ = Format.objects.get_or_create(name=format_name)
                 book.format.add(format_obj)
             print(f"📚 Formát doplněn: {', '.join(get_format())}")
 
-        # Ak kniha nemá obrázok, vyberieme náhodný obrázok
+        # If the book has no image, select a random image
         if not book.image:
             book.image = get_random_image()
             print(f"🖼️ Obrázek doplněn: {book.image}")

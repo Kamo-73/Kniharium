@@ -267,7 +267,7 @@ for data in USERS:
     )
     print(f"✅ Vytvorený User: {username}")
 
-    # Vytvor profil – ak sa nevytvára automaticky cez signál
+    # Create profile
     profile, created = Profile.objects.get_or_create(user=user)
     profile.date_of_birth = datetime.strptime(data["date_of_birth"], "%Y-%m-%d").date()
     profile.biography = data["biography"]

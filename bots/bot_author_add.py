@@ -6,26 +6,26 @@ import datetime
 import requests
 from urllib.parse import quote
 
-# 🛠️ Inicializácia Django prostredia
+# Django environment initialization
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kniharium.settings")
 django.setup()
 
-# 📦 Import modelu a podbotov
+# Import of the model and sub-bots
 from viewer.models import Author, Nationality
 from bots.bot_author_bio import get_description_from_wikipedia, translate_to_czech, FALLBACK_BIO_MALE, FALLBACK_BIO_FEMALE
 from bots.bot_author_nationality import get_wikidata_id, get_nationalities_from_wikidata, translate_nationality_to_czech, CZECH_NATIONALITIES
 from bots.bot_author_years import get_birth_date
 
 def create_author(first_name, last_name, gender):
-    # ✅ Kontrola, či autor už existuje
+    # Check if the author already exists
     if Author.objects.filter(name=first_name.strip(), surname=last_name.strip()).exists():
         print(f"⚠️ Autor {first_name} {last_name} už v databázi existuje.")
         return
 
     full_name = f"{first_name} {last_name}"
 
-    # ✅ BIOGRAFIA
+    # Bio
     description_en = get_description_from_wikipedia(full_name)
     if not description_en or len(description_en.strip()) < 50:
         bio = random.choice(FALLBACK_BIO_MALE if gender == "muž" else FALLBACK_BIO_FEMALE)
@@ -34,7 +34,7 @@ def create_author(first_name, last_name, gender):
         if len(bio.strip()) < 50 or "MYMEMORY WARNING" in bio.upper():
             bio = random.choice(FALLBACK_BIO_MALE if gender == "muž" else FALLBACK_BIO_FEMALE)
 
-    # ✅ NÁRODNOSŤ
+    # Nationality
     wikidata_id = get_wikidata_id(full_name)
     cz_nationality = None
     if wikidata_id:
@@ -49,7 +49,7 @@ def create_author(first_name, last_name, gender):
 
     nationality_obj, _ = Nationality.objects.get_or_create(name=cz_nationality)
 
-    # ✅ DÁTUM NARODENIA
+    # Birth date
     birth_date = get_birth_date(wikidata_id) if wikidata_id else None
     if birth_date:
         year, month, day = map(int, birth_date.split("-"))
@@ -62,7 +62,7 @@ def create_author(first_name, last_name, gender):
         fallback_year = random.randint(1969, 2000)
         birth_date_obj = datetime.date(fallback_year, 1, 1)
 
-    # ✅ OBRÁZOK
+    # ✅ Picture
     query = quote(full_name)
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query}"
     response = requests.get(url)
@@ -76,7 +76,7 @@ def create_author(first_name, last_name, gender):
         fallback = "author_fallback_woman.png" if gender == "žena" else "author_fallback_man.png"
         picture_url = f"images/{fallback}"
 
-    # ✅ Uloženie autora
+    # Saving the author
     author = Author.objects.create(
         name=first_name.strip(),
         surname=last_name.strip(),

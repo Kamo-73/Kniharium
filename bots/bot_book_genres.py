@@ -11,7 +11,7 @@ django.setup()
 from viewer.models import Genre
 from django.db import transaction
 
-# Mapa anglických žánrov na české
+# Mapping of English genres to Czech
 GENRE_TRANSLATION = {
     "Fiction": "Beletria",
     "Nonfiction": "Literatura faktu",
@@ -153,7 +153,7 @@ def save_genres_to_database(book_title):
             Genre.objects.get_or_create(name=genre)
         return matches
 
-    # Fallback, ak sa nič nenašlo
+    # Fallback if nothing was found
     fallback_genres = random.sample(list(GENRE_TRANSLATION.values()), 3)
     print(f"⚠️ Nebyly nalezeny žádné žánry – použit fallback: {', '.join(fallback_genres)}")
     for genre in fallback_genres:
