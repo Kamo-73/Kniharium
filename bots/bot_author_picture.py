@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import quote
 
+
 def get_picture_url(first_name, last_name, gender, language='en'):
     full_name = f"{first_name} {last_name}"
     query = quote(full_name)
@@ -22,6 +23,7 @@ def get_picture_url(first_name, last_name, gender, language='en'):
         fallback = "author_fallback_woman.png" if gender == "žena" else "author_fallback_man.png"
         fallback_path = f"images/{fallback}"  # cesta relativní k MEDIA_ROOT
         print(f"🖼️ Obrázek nenalezen – použitý fallback: /media/{fallback_path}")
+
 
 if __name__ == "__main__":
     first_name = input("Zadej jméno autora/autorky: ")

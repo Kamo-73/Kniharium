@@ -53,6 +53,7 @@ good_female_comments = [
 
 ALL_GOOD_USERS = good_males + good_females
 
+
 def create_good_comments(num_users, num_comments_per_user):
     selected_users = random.sample(ALL_GOOD_USERS, min(num_users, len(ALL_GOOD_USERS)))
     available_books = list(Book.objects.all())
@@ -87,6 +88,7 @@ def create_good_comments(num_users, num_comments_per_user):
 
 def run(num_users, num_comments_per_user):
     create_good_comments(num_users, num_comments_per_user)
+
 
 if __name__ == "__main__":
     run(2, 3)

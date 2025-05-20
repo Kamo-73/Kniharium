@@ -48,7 +48,8 @@ nationalities = [
     "Americká", "Anglická", "Argentinská", "Australská", "Belgická", "Brazilská", "Britská", "Dánská", "Egyptská",
     "Finská", "Francouzská", "Indická", "Irská", "Italská", "Izraelská", "Japonská", "Kanadská", "Korejská", "Kubánská",
     "Maďarská", "Mexická", "Nizozemská", "Norská", "Německá", "Polská", "Portugalská", "Rakouská", "Rumunská", "Ruská",
-    "Slovenská", "Turecká", "USA", "Ukrajinská", "Íránská", "Česká", "Čínská", "Řecká", "Španělská", "Švédská", "Švýcarská"
+    "Slovenská", "Turecká", "USA", "Ukrajinská", "Íránská", "Česká", "Čínská", "Řecká", "Španělská", "Švédská",
+    "Švýcarská"
 ]
 
 quotes = [
@@ -83,7 +84,6 @@ quotes = [
     "A book is a device to ignite the imagination.",
     "You don’t read a book to pass the time. You read to discover yourself."
 ]
-
 
 
 def fill_author_data():
@@ -137,6 +137,7 @@ def fill_author_data():
         # Save the updated author
         author.save()
         print(f"✅ Autor {author.name} {author.surname} bol úspešne aktualizovaný.")
+
 
 def run():
     fill_author_data()

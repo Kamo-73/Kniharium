@@ -13,9 +13,12 @@ django.setup()
 
 # Import of the model and sub-bots
 from viewer.models import Author, Nationality
-from bots.bot_author_bio import get_description_from_wikipedia, translate_to_czech, FALLBACK_BIO_MALE, FALLBACK_BIO_FEMALE
-from bots.bot_author_nationality import get_wikidata_id, get_nationalities_from_wikidata, translate_nationality_to_czech, CZECH_NATIONALITIES
+from bots.bot_author_bio import get_description_from_wikipedia, translate_to_czech, FALLBACK_BIO_MALE, \
+    FALLBACK_BIO_FEMALE
+from bots.bot_author_nationality import get_wikidata_id, get_nationalities_from_wikidata, \
+    translate_nationality_to_czech, CZECH_NATIONALITIES
 from bots.bot_author_years import get_birth_date
+
 
 def create_author(first_name, last_name, gender):
     # Check if the author already exists
@@ -91,6 +94,7 @@ def create_author(first_name, last_name, gender):
     print(f"🌍 Národnost: {cz_nationality}")
     print(f"🎂 Datum narození: {birth_date_obj}")
     print(f"🖼️ Obrázek: {picture_url}")
+
 
 def run(name, surname, gender):
     create_author(name, surname, gender)

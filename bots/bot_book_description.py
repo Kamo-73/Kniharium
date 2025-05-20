@@ -46,9 +46,10 @@ FALLBACK_DESCRIPTIONS = [
     "Je to kniha, kterou si nepamatujete po kapitolách, ale po pocitech. Po náladách, které ve vás vyvolala. Po momentech, kdy jste se přistihli, že na chvíli zapomněli, kde jste. Nečeká na váš obdiv – jen na vaši pozornost. A kdo ji dá, dostane víc, než by čekal."
 ]
 
+
 def translate_to_czech(text):
     try:
-        parts = [text[i:i+500] for i in range(0, len(text), 500)]
+        parts = [text[i:i + 500] for i in range(0, len(text), 500)]
         translated_parts = []
         for part in parts:
             resp = requests.get(f"https://api.mymemory.translated.net/get?q={quote(part)}&langpair=en|cs")
@@ -59,6 +60,7 @@ def translate_to_czech(text):
         return joined.replace("\n", " ").strip()
     except:
         return text.replace("\n", " ").strip()
+
 
 def get_work_key(book_title):
     query = quote(book_title)
@@ -71,6 +73,7 @@ def get_work_key(book_title):
         return None
     return data["docs"][0].get("key")
 
+
 def get_description_from_openlibrary(work_key):
     url = f"https://openlibrary.org{work_key}.json"
     response = requests.get(url)
@@ -81,6 +84,7 @@ def get_description_from_openlibrary(work_key):
     if isinstance(desc, dict):
         return desc.get("value")
     return desc
+
 
 def get_and_translate_description(book_title):
     work_key = get_work_key(book_title)
@@ -104,6 +108,7 @@ def get_and_translate_description(book_title):
 
     print(f"📖 Přeložený popis pro '{book_title}':\n{description_cz}")
     return description_cz
+
 
 if __name__ == "__main__":
     book_title = input("Zadej název knihy: ")

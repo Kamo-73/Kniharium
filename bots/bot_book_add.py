@@ -19,61 +19,113 @@ from bots.bot_book_genres import save_genres_to_database
 # List of books to add
 BOOK_LIST = [
     {
-        "name": "Umberto",
-        "surname": "Eco",
-        "title_orig": "The Name of the Rose",
-        "title_cz": "Jméno růže",
-        "num_of_pages": 536,
-        "publisher": "Argo",
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "Sarum",
+        "title_cz": "Sarum: Sága Anglie",
+        "num_of_pages": 912,
+        "publisher": "BB/art",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "London",
+        "title_cz": "Londýn",
+        "num_of_pages": 1152,
+        "publisher": "BB/art",
         "rating_ours": 5,
         "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
     },
     {
-        "name": "Umberto",
-        "surname": "Eco",
-        "title_orig": "Foucault's Pendulum",
-        "title_cz": "Foucaultovo kyvadlo",
-        "num_of_pages": 656,
-        "publisher": "Argo",
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "New York",
+        "title_cz": "New York",
+        "num_of_pages": 1040,
+        "publisher": "BB/art",
         "rating_ours": 5,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
+        "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Umberto",
-        "surname": "Eco",
-        "title_orig": "Baudolino",
-        "title_cz": "Baudolino",
-        "num_of_pages": 544,
-        "publisher": "SLOVART",
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "Paris",
+        "title_cz": "Paříž",
+        "num_of_pages": 944,
+        "publisher": "BB/art",
         "rating_ours": 4,
         "format": ["Vázaná kniha", "E-kniha"]
     },
     {
-        "name": "Umberto",
-        "surname": "Eco",
-        "title_orig": "The Prague Cemetery",
-        "title_cz": "Pražský hřbitov",
-        "num_of_pages": 464,
-        "publisher": "Argo",
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "Russka",
+        "title_cz": "Russka: Příběh Ruska",
+        "num_of_pages": 992,
+        "publisher": "BB/art",
         "rating_ours": 4,
-        "format": ["Vázaná kniha", "E-kniha", "Audiokniha"]
+        "format": ["Vázaná kniha"]
     },
     {
-        "name": "Umberto",
-        "surname": "Eco",
-        "title_orig": "The Island of the Day Before",
-        "title_cz": "Ostrov včerejšího dne",
-        "num_of_pages": 528,
-        "publisher": "Argo",
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "The Forest",
+        "title_cz": "Les",
+        "num_of_pages": 816,
+        "publisher": "BB/art",
         "rating_ours": 4,
         "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "China",
+        "title_cz": "Čína",
+        "num_of_pages": 1072,
+        "publisher": "BB/art",
+        "rating_ours": 5,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "The Rebels of Ireland",
+        "title_cz": "Rebelové Irska",
+        "num_of_pages": 768,
+        "publisher": "BB/art",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha"]
+    },
+    {
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "The Princes of Ireland",
+        "title_cz": "Princové Irska",
+        "num_of_pages": 768,
+        "publisher": "BB/art",
+        "rating_ours": 4,
+        "format": ["Vázaná kniha", "E-kniha"]
+    },
+    {
+        "name": "Edward",
+        "surname": "Rutherfurd",
+        "title_orig": "Dublin: Foundation",
+        "title_cz": "Dublin: Zrození",
+        "num_of_pages": 720,
+        "publisher": "BB/art",
+        "rating_ours": 3,
+        "format": ["Vázaná kniha"]
     }
 ]
+
 
 def calculate_reading_time(pages):
     words_per_page = 275
     reading_speed = 225  # words per minute
     return ceil((pages * words_per_page) / reading_speed)
+
 
 @transaction.atomic
 def add_books():
@@ -123,6 +175,7 @@ def add_books():
             book.genre.add(genre_obj)
 
         print(f"✅ Kniha '{book.title_orig}' byla přidána do databáze.")
+
 
 def run(book_data):
     print("▶️ Pridávam knihu:", book_data["title_cz"])
@@ -181,6 +234,7 @@ def run(book_data):
         book.genre.add(genre_obj)
 
     print(f"✅ Kniha '{book.title_cz}' bola pridaná.")
+
 
 if __name__ == "__main__":
     add_books()

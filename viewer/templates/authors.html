@@ -70,11 +70,11 @@
         Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
         {% if has_previous %}
             <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}"
-               style="margin-left: 20px;">&#x3C; Předcházející</a>
+               style="margin-left: 20px; text-decoration: none; color: inherit;">&#x3C; Předcházející</a>
         {% endif %}
         {% if has_next %}
             <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}"
-               style="margin-left: 10px;">Další &#x3E;</a>
+               style="margin-left: 10px; text-decoration: none; color: inherit;">Další &#x3E;</a>
         {% endif %}
     </div>
 
@@ -152,11 +152,11 @@
         Strana {{ current_page }} – písmeno <strong>{{ current_letter }}</strong>
         {% if has_previous %}
             <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ previous_page_number }}"
-               style="margin-left: 20px;">&#x3C; Předcházející</a>
+               style="margin-left: 20px; text-decoration: none; color: inherit;">&#x3C; Předcházející</a>
         {% endif %}
         {% if has_next %}
             <a href="?letter={{ current_letter }}&sort={{ sort }}&page={{ next_page_number }}"
-               style="margin-left: 10px;">Další &#x3E;</a>
+               style="margin-left: 10px; text-decoration: none; color: inherit;">Další &#x3E;</a>
         {% endif %}
     </div>
 {% endblock %}

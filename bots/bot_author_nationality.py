@@ -14,8 +14,10 @@ CZECH_NATIONALITIES = [
 
 # Translation of English nationalities to Czech
 NATIONALITY_MAP = {
-    "United States of America": "Americká", "United States": "Americká", "USA": "Americká", "US": "Americká", "American": "Americká",
-    "England": "Anglická", "English": "Anglická", "United Kingdom": "Britská", "Great Britain": "Britská", "British": "Britská",
+    "United States of America": "Americká", "United States": "Americká", "USA": "Americká", "US": "Americká",
+    "American": "Americká",
+    "England": "Anglická", "English": "Anglická", "United Kingdom": "Britská", "Great Britain": "Britská",
+    "British": "Britská",
     "Argentina": "Argentinská", "Argentine": "Argentinská", "Australia": "Australská", "Australian": "Australská",
     "Belgium": "Belgická", "Belgian": "Belgická", "Brazil": "Brazilská", "Brazilian": "Brazilská",
     "Denmark": "Dánská", "Danish": "Dánská", "Egypt": "Egyptská", "Egyptian": "Egyptská",
@@ -37,8 +39,10 @@ NATIONALITY_MAP = {
     "Czechoslovakia": "Česká", "Cisleithania": "Rakouská"
 }
 
+
 def translate_nationality_to_czech(english):
     return NATIONALITY_MAP.get(english.strip(), None)
+
 
 def get_wikidata_id(author_name):
     query = quote(author_name)
@@ -51,6 +55,7 @@ def get_wikidata_id(author_name):
     for page in pages.values():
         return page.get("pageprops", {}).get("wikibase_item")
     return None
+
 
 def get_nationalities_from_wikidata(wikidata_id):
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{wikidata_id}.json"
@@ -72,6 +77,7 @@ def get_nationalities_from_wikidata(wikidata_id):
                     nationalities.append(en_name)
     return nationalities
 
+
 def detect_author_nationality(first_name, last_name):
     full_name = f"{first_name} {last_name}"
     wikidata_id = get_wikidata_id(full_name)
@@ -89,6 +95,7 @@ def detect_author_nationality(first_name, last_name):
 
     fallback = random.choice(CZECH_NATIONALITIES)
     print(f"🌍 Národnost (náhodná): {fallback}")
+
 
 if __name__ == "__main__":
     first_name = input("Zadej jméno autora: ")

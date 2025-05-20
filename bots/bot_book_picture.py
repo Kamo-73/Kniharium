@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import quote
 
+
 def get_cover_url(book_title):
     query = quote(book_title)
     url = f"https://openlibrary.org/search.json?title={query}"
@@ -24,6 +25,7 @@ def get_cover_url(book_title):
     else:
         print("⚠️ Obálka nebyla nalezena.")
         return None
+
 
 if __name__ == "__main__":
     book_title = input("Zadej název knihy: ")

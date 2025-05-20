@@ -93,6 +93,7 @@ neutral_female_comments = [
 
 ALL_USERS = neutral_males + neutral_females
 
+
 def create_neutral_comments(num_users, num_comments_per_user):
     selected_users = random.sample(ALL_USERS, min(num_users, len(ALL_USERS)))
     available_books = list(Book.objects.all())
@@ -124,8 +125,10 @@ def create_neutral_comments(num_users, num_comments_per_user):
 
             print(f"🟡 {username} komentoval „{book.title_cz}“ – {rating}★: {comment_text[:50]}...")
 
+
 def run(num_users, num_comments_per_user):
     create_neutral_comments(num_users, num_comments_per_user)
+
 
 if __name__ == "__main__":
     run(2, 3)

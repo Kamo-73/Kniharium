@@ -59,49 +59,62 @@ book_descriptions = [
 
     """Čtení této knihy je jako být pozván na cizí půdu a přesto cítit, že jste doma. Je to melancholické putování krajinou vnitřního světa, kde je každý detail důležitý – prasklina na hrnku, zatažená obloha, vůně pečeného chleba. Je napsaná s takovou něhou, že se jí nechcete dotknout prstem – jen ji držet na klíně a dýchat spolu s ní."""
 ]
+
+
 # Function for selecting a random page count
 def get_random_pages():
     return random.randint(100, 1100)
+
 
 # Function for selecting a random description
 def get_random_description():
     return random.choice(book_descriptions)
 
+
 # Function for selecting a random publisher from the database
 def get_random_publisher():
     return Publisher.objects.order_by('?').first()
+
 
 # Function for selecting 3 random genres from the database
 def get_random_genres():
     genres = Genre.objects.order_by('?')[:3]
     return [genre.name for genre in genres]
 
+
 # Function for selecting a random image
 def get_random_image():
-    image_files = ["book_fallback_1.png", "book_fallback_2.png", "book_fallback_3.png", "book_fallback_4.png", "book_fallback_5.png"]
+    image_files = ["book_fallback_1.png", "book_fallback_2.png", "book_fallback_3.png", "book_fallback_4.png",
+                   "book_fallback_5.png"]
     return f"images/{random.choice(image_files)}"
+
 
 # Function for selecting a random author from the database
 def get_random_author():
     return Author.objects.order_by('?').first()
 
+
 # Function for selecting a random rating
 def get_random_rating():
     return random.randint(1, 5)
+
 
 # Function for selecting a random year of publication
 def get_random_year():
     return random.randint(1969, 2025)
 
+
 # Function for selecting the format (always "Hardcover")
 def get_format():
     return ["Vázaná kniha"]
+
 
 # Function for calculating reading time based on page count
 def calculate_reading_time(pages):
     words_per_page = 275
     reading_speed = 225  # words per minute
     return ceil((pages * words_per_page) / reading_speed)
+
 
 @transaction.atomic
 def check_and_fill_books():
@@ -174,9 +187,10 @@ def check_and_fill_books():
         book.save()
         print(f"✅ Kniha '{book.title_orig}' bola úspešne aktualizována.")
 
+
 def run():
     check_and_fill_books()
 
+
 if __name__ == "__main__":
     check_and_fill_books()
-

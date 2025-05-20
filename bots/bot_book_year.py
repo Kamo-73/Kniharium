@@ -2,6 +2,7 @@ import requests
 from urllib.parse import quote
 import random
 
+
 def get_year_of_release(book_title):
     query = quote(book_title)
     url = f"https://openlibrary.org/search.json?title={query}"
@@ -23,6 +24,7 @@ def get_year_of_release(book_title):
 
     print("⚠️ Rok vydání nebyl nalezen, vybírám náhodně.")
     return random.randint(2000, 2025)
+
 
 if __name__ == "__main__":
     book_title = input("Zadej název knihy: ")

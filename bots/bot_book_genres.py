@@ -4,6 +4,7 @@ from urllib.parse import quote
 import random
 
 import os, sys, django
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kniharium.settings")
 django.setup()
@@ -102,6 +103,7 @@ GENRE_TRANSLATION = {
     "Literary Criticism": "Literární kritika"
 }
 
+
 def get_subjects_from_openlibrary(book_title):
     query = quote(book_title)
     search_url = f"https://openlibrary.org/search?q={query}"
@@ -132,6 +134,7 @@ def get_subjects_from_openlibrary(book_title):
     subjects = [tag.get_text(strip=True) for tag in tags]
     return subjects
 
+
 def get_genres(book_title):
     subjects = get_subjects_from_openlibrary(book_title)
     matches = []
@@ -143,6 +146,7 @@ def get_genres(book_title):
                 break
 
     return list(set(matches))
+
 
 @transaction.atomic
 def save_genres_to_database(book_title):

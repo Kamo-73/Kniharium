@@ -17,7 +17,7 @@ FALLBACK_BIO_MALE = [
 ]
 
 # Fallback biog - female
-FALLBACK_BIO_FEMALE  = [
+FALLBACK_BIO_FEMALE = [
     "Autorka začala písať už ako dieťa, keď si vymýšľala príbehy pre svoje bábiky a zapisovala ich do školských zošitov. V desiatich rokoch napísala svoju prvú báseň a odvtedy nikdy neprestala tvoriť. Láska k slovu ju sprevádzala počas celého dospievania, no k písaniu sa vrátila naplno až po štúdiách. Jej tvorbu ovplyvnili viacerí autori, najmä Stephen King, vďaka ktorému sa nevyhýba temnejším témam ani psychologickému napätiu. V jej príbehoch sa stretáva každodennosť so záhadou, vnútorné sily postáv často zrkadlia vonkajšie udalosti. Autorka verí, že literatúra má moc odhaliť to, čo bežne skrývame – pred inými, aj pred sebou samými.",
     "Autorka vyrastala obklopená knihami, ktoré jej matka nosila z knižnice. Už ako tínedžerka si viedla čitateľský denník, v ktorom si nevšímala len príbehy, ale analyzovala štýl a rytmus viet. Táto precíznosť sa neskôr odrazila aj v jej vlastnej tvorbe. Hoci začínala s poéziou, jej texty sa postupne rozvinuli do dlhších foriem – najmä do introspektívnych próz, kde sa snúbi jemný jazyk s hlbokým emocionálnym nábojom. V jej knihách nájdeme postavy, ktoré sa hľadajú, zraňujú, odpúšťajú si – často potichu a medzi riadkami. Autorka verí, že skutočné príbehy sa odohrávajú v tichu, v pohľadoch, v rozhodnutiach, ktoré sa zdajú byť malé, no menia všetko.",
     "Autorka pôsobila dlhé roky v oblasti filmu a divadla, kde sa venovala réžii a scenáristike. Dramatická štruktúra, cit pre scénu a schopnosť vystavať silný konflikt sú znaky, ktoré si preniesla aj do literárnej tvorby. V jej knihách je každý dialóg nositeľom napätia a každá situácia má presný rytmus. Postavy sa často ocitajú na hrane – medzi túžbou a zodpovednosťou, medzi tým, čo chcú, a tým, čo si od nich vyžaduje svet. Témy ako identita, hranice slobody či vzťahy medzi ženami sú v jej dielach spracované s jemnosťou, no aj odvahou. Autorka verí, že práve v krehkosti sa ukrýva najväčšia sila.",
@@ -29,6 +29,7 @@ FALLBACK_BIO_FEMALE  = [
     "V detstve sa autorka venovala hudbe – hrala na klavíri a písala texty piesní. Tieto texty boli čoraz dlhšie, až sa z nich stali prózy. Hudobný rytmus si však preniesla aj do svojho štýlu – jej knihy majú svoj vlastný „takt“, opakovanie motívov a melodickú výstavbu viet. Píše najmä o láske, spomienkach, nenápadných stratách a veľkých tichách. Postavy sú často vnímavé, krehké, no zároveň pevné vo svojich hodnotách. Autorka tvrdí, že aj smútok môže byť krásny, ak je vyrozprávaný s nehou. Literatúru vníma ako formu hudby, len bez notovej osnovy.",
     "Autorka si prešla rôznymi fázami – najprv písala pre deti, potom pre mládež, neskôr skúšala žurnalistiku, až napokon objavila historickú fikciu. V tomto žánri sa našla, pretože jej umožňuje spájať rešpekt k minulosti s citom pre rozprávanie. Venuje sa príbehom, ktoré oživujú zabudnuté osudy žien, remeselníkov, ľudí z okraja dejín. Nesústredí sa na veľké mená, ale na malých hrdinov každodennosti. Jej knihy sú dôsledne rešeršované, no vždy s dôrazom na emócie a ľudskosť. Autorka verí, že história nie je len dátum – ale pamäť, ktorú môžeme uchovať práve cez príbeh."
 ]
+
 
 def translate_to_czech(text):
     try:
@@ -43,6 +44,7 @@ def translate_to_czech(text):
     except:
         return text.strip()
 
+
 def get_description_from_wikipedia(full_name):
     query = quote(full_name)
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query}"
@@ -51,6 +53,7 @@ def get_description_from_wikipedia(full_name):
         return None
     data = response.json()
     return data.get("extract", "")
+
 
 def display_biography(first_name, last_name, gender):
     full_name = f"{first_name} {last_name}"
@@ -70,6 +73,7 @@ def display_biography(first_name, last_name, gender):
         return
 
     print(f"📖 Biografie (přeložená):\n{description_cz}")
+
 
 if __name__ == "__main__":
     first_name = input("Zadej jméno autora/autorky: ")

@@ -274,5 +274,4 @@ for data in USERS:
     profile.save()
     print(f"🧾 Profil pridaný: {username}")
 
-
 # import bots.users_add
