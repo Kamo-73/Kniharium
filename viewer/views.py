@@ -374,6 +374,32 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = 'viewer.delete_book'
 
 
+class BookReviewView(DetailView):
+    model = Book
+    template_name = 'book_review.html'
+    context_object_name = 'book'
+
+    def get(self, request, *args, **kwargs):
+        book_obj = self.get_object()
+        if not book_obj.review:
+            return redirect('book', pk=book_obj.pk)
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book_obj = self.get_object()
+
+        rating_avg = book_obj.comments.aggregate(Avg('rating'))['rating__avg']
+        user_rating_avg = round(rating_avg or 0)
+
+        authors = book_obj.author.all()
+        autor_string = f"{authors[0].name} {authors[0].surname}" if authors else ""
+
+        context['user_rating_avg'] = user_rating_avg
+        context['author_string'] = autor_string
+        return context
+
+
 class AuthorsListView(ListView):
     template_name = 'authors.html'
     context_object_name = 'authors'

@@ -164,11 +164,18 @@
                 <span style="font-size: 16px; color: gray;">({{ rating_count }} hodnocení)</span>
             </a><br>
 
-            <a style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline;">
-                Recenze:
-            </a> <br><br>
+{% if book.review %}
+    <a href="{% url 'book_review' pk=book.pk %}"
+       style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline; color: inherit;">
+        Recenze:
+    </a>
+{% endif %}
+
+            <br>
+            <br>
 
             <div style="text-align: center;">
+            Dostupný format knihy <br>
                 {% with '' as zobrazeny %}
 
                     {% if 'Vázaná kniha' in format_vazana and not 'vaz' in zobrazeny %}

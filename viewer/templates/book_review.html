@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    nazov review
+{% endblock %}
+
+{% block left_sidebar %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="review-container" style="max-width: 850px; margin: 40px auto; font-family: 'Segoe UI', sans-serif; color: #111; line-height: 1.6; padding: 20px;">
+
+    <div style="text-align: center; font-size: 40px; font-weight: bold; margin-bottom: 15px;">
+        Recenzia
+    </div>
+
+<h1 style="text-align: center; font-size: 55px; font-weight: bold; margin: 0;">
+    <a href="{% url 'author' pk=book.author.first.pk %}" style="color: inherit; text-decoration: none;">
+        {{ author_string }}
+    </a>
+</h1>
+
+<h2 style="text-align: center; font-size: 55px; font-weight: bold; margin: 0;">
+    <a href="{% url 'book' pk=book.pk %}" style="color: inherit; text-decoration: none;">
+        {{ book.title_orig }}
+    </a>
+</h2>
+
+<hr style="margin-bottom: 30px;">
+
+    <!-- picture and info -->
+<div style="display: flex; justify-content: center; gap: 40px; align-items: flex-start; margin-top: 30px; flex-wrap: wrap;">
+
+    <!-- picture -->
+    {% if book.image and book.image.name %}
+        {% if "http" in book.image.name %}
+            <img src="{{ book.image.name }}" alt="{{ book.title_cz }}"
+                 style="height: 370px; width: 270px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+        {% else %}
+            <img src="/media/{{ book.image.name }}" alt="{{ book.title_cz }}"
+                 style="height: 370px; width: 270px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+        {% endif %}
+    {% else %}
+        <div style="height: 370px; width: 270px; background-color: #ccc; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            Chybí obrázek
+        </div>
+    {% endif %}
+
+    <!-- info -->
+<div style="display: flex; flex-direction: column; justify-content: space-between; height: 370px; font-size: 30px;">
+    <div>
+
+        <p>
+    <strong>Český názov:</strong>
+    <a href="{% url 'book' pk=book.pk %}" style="color: inherit; text-decoration: none;">
+        {{ book.title_cz }}
+    </a>
+</p>
+
+        <p><strong>Naše hodnotenie:</strong>
+            {% for i in "12345" %}
+                {% if forloop.counter <= book.rating_ours %}
+                    ★
+                {% else %}
+                    ☆
+                {% endif %}
+            {% endfor %}
+        </p>
+
+        <p><strong>Hodnotenie čitateľov:</strong>
+            {% for i in "12345" %}
+                {% if forloop.counter <= user_rating_avg %}
+                    ★
+                {% else %}
+                    ☆
+                {% endif %}
+            {% endfor %}
+        </p>
+
+        <p><strong>Počet strán:</strong> {{ book.num_of_pages }}</p>
+    </div>
+
+        <!-- dates -->
+        <div style="font-size: 13px; color: #555; margin-top: 20px;">
+            <p>Pridaná na stránku: {{ book.created|date:"j.n.Y" }}</p>
+            <p>Posledná úprava: {{ book.updated|date:"j.n.Y" }}</p>
+        </div>
+    </div>
+</div>
+<hr style="margin-bottom: 30px;">
+    <!-- text of review -->
+<div style="margin-top: 40px; text-align: justify; font-size: 18px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+    <style>
+        .review-text p:first-of-type {
+            text-indent: 30px;
+        }
+    </style>
+
+    <div class="review-text">
+        {{ book.review|linebreaks }}
+    </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block right_sidebar %}
+
+{% endblock %}
+
+{% include "footer.html" %}
