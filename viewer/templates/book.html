@@ -122,7 +122,9 @@
                         {{ genre.name }}
                     </span>
                     {% endfor %}<br> <br>
-                    <a style="font-size: 25px;"><strong>Nakladatelství:</strong> {{ book.publisher }}</a> <br>
+                    <a href="{% url 'publisher' pk=book.publisher.pk %}" style="font-size: 25px; color: inherit; text-decoration: none;">
+                        <strong>Nakladatelství:</strong> {{ book.publisher }}
+                    </a><br>
                     <a style="font-size: 25px;"><strong>Rok vydání:</strong> {{ book.year_of_publishing }}</a><br>
                     <a style="font-size: 25px;"><strong>Počet stran:</strong> {{ book.num_of_pages }}</a><br>
                     <a style="font-size: 25px;"><strong>Délka čtení:</strong> {{ reading_time }}</a><br>
@@ -167,7 +169,7 @@
 {% if book.review %}
     <a href="{% url 'book_review' pk=book.pk %}"
        style="font-size: 30px; font-weight: bold; margin-top: 30px; text-decoration: underline; color: inherit;">
-        Recenze:
+        Recenze
     </a>
 {% endif %}
 
@@ -175,7 +177,7 @@
             <br>
 
             <div style="text-align: center;">
-            Dostupný format knihy <br>
+            Dostupné formáty – kliknutím přejdete na Heuréku:<br>
                 {% with '' as zobrazeny %}
 
                     {% if 'Vázaná kniha' in format_vazana and not 'vaz' in zobrazeny %}
@@ -206,41 +208,58 @@
             </div>
 
 
-            {% if request.user.is_authenticated %}
-                <div style="text-align: center;">
 
-                    <div style="display: inline-block; margin: 20px;">
+{% if request.user.is_authenticated %}
+<div style="text-align: center;">
+    <div style="background-color: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
 
-                        {% if book in profile.watchlist.all %}
-                            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">👀</a><br>
-                            <span style="font-size: 18px;">Odebrat</span>
-                        {% else %}
-                            <a style="font-size: 50px;" href="{% url 'watchlist' book.id %}">😌</a><br>
-                            <span style="font-size: 18px;">Přidat</span>
-                        {% endif %}
+        <!-- Nadpis tesne nad emoji -->
+        <div style="font-size: 20px; line-height: 1; margin: 0; padding: 0;">
+            Spravujte své seznamy
+        </div><br>
 
+        <!-- Emoji riadok -->
+        <div style="display: flex; justify-content: center; gap: 30px; font-size: 70px; line-height: 1; margin-top: 2px;">
 
-                    </div>
-                    <div style="display: inline-block; margin: 20px;">
-                        {% if book in profile.readlist.all %}
-                            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📖</a><br>
-                            <span style="font-size: 18px;">Odebrat</span>
-                        {% else %}
-                            <a style="font-size: 50px;" href="{% url 'readlist' book.id %}">📘</a><br>
-                            <span style="font-size: 18px;">Přidat</span>
-                        {% endif %}
-                    </div>
-                    <div style="display: inline-block; margin: 20px;">
-                        {% if book in profile.favouritelist.all %}
-                            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">❤️</a><br>
-                            <span style="font-size: 18px;">V oblíbených</span>
-                        {% else %}
-                            <a style="font-size: 50px;" href="{% url 'favouritelist' book.id %}">🤍</a><br>
-                            <span style="font-size: 18px;">Přidat</span>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endif %}
+            <!-- Watchlist -->
+            <a href="{% url 'watchlist' book.id %}"
+               title="{% if book in profile.watchlist.all %}Odebrat z watchlistu{% else %}Přidat do watchlistu{% endif %}"
+               style="text-decoration: none; color: inherit;">
+                {% if book in profile.watchlist.all %}
+                    👀
+                {% else %}
+                    😌
+                {% endif %}
+            </a>
+
+            <!-- Prečítané -->
+            <a href="{% url 'readlist' book.id %}"
+               title="{% if book in profile.readlist.all %}Odebrat z přečtených{% else %}Přidat do přečtených{% endif %}"
+               style="text-decoration: none; color: inherit;">
+                {% if book in profile.readlist.all %}
+                    📖
+                {% else %}
+                    📘
+                {% endif %}
+            </a>
+
+            <!-- Obľúbené -->
+            <a href="{% url 'favouritelist' book.id %}"
+               title="{% if book in profile.favouritelist.all %}Odebrat z oblíbených{% else %}Přidat do oblíbených{% endif %}"
+               style="text-decoration: none; color: inherit;">
+                {% if book in profile.favouritelist.all %}
+                    ❤️
+                {% else %}
+                    🤍
+                {% endif %}
+            </a>
+
+        </div>
+    </div>
+    </div>
+</div>
+{% endif %}
         </div>
 
     </div>
